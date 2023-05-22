@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "autofl"
+version = "0.1.0"
+description = ""
+authors = ["Cezar Sas <cezar.sas@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.95.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
