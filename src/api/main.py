@@ -2,11 +2,15 @@ from typing import Union, List
 
 from fastapi import FastAPI
 
-from entity.project import Project
-
 app = FastAPI()
 
 
-@app.get("/analyze")
-async def analyze(name: str, remote: str, languages: Union[str, List[str]], dir_path: str='.'):
-    project = Project()
+@app.get("/label/files")
+async def label_files(name: str, remote: str, languages: Union[str, List[str]], *args, **kwargs):
+    labelled_files = []
+    return labelled_files
+
+
+@app.get("/")
+async def main():
+    return {'Message': "Done"}

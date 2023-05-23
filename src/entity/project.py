@@ -1,4 +1,5 @@
-from typing import List, Union
+import json
+from typing import List, Union, Iterable
 
 
 class Project:
@@ -16,8 +17,8 @@ class Project:
     def load_files(self):
         pass
 
-    def __iter__(self):
-        return FileIterator(self.languages)
+    def __iter__(self) -> Iterable:
+        return FilesIterator(self.languages)
 
     @property
     def languages(self) -> List:
@@ -34,8 +35,15 @@ class Project:
         elif arg_type == list:
             self._languages = languages
 
+    def to_json(self) -> str:
+        annotated_files = {}
+        for file in self:
+            annotated_files[file.name] = {'annot': file.annot, 'label': file.label}
 
-class FileIterator:
+        return json.dumps(annotated_files)
+
+
+class FilesIterator:
     def __init__(self, files):
         self.idx = 0
         self.files = files
@@ -50,3 +58,15 @@ class FileIterator:
         except IndexError:
             self.idx = 0
             raise StopIteration
+
+
+class File:
+    def __int__(self, path):
+        self.path = path
+        self.content = self._load_content()
+
+    def _load_content(self) -> str:
+        with open(self.path, 'rt') as inf:
+            content = ' '.join(inf.readlines())
+
+        return content
