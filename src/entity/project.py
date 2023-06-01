@@ -1,34 +1,41 @@
+import glob
 import json
+from pathlib import Path
 from typing import List, Union, Iterable
+
+from entity.file import File
 
 
 class Project:
-    def __int__(self, name: str, remote: str, languages: Union[str, List[str]], dir_path: str = '.'):
+    def __init__(self, name: str, remote: str, extensions: Union[str, List[str]], dir_path: str = '.'):
         self.name = name
         self.remote = remote
         self.dir_path = dir_path
-        self.languages = languages
+        self.extensions = extensions
 
-        self.files = []
+        self.files = self.load_files()
 
     def clone(self):
         pass
 
     def load_files(self):
-        pass
+        all_paths = glob.glob(self.dir_path, recursive=True)
+        filtered_paths = [Path(x) for x in all_paths if x in [f'*.{ext}' for ext in self.extensions]]
+
+        return [File(path) for path in filtered_paths]
 
     def __iter__(self) -> Iterable:
-        return FilesIterator(self.languages)
+        return FilesIterator(self.files)
 
     @property
-    def languages(self) -> List:
+    def extensions(self) -> List[File]:
         return self._languages
 
-    @languages.setter
-    def languages(self, languages) -> Union[None, TypeError]:
+    @extensions.setter
+    def extensions(self, languages):
         arg_type = type(languages)
         if arg_type not in [str, list]:
-            return TypeError('Languages passed are not valid', languages)
+            raise TypeError('Languages passed are not valid', languages)
 
         if arg_type == str:
             self._languages = [languages]
@@ -58,15 +65,3 @@ class FilesIterator:
         except IndexError:
             self.idx = 0
             raise StopIteration
-
-
-class File:
-    def __int__(self, path):
-        self.path = path
-        self.content = self._load_content()
-
-    def _load_content(self) -> str:
-        with open(self.path, 'rt') as inf:
-            content = ' '.join(inf.readlines())
-
-        return content

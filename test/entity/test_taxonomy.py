@@ -2,8 +2,6 @@ import unittest
 
 from hydra import initialize, compose
 
-from entity.taxonomy import GitRanking
-
 
 class TestGitRankingTaxonomy(unittest.TestCase):
     def setUp(self) -> None:
@@ -13,6 +11,11 @@ class TestGitRankingTaxonomy(unittest.TestCase):
     def test_load(self):
         print(self.cfg)
         self.assertTrue(True)
+
+    def test_save(self):
+        print('Fail', self.cfg)
+        self.assertTrue(True)
+
 
 
 if __name__ == '__main__':
