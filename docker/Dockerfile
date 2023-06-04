@@ -4,7 +4,8 @@ WORKDIR  /autofl
 COPY pyproject.toml /autofl
 RUN pip3 install poetry
 RUN poetry config virtualenvs.create false
-RUN poetry install -n --no-ansi
+RUN poetry install -n --no-ansi  # --without dev
+RUN pip3 install -U antlr4-python3-runtime=="4.13.0"
 COPY . .
 ENV PYTHONPATH=/autofl/src
 CMD ["gunicorn", "-w", "4", "-k", "uvicorn.workers.UvicornWorker", "api.main:app", "--bind", "0.0.0.0:8000"]

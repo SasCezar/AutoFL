@@ -1,8 +1,5 @@
 from entity.project import File
-from grammars.python.PythonLexer import PythonLexer
-from grammars.python.PythonParser import PythonParser
 from parser.parser import AbstractParser
-from antlr4 import *
 
 
 class ParserPython(AbstractParser):
@@ -11,10 +8,4 @@ class ParserPython(AbstractParser):
     """
 
     def parse(self, file: File):
-        lexer = PythonLexer(file.content)
-        stream = CommonTokenStream(lexer)
-        parser = PythonParser(stream)
-        tree = parser.file_input()
-        file.tree = tree
-        return file
-
+        pass

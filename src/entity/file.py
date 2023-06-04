@@ -2,7 +2,9 @@ from pathlib import Path
 
 
 class File:
-    def __int__(self, path: Path):
+    def __init__(self, path: Path | str):
+        if isinstance(path, str):
+            path = Path(path)
         self.path = path
         self.content = self._load_content()
         self.language = path.suffix

@@ -1,14 +1,15 @@
-from typing import Union, List
-
 from fastapi import FastAPI
+from fastapi.responses import JSONResponse
+
+from api.analysis import Analysis
 
 app = FastAPI()
 
 
-@app.get("/label/files")
-async def label_files(name: str, remote: str, languages: Union[str, List[str]], *args, **kwargs):
-    labelled_files = []
-    return labelled_files
+@app.post("/label/files")
+async def label_files(analysis: Analysis):
+    analysis = {'Key': 'Value', 'Body': analysis}
+    return JSONResponse(content=analysis)
 
 
 @app.get("/")
