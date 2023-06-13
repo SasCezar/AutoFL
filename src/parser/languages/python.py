@@ -2,8 +2,7 @@ import re
 
 from entity.project import File
 from grammars.python import PythonLexer, PythonParser
-
-from parser import ParserBase
+from parser.parser import ParserBase
 
 
 class ParserPython(ParserBase, lang='python'):

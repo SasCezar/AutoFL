@@ -2,8 +2,7 @@ import re
 
 from entity.file import File
 from grammars.java import JavaParser, JavaLexer
-
-from parser import ParserBase
+from parser.parser import ParserBase
 
 
 class ParserJava(ParserBase, lang='java'):
