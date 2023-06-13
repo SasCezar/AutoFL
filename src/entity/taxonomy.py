@@ -8,11 +8,11 @@ from typing import List, Dict
 import pandas as pd
 
 
-class Taxonomy(ABC):
+class TaxonomyBase(ABC):
     def __init__(self, path):
         self.path = path
-        self.taxonomy: Dict[str, Label] = None
-        self.inverted: Dict[int: Label] = None
+        self.taxonomy: Dict[str, LabelBase] = None
+        self.inverted: Dict[int: LabelBase] = None
 
     @abstractmethod
     def load(self):
@@ -26,12 +26,12 @@ class Taxonomy(ABC):
 
 
 @dataclass
-class Label(ABC):
+class LabelBase(ABC):
     index: int
     label: str
 
 
-class GitRanking(Taxonomy):
+class GitRanking(TaxonomyBase):
     def __int__(self, path, keywords_path):
         super().__init__(path)
         self.keywords_path: str = keywords_path
@@ -61,7 +61,7 @@ class GitRanking(Taxonomy):
 
 
 @dataclass
-class GitRankingLabel(Label):
+class GitRankingLabel(LabelBase):
     index: int
     label: str
     keywords: List[str]
