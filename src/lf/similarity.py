@@ -10,8 +10,9 @@ class SimilarityLF(LFBase):
         super().__init__(taxonomy)
         self.embedding = embedding
         self.label_vecs = self.embed_labels()
+        self.content = False
 
-    def annotate(self, name, content):
+    def annotate(self, name, content) -> np.array:
         content_vec = [self.embedding.get_embedding(content.lower())]
 
         try:
@@ -26,7 +27,7 @@ class SimilarityLF(LFBase):
         norm = np.linalg.norm(sims)
         node_labels = sims / norm if norm else sims
 
-        return name, node_labels
+        return node_labels
 
     def embed_labels(self):
         res = []

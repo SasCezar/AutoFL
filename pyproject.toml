@@ -16,6 +16,8 @@ setuptools = "^67.8.0"
 antlr4-python3-runtime = "4.9.3"
 multiset = "^3.0.1"
 scikit-learn = "^1.2.2"
+pydantic = "^1.10.9"
+gitpython = "^3.1.31"
 
 
 [tool.poetry.group.dev.dependencies]

@@ -9,7 +9,7 @@ from lf import LFBase
 
 class KeywordLF(LFBase):
 
-    def annotate(self, name, content):
+    def annotate(self, name, content) -> np.array:
         node_labels = np.zeros(len(self.taxonomy))
         for _label in self.taxonomy:
             label: KeywordLabel = _label
@@ -21,4 +21,4 @@ class KeywordLF(LFBase):
         norm = np.sum(node_labels)
         node_vec = node_labels / norm if norm > 0 else np.zeros(len(self.taxonomy))
 
-        return name, node_vec
+        return node_vec

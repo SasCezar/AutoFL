@@ -1,67 +1,60 @@
-import glob
-import json
+import os
 from pathlib import Path
-from typing import List, Union, Iterable
+from typing import List, Union, Optional
+
+from git import Repo
+from pydantic import BaseModel
 
 from entity.file import File
 
 
-class Project:
-    def __init__(self, name: str, remote: str, extensions: Union[str, List[str]], dir_path: str = '.'):
-        self.name = name
-        self.remote = remote
-        self.dir_path = dir_path
-        self.extensions = extensions
-
-        self.files = self.load_files()
-
-    def clone(self):
-        pass
-
-    def load_files(self):
-        all_paths = glob.glob(self.dir_path, recursive=True)
-        filtered_paths = [Path(x) for x in all_paths if x in [f'*.{ext}' for ext in self.extensions]]
-
-        return [File(path) for path in filtered_paths]
-
-    def __iter__(self) -> Iterable:
-        return FilesIterator(self.files)
-
-    @property
-    def extensions(self) -> List[File]:
-        return self._languages
-
-    @extensions.setter
-    def extensions(self, languages):
-        arg_type = type(languages)
-        if arg_type not in [str, list]:
-            raise TypeError('Languages passed are not valid', languages)
-
-        if arg_type == str:
-            self._languages = [languages]
-        elif arg_type == list:
-            self._languages = languages
-
-    def to_json(self) -> str:
-        annotated_files = {}
-        for file in self:
-            annotated_files[file.name] = {'annot': file.annot, 'label': file.name}
-
-        return json.dumps(annotated_files)
+class Project(BaseModel):
+    name: str
+    remote: str
+    dir_path: Path
+    languages: List[str]
+    files: List[File]
 
 
-class FilesIterator:
-    def __init__(self, files):
-        self.idx = 0
-        self.files = files
+class ProjectBuilder:
+    def build(self,
+              name: str,
+              directory: Union[str, Path],
+              languages: Union[str, List[str]],
+              remote: Optional[str] = None
+              ):
+        repo_dir = Path(directory, name)
 
-    def __iter__(self):
-        return self
+        if remote:
+            self.clone(remote, repo_dir)
 
-    def __next__(self):
-        self.idx += 1
-        try:
-            return self.files[self.idx - 1]
-        except IndexError:
-            self.idx = 0
-            raise StopIteration
+        files = self.load_files(repo_dir, languages)
+
+        return Project(name=name, remote=remote, dir_path=repo_dir, languages=languages, files=files)
+
+    @staticmethod
+    def clone(remote, repo_dir) -> None:
+        if not os.path.exists(repo_dir):
+            Repo.clone_from(remote, repo_dir)
+
+        return
+
+    def load_files(self, repo_dir: Path, languages) -> List[File]:
+        all_paths = list(repo_dir.glob('**/*'))
+        filtered_paths = [Path(x) for x in all_paths if x.is_file() and x.suffix.strip('.') in languages]
+        files = []
+        for path in filtered_paths:
+            rel_path = path.relative_to(repo_dir)
+            language = path.suffix
+            content = self.read_file(path)
+            file = File(path=rel_path, language=language, content=content)
+            files.append(file)
+
+        return files
+
+    @staticmethod
+    def read_file(path) -> str:
+        with open(path, 'rt') as inf:
+            content = ' '.join(inf.readlines())
+
+        return content
