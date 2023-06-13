@@ -1,9 +1,9 @@
 import re
 
 from entity.file import File
-from grammars.java.JavaLexer import JavaLexer
-from grammars.java.JavaParser import JavaParser
-from parser.parser import ParserBase
+from grammars.java import JavaParser, JavaLexer
+
+from parser import ParserBase
 
 
 class ParserJava(ParserBase, lang='java'):
@@ -15,7 +15,7 @@ class ParserJava(ParserBase, lang='java'):
         super().__init__()
         self.parser = JavaParser
         self.lexer = JavaLexer
-        self.identifiers_re = re.compile("identifier (\w*)")
+        self.identifiers_re = re.compile(r"identifier (\w*)")
 
     def parse(self, file: File):
         ast = self._parse(file.content)

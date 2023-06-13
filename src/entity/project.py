@@ -45,7 +45,7 @@ class Project:
     def to_json(self) -> str:
         annotated_files = {}
         for file in self:
-            annotated_files[file.name] = {'annot': file.annot, 'label': file.label}
+            annotated_files[file.name] = {'annot': file.annot, 'label': file.name}
 
         return json.dumps(annotated_files)
 

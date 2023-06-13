@@ -5,7 +5,7 @@ from entity.taxonomy import TaxonomyBase
 
 
 class LFBase(ABC):
-    def __int__(self, taxonomy: TaxonomyBase):
+    def __init__(self, taxonomy: TaxonomyBase):
         self.taxonomy = taxonomy
 
     def label(self, file: File):

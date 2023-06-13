@@ -1,9 +1,9 @@
 import re
 
 from entity.project import File
-from grammars.python.PythonLexer import PythonLexer
-from grammars.python.PythonParser import PythonParser
-from parser.parser import ParserBase
+from grammars.python import PythonLexer, PythonParser
+
+from parser import ParserBase
 
 
 class ParserPython(ParserBase, lang='python'):
@@ -15,7 +15,7 @@ class ParserPython(ParserBase, lang='python'):
         super().__init__()
         self.lexer = PythonLexer
         self.parser = PythonParser
-        self.identifiers_re = re.compile("name (\w*)")
+        self.identifiers_re = re.compile(r"name (\w*)")
 
     def parse(self, file: File):
         ast = self._parse(file.content)
