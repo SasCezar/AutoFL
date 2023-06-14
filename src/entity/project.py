@@ -22,7 +22,7 @@ class ProjectBuilder:
               directory: Union[str, Path],
               languages: Union[str, List[str]],
               remote: Optional[str] = None
-              ):
+              ) -> Project:
         repo_dir = Path(directory, name)
 
         if remote:

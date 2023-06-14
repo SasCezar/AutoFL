@@ -1,3 +1,5 @@
+from typing import List
+
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 
@@ -29,7 +31,7 @@ class SimilarityLF(LFBase):
 
         return node_labels
 
-    def embed_labels(self):
+    def embed_labels(self) -> List[np.array]:
         res = []
         for label in self.taxonomy:
             res.append(self.embedding.get_embedding(label.name.lower()))

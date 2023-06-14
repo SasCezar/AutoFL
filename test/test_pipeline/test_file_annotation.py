@@ -3,10 +3,10 @@ import unittest
 from hydra import initialize, compose
 from hydra.utils import instantiate
 
-from entity.project import Project
+from entity.project import ProjectBuilder
 from lf import LFBase
 from parser.parser import ParserFactory
-from pipeline.pipeline import FileAnnotationPipeline
+from pipeline.annotation import FileAnnotationPipeline
 
 
 class TestPipeline(unittest.TestCase):
@@ -14,8 +14,8 @@ class TestPipeline(unittest.TestCase):
         with initialize(version_base='1.3', config_path="../../config/"):
             self.cfg = compose(config_name="main.yaml")
 
-        self.project = Project('Weka', 'https://github.com/Waikato/weka-3.8',
-                               extensions=['java'])
+        self.project = ProjectBuilder().build('Waikato|weka-3.8', '/home/sasce/PycharmProjects/AutoFL/test/resources/repository',
+                                               ['java'], 'https://github.com/Waikato/weka-3.8')
 
         self.parser = ParserFactory.create_parser('java')
         self.lf: LFBase = instantiate(self.cfg.lf)

@@ -13,10 +13,13 @@ class TestProjectBuilder(unittest.TestCase):
         self.builder = ProjectBuilder()
 
     def test_build(self):
-        project = self.builder.build('Waikato|weka-3.8', '/home/sasce/PycharmProjects/AutoFL/test/resources/repository',
-                                     ['java'], 'https://github.com/Waikato/weka-3.8')
+        project = self.builder.build('Waikato|weka-3.8',
+                                     '/home/sasce/PycharmProjects/AutoFL/test/resources/repository',
+                                     ['java'],
+                                     'https://github.com/Waikato/weka-3.8')
 
-        self.assertEquals(len(project.files), 3088)
+        self.assertEqual(len(project.files), 3088)
+        self.assertEqual(str(project.files[0].path), 'weka/src/test/java/weka/AllTests.java')
 
 
 if __name__ == '__main__':
