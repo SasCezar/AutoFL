@@ -4,7 +4,7 @@ import numpy as np
 from multiset import Multiset
 
 from entity.taxonomy import KeywordLabel
-from lf import LFBase
+from annotation import LFBase
 
 
 class KeywordLF(LFBase):

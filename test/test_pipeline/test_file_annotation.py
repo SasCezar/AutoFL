@@ -4,7 +4,7 @@ from hydra import initialize, compose
 from hydra.utils import instantiate
 
 from entity.project import ProjectBuilder
-from lf import LFBase
+from annotation import LFBase
 from parser.parser import ParserFactory
 from pipeline.annotation import FileAnnotationPipeline
 
