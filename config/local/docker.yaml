@@ -1,0 +1,5 @@
+# @package _global_
+base_path: /autofl
+data_path: ${base_path}/data
+raw_data_path: ${data_path}/raw/
+repository_path: ${raw_data_path}/repository

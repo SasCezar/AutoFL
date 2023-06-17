@@ -14,7 +14,7 @@ class SimilarityLF(LFBase):
         self.label_vecs = self.embed_labels()
         self.content = False
 
-    def annotate(self, name, content) -> np.array:
+    def annotate(self, name: str, content: str) -> np.array:
         content_vec = [self.embedding.get_embedding(content.lower())]
 
         try:

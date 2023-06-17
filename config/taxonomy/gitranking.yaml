@@ -1,0 +1,4 @@
+_target_: entity.taxonomy.KeywordTaxonomy
+path: ${}
+keywords_path: ${}
+

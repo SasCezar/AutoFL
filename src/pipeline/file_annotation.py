@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List
 
 from annotation.filtering import FilteringBase
 from annotation.transformation import TransformationBase
@@ -18,9 +18,9 @@ class FileAnnotationPipeline(PipelineBase):
         self.filtering = filtering
         self.transformation = transformation
 
-    def run(self, project: Project):
-        res = {}
-        for file in project:
+    def run(self, project: Project) -> Project:
+        res = []
+        for file in project.files:
 
             content = self.parse_file(file) if self.lf.content else ""
 
@@ -33,9 +33,10 @@ class FileAnnotationPipeline(PipelineBase):
             if self.transformation:
                 label_vec = self.transformation.transform(label_vec)
 
-            res[file.path] = Annotation(distribution=label_vec, labels=labels, filtered=filtered)
+            res.append(Annotation(file=file.path, distribution=label_vec, labels=labels, filtered=filtered))
 
-        return res
+        project.files_annotation = res
+        return project
 
     def parse_file(self, file: File):
         lang = file.language

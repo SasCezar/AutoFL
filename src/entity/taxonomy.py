@@ -1,9 +1,10 @@
 import glob
 import json
 from abc import ABC, abstractmethod
+from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict
+from typing import Dict, Union
 
 import pandas as pd
 from multiset import Multiset
@@ -24,10 +25,10 @@ class KeywordLabel(LabelBase):
 
 
 class TaxonomyBase(ABC):
-    def __init__(self, path):
+    def __init__(self, path: Union[str, Path]):
         self.path = path
-        self.taxonomy: Dict[str, LabelBase] = None
-        self.inverted: Dict[int: LabelBase] = None
+        self.name_to_label: Dict[str, LabelBase] = {}
+        self.id_to_label: Dict[int: LabelBase] = {}
 
         self.n = 0
 
@@ -36,13 +37,13 @@ class TaxonomyBase(ABC):
         pass
 
     def __getitem__(self, item):
-        return self.taxonomy[item]
+        return self.name_to_label[item]
 
     def get_label(self, index):
-        return self.inverted[index]
+        return self.id_to_label[index]
 
     def __len__(self):
-        return len(self.taxonomy)
+        return len(self.name_to_label)
 
     def __next__(self) -> LabelBase:
         if self.n <= len(self):
@@ -52,9 +53,12 @@ class TaxonomyBase(ABC):
             self.n = 0
             raise StopIteration
 
+    def __str__(self):
+        return str([self.name_to_label[x] for x in self.name_to_label])
+
 
 class KeywordTaxonomy(TaxonomyBase):
-    def __int__(self, path, keywords_path):
+    def __init__(self, path: Union[str, Path], keywords_path: Union[str, Path]):
         super().__init__(path)
         self.keywords_path: str = keywords_path
         self.load()
@@ -67,16 +71,16 @@ class KeywordTaxonomy(TaxonomyBase):
         with open(self.path, 'rt') as inf:
             labels = json.load(inf)
 
-        keywords_files = [Path(x) for x in glob.glob(f"{self.keywords_path}/*.txt")]
+        keywords_files = [Path(x) for x in glob.glob(f"{self.keywords_path}/*.csv")]
         keywords = {}
-        weights = {}
+        weights = defaultdict(dict)
         for file in keywords_files:
-            kw_weight = zip(pd.read_csv(file)['keyword'], pd.read_csv(file)['tfidf'])
+            kw_weight = list(zip(pd.read_csv(file)['keyword'], pd.read_csv(file)['tfidf']))
             keywords[file.stem] = Multiset([kw for kw, _ in kw_weight])
             for kw, w in kw_weight:
                 weights[file.stem][kw] = w
 
         for name, idx in labels.items():
             label = KeywordLabel(index=idx, name=name, keywords=keywords[name], weights=weights[name])
-            self.taxonomy[name] = label
-            self.inverted[idx] = label
+            self.name_to_label[name] = label
+            self.id_to_label[idx] = label

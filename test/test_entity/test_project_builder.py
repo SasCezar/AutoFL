@@ -8,7 +8,7 @@ from entity.project import ProjectBuilder
 class TestProjectBuilder(unittest.TestCase):
     def setUp(self) -> None:
         with initialize(version_base='1.3', config_path="../../config/"):
-            self.cfg = compose(config_name="main.yaml")
+            self.cfg = compose(config_name="test.yaml")
 
         self.builder = ProjectBuilder()
 

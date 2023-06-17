@@ -9,7 +9,7 @@ from annotation import LFBase
 
 class KeywordLF(LFBase):
 
-    def annotate(self, name, content) -> np.array:
+    def annotate(self, name: str, content: str) -> np.array:
         node_labels = np.zeros(len(self.taxonomy))
         for _label in self.taxonomy:
             label: KeywordLabel = _label

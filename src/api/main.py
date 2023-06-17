@@ -21,4 +21,3 @@ async def label_files(analysis: Analysis):
 @app.get("/")
 async def main():
     return {'Message': "Done"}
-

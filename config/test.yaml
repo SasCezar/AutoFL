@@ -2,5 +2,4 @@
 defaults:
   - _self_
   - local: default
-
-name: 10
+  - taxonomy: small

@@ -5,12 +5,12 @@ import numpy as np
 
 class TransformationBase(ABC):
     @abstractmethod
-    def transform(self, distribution: np.array):
+    def transform(self, distribution: np.array) -> np.array:
         pass
 
 
 class SingleLabel(TransformationBase):
-    def transform(self, distribution: np.array):
+    def transform(self, distribution: np.array) -> np.array:
         argmax = np.argmax(distribution)
         distribution = np.zeros(len(distribution))
         distribution[argmax] = 1
@@ -19,18 +19,14 @@ class SingleLabel(TransformationBase):
 
 class TopLabels(TransformationBase):
     """
-    Picks the probabilities with a
+    Picks the probabilities with a threshold higher than min_threshold
     """
-    def __init__(self, top_k, min_threshold=0.05):
-        self.top_k = top_k
+
+    def __init__(self, min_threshold: float = 0.05):
         self.min_threshold = min_threshold
 
-    def transform(self, distribution: np.array):
-        sorted_distribution = np.argsort(distribution)[::-1]
-        res_distribution = np.zeros(len(distribution))
-
-        for i in sorted_distribution[:self.top_k]:
-            res_distribution[i] = distribution[i] if distribution[i] > self.min_threshold else 0
+    def transform(self, distribution: np.array) -> np.array:
+        res_distribution = distribution > self.min_threshold
 
         norm = np.linalg.norm(res_distribution)
         if norm != 0:

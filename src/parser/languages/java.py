@@ -1,7 +1,8 @@
 import re
 
 from entity.file import File
-from grammars.java import JavaParser, JavaLexer
+from grammars.java.JavaLexer import JavaLexer
+from grammars.java.JavaParser import JavaParser
 from parser.parser import ParserBase
 
 

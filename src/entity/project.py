@@ -5,6 +5,7 @@ from typing import List, Union, Optional
 from git import Repo
 from pydantic import BaseModel
 
+from entity.annotation import Annotation
 from entity.file import File
 
 
@@ -14,6 +15,7 @@ class Project(BaseModel):
     dir_path: Path
     languages: List[str]
     files: List[File]
+    files_annotation: Optional[List[Annotation]]
 
 
 class ProjectBuilder:
