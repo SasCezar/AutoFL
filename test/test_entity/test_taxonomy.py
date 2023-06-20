@@ -22,6 +22,14 @@ class TestKeywordTaxonomy(unittest.TestCase):
         self.assertEqual(self.taxonomy.id_to_label[0].name, '3D computer graphics')
         self.assertEqual(self.taxonomy.id_to_label[3].name, 'Bidirectional recurrent neural networks')
 
+    def test_iteration(self):
+        iterator = iter(self.taxonomy)
+        self.assertEqual(next(iterator).index, 0)
+        self.assertEqual(next(iterator).index, 1)
+        self.assertEqual(next(iterator).index, 2)
+        self.assertEqual(next(iterator).index, 3)
+        self.assertRaises(StopIteration, next, iterator)
+
 
 if __name__ == '__main__':
     unittest.main()

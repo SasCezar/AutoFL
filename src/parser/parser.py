@@ -15,6 +15,7 @@ class ParserBase(ABC):
     def __init__(self):
         self.lexer: Lexer
         self.parser: Parser
+        self.root = lambda x: x.compilationUnit()
 
     @abstractmethod
     def parse(self, file: File):
@@ -29,7 +30,7 @@ class ParserBase(ABC):
         lexer = self.lexer(input_stream)
         stream = CommonTokenStream(lexer)
         parser = self.parser(stream)
-        tree = parser.compilationUnit()
+        tree = self.root(parser)
         is_syntax_errors = tree.parser._syntaxErrors  # Binary
         return tree.toStringTree(recog=parser), is_syntax_errors
 
@@ -52,7 +53,7 @@ class ParserFactory:
         try:
             return cls.registry[name]()
         except KeyError:
-            raise ValueError(f"unknown product type : {name}")
+            raise ValueError(f"Unknown parser : {name}")
 
 
 # Keep here. Allows for the self register of the language specific parser in the language folder

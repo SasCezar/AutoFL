@@ -7,7 +7,6 @@ from pathlib import Path
 from typing import Dict, Union
 
 import pandas as pd
-from multiset import Multiset
 
 
 @dataclass
@@ -20,7 +19,7 @@ class LabelBase(ABC):
 class KeywordLabel(LabelBase):
     index: int
     name: str
-    keywords: Multiset
+    keywords: set
     weights: Dict[str, float]
 
 
@@ -36,19 +35,23 @@ class TaxonomyBase(ABC):
     def load(self):
         pass
 
-    def __getitem__(self, item):
-        return self.name_to_label[item]
-
-    def get_label(self, index):
-        return self.id_to_label[index]
+    def __getitem__(self, item: str | int):
+        if isinstance(item, str):
+            return self.name_to_label[item]
+        else:
+            return self.id_to_label[item]
 
     def __len__(self):
         return len(self.name_to_label)
 
+    def __iter__(self):
+        return self
+
     def __next__(self) -> LabelBase:
-        if self.n <= len(self):
+        if self.n < len(self):
+            label = self.id_to_label[self.n]
             self.n += 1
-            return self.get_label(self.n)
+            return label
         else:
             self.n = 0
             raise StopIteration
@@ -76,7 +79,7 @@ class KeywordTaxonomy(TaxonomyBase):
         weights = defaultdict(dict)
         for file in keywords_files:
             kw_weight = list(zip(pd.read_csv(file)['keyword'], pd.read_csv(file)['tfidf']))
-            keywords[file.stem] = Multiset([kw for kw, _ in kw_weight])
+            keywords[file.stem] = set([kw for kw, _ in kw_weight])
             for kw, w in kw_weight:
                 weights[file.stem][kw] = w
 

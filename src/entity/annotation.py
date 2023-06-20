@@ -8,4 +8,4 @@ class Annotation(BaseModel):
     file: Path
     distribution: List[float]
     labels: List[str]
-    filtered: bool
+    unannotated: bool

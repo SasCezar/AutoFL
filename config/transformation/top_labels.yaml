@@ -1,0 +1,2 @@
+_target_: annotation.transformation.TopLabels
+min_threshold: 0.05

@@ -33,5 +33,3 @@ class ThresholdFiltering(FilteringBase):
             return False
 
         return True
-
-

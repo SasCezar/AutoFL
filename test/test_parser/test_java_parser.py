@@ -12,10 +12,10 @@ class TestJavaParser(unittest.TestCase):
         with initialize(version_base='1.3', config_path="../../config/"):
             self.cfg = compose(config_name="test.yaml")
 
-        self.parser: ParserBase = ParserFactory.create_parser('java')
-        file_path = Path(self.cfg.test_data_path).joinpath(Path('example_class.java'))
+        file_path = Path(self.cfg.test_data_path).joinpath(Path('parser/example_class.java'))
         content = self.load_file(file_path)
         self.file = File(path=file_path, language='java', content=content)
+        self.parser: ParserBase = ParserFactory.create_parser(self.file.language)
 
         self.gt = ['Lamp', 'isOn', 'turnOn', 'isOn', 'System', 'out', 'println',
                    'isOn', 'turnOff', 'isOn', 'System', 'out', 'println', 'isOn', 'Main',
@@ -29,7 +29,7 @@ class TestJavaParser(unittest.TestCase):
     @staticmethod
     def load_file(path):
         with open(path, 'rt') as inf:
-            return " ".join(inf.readlines())
+            return "".join(inf.readlines())
 
 
 if __name__ == '__main__':

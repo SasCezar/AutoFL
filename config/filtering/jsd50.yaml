@@ -1,0 +1,2 @@
+_target_: annotation.filtering.JSDFiltering
+threshold: 0.5

@@ -3,3 +3,6 @@ defaults:
   - _self_
   - local: default
   - taxonomy: small
+  - lf: keyword
+  - filtering: none
+  - transformation: none

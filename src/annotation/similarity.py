@@ -1,6 +1,7 @@
 from typing import List
 
 import numpy as np
+from loguru import logger
 from sklearn.metrics.pairwise import cosine_similarity
 
 from entity.taxonomy import TaxonomyBase
@@ -20,9 +21,7 @@ class SimilarityLF(LFBase):
         try:
             sims = cosine_similarity(content_vec, self.label_vecs)
         except ValueError:
-            print(f"Error in {name}")
-            print(f"Content: {content}")
-            print(f"Content vec: {content_vec}")
+            logger.error(f"Error in {name}\nContent: {content}\nContent vec: {content_vec}")
 
         # Adding -1 (lowest value for cosine sim) to bring the vector in the range 0-1 when normalizing
         sims = sims[0] + -1
