@@ -16,7 +16,8 @@ class Project(BaseModel):
     languages: List[str]
     files: List[File]
     files_annotation: Optional[List[Annotation]]
-    sha: str
+    sha: Optional[str]
+    labels: Optional[List[str]]
 
 
 class ProjectBuilder:

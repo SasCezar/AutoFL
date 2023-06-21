@@ -14,7 +14,10 @@ from pipeline.pipeline import PipelineBase
 
 
 class FileAnnotationPipeline(PipelineBase):
-    def __init__(self, lf: LFBase, filtering: FilteringBase, transformation: TransformationBase):
+    def __init__(self,
+                 lf: LFBase,
+                 filtering: FilteringBase,
+                 transformation: TransformationBase):
         self.parser_factory = ParserFactory()
         self.parsers: Dict[str, ParserBase] = {}
         self.lf = lf
