@@ -1,0 +1,9 @@
+defaults:
+  #- /loader: JSON
+  - /lf: keyword
+  - /transformation: none
+  - /filtering: none
+
+
+out_file:
+exclude: {}

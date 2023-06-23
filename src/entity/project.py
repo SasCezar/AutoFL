@@ -9,15 +9,19 @@ from entity.annotation import Annotation
 from entity.file import File
 
 
+class Version(BaseModel):
+    commit_id: Optional[str]
+    files: Optional[List[File]]
+    files_annotation: Optional[List[Annotation]]
+    labels: Optional[List[str]]
+
+
 class Project(BaseModel):
     name: str
-    remote: str
-    dir_path: Path
-    languages: List[str]
-    files: List[File]
-    files_annotation: Optional[List[Annotation]]
-    sha: Optional[str]
-    labels: Optional[List[str]]
+    remote: Optional[str]
+    dir_path: Optional[Path]
+    languages: Optional[List[str]]
+    versions: List[Version]
 
 
 class ProjectBuilder:
@@ -25,7 +29,8 @@ class ProjectBuilder:
               name: str,
               directory: Union[str, Path],
               languages: Union[str, List[str]],
-              remote: Optional[str] = None
+              remote: Optional[str] = None,
+              commit_id: Optional[str] = None,
               ) -> Project:
 
         repo_dir = Path(directory, name)
@@ -34,8 +39,14 @@ class ProjectBuilder:
             self.clone(remote, repo_dir)
 
         repo = Repo(repo_dir)
-        sha = repo.head.object.hexsha
+        a = iter(repo.iter_commits())
+        for c in a:
+            print(c.hexsha)
+        if commit_id:
+            repo.git.checkout(commit_id)
 
+        sha = repo.head.object.hexsha
+        print(sha)
         files = self.load_files(repo_dir, languages)
 
         return Project(name=name, remote=remote, dir_path=repo_dir, languages=languages, files=files, sha=sha)

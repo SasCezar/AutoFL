@@ -1,7 +1,11 @@
 # @package _global_
 defaults:
   - _self_
-  - run: file_annotation
-  - loader: json
+  - run: batch_file_annotation
 
 n_workers: 2
+
+hydra:
+  output_subdir: null
+  run:
+    dir: .

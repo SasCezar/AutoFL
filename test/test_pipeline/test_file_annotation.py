@@ -8,7 +8,10 @@ from annotation.filtering import FilteringBase
 from annotation.transformation import TransformationBase
 from entity.project import ProjectBuilder, Project
 from entity.taxonomy import KeywordTaxonomy
+from execution.file_annotation import FileAnnotationExecution
 from pipeline.file_annotation import FileAnnotationPipeline
+from pipeline.identifier_extraction import IdentifierExtractionPipeline
+from vcs.version_strategy import VersionStrategyBase
 
 
 class TestPipeline(unittest.TestCase):
@@ -23,17 +26,24 @@ class TestPipeline(unittest.TestCase):
 
         self.taxonomy: KeywordTaxonomy = instantiate(self.cfg.taxonomy)
         self.lf: LFBase = instantiate(self.cfg.lf, taxonomy=self.taxonomy)
-        print(self.cfg.transformation)
+
         self.transformation: TransformationBase = instantiate(
             self.cfg.transformation) if self.cfg.transformation._target_ else None
         self.filtering: FilteringBase = instantiate(self.cfg.filtering) if self.cfg.filtering._target_ else None
 
-        self.pipeline = FileAnnotationPipeline(self.lf,
-                                               self.filtering,
-                                               self.transformation)
+        self.annotation = FileAnnotationPipeline(self.lf,
+                                                 self.filtering,
+                                                 self.transformation)
+
+        self.identifier_extraction = IdentifierExtractionPipeline()
+        self.version_strategy: VersionStrategyBase = instantiate(self.cfg.version_strategy)
+
+        self.execution = FileAnnotationExecution(self.identifier_extraction,
+                                                 self.annotation,
+                                                 self.version_strategy)
 
     def test_pipeline(self):
-        print(self.pipeline.run(self.project).files_annotation)
+        print(self.execution.run(self.project))
 
 
 if __name__ == '__main__':

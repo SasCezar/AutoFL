@@ -3,4 +3,8 @@ defaults:
   - _self_
   - local: default
 
-name: 10
+
+hydra:
+  output_subdir: null
+  run:
+    dir: .

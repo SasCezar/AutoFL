@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Tuple
 
 import numpy as np
 from tqdm import tqdm
@@ -7,9 +7,7 @@ from annotation import LFBase
 from annotation.filtering import FilteringBase
 from annotation.transformation import TransformationBase
 from entity.annotation import Annotation
-from entity.file import File
-from entity.project import Project
-from parser.parser import ParserFactory, ParserBase
+from entity.project import Project, Version
 from pipeline.pipeline import PipelineBase
 
 
@@ -18,19 +16,15 @@ class FileAnnotationPipeline(PipelineBase):
                  lf: LFBase,
                  filtering: FilteringBase,
                  transformation: TransformationBase):
-        self.parser_factory = ParserFactory()
-        self.parsers: Dict[str, ParserBase] = {}
         self.lf = lf
         self.filtering = filtering
         self.transformation = transformation
 
-    def run(self, project: Project) -> Project:
+    def run(self, project: Project, version: Version) -> Tuple[Project, Version]:
         res = []
-        for file in tqdm(project.files):
+        for file in tqdm(version.files):
 
-            content = self.parse_file(file) if self.lf.content else ""
-
-            label_vec = self.lf.annotate(file.path, content)
+            label_vec = self.lf.annotate(file.path, " ".join(file.identifiers))
             unannotated = 0
 
             if self.filtering:
@@ -45,11 +39,4 @@ class FileAnnotationPipeline(PipelineBase):
             res.append(Annotation(file=file.path, distribution=list(label_vec), labels=[], unannotated=unannotated))
 
         project.files_annotation = res
-        return project
-
-    def parse_file(self, file: File):
-        lang = file.language.strip('.')
-        if lang not in self.parsers:
-            self.parsers[lang] = self.parser_factory.create_parser(lang)
-        content = " ".join(self.parsers[lang].parse(file))
-        return content
+        return project, version

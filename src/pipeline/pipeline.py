@@ -1,19 +1,20 @@
 import json
 from abc import ABC
 from pathlib import Path
-from typing import List
+from typing import List, Tuple
 
 from tqdm import tqdm
 
-from entity.project import Project
+from entity.project import Project, Version
 
 
 class PipelineBase(ABC):
 
-    def run(self, project: Project) -> Project:
+    def run(self, project: Project, version: Version) -> Tuple[Project, Version]:
         pass
 
 
+# TODO: Move to BATCH, and use the Execution pipeline
 class BatchPipeline:
     def __init__(self, pipeline: PipelineBase,
                  out_path: str | Path,

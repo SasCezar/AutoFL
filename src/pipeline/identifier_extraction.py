@@ -1,6 +1,6 @@
-from typing import Dict
+from typing import Dict, Tuple
 
-from entity.project import Project
+from entity.project import Project, Version
 from parser.parser import ParserFactory, ParserBase
 from pipeline.pipeline import PipelineBase
 
@@ -10,8 +10,8 @@ class IdentifierExtractionPipeline(PipelineBase):
         self.parser_factory = ParserFactory()
         self.parsers: Dict[str, ParserBase] = {}
 
-    def run(self, project: Project) -> Project:
-        for file in project.files:
+    def run(self, project: Project, version: Version) -> Tuple[Project, Version]:
+        for file in version.files:
             file.identifiers = self.parsers[file.language].parse(file)
 
-        return project
+        return project, version
