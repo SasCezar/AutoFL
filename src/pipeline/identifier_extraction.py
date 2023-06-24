@@ -6,12 +6,21 @@ from pipeline.pipeline import PipelineBase
 
 
 class IdentifierExtractionPipeline(PipelineBase):
-    def __init__(self):
+    def __init__(self, use_cache: bool = False):
         self.parser_factory = ParserFactory()
         self.parsers: Dict[str, ParserBase] = {}
+        self.use_cache = use_cache
 
     def run(self, project: Project, version: Version) -> Tuple[Project, Version]:
         for file in version.files:
-            file.identifiers = self.parsers[file.language].parse(file)
+            lang = file.language.strip('.')
+
+            if file.identifiers or self.use_cache:
+                continue
+
+            if lang not in self.parsers:
+                self.parsers[lang] = self.parser_factory.create_parser(lang)
+
+            file.identifiers = self.parsers[lang].parse(file)
 
         return project, version

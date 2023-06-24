@@ -1,9 +1,9 @@
 from abc import ABC
 from typing import List
 
-from entity.project import Project, Version
+from git import Repo
 
 
 class VersionStrategyBase(ABC):
-    def get_versions(self, project: Project) -> List[Version]:
+    def get_versions(self, repository: Repo) -> List[str]:
         pass

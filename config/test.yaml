@@ -6,3 +6,4 @@ defaults:
   - lf: keyword
   - filtering: none
   - transformation: none
+  - version_strategy: latest_strategy

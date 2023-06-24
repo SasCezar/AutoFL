@@ -1,4 +1,5 @@
 import unittest
+from pathlib import Path
 
 from hydra import initialize, compose
 from hydra.utils import instantiate
@@ -6,11 +7,12 @@ from hydra.utils import instantiate
 from annotation import LFBase
 from annotation.filtering import FilteringBase
 from annotation.transformation import TransformationBase
-from entity.project import ProjectBuilder, Project
+from entity.project import Project
 from entity.taxonomy import KeywordTaxonomy
 from execution.file_annotation import FileAnnotationExecution
 from pipeline.file_annotation import FileAnnotationPipeline
 from pipeline.identifier_extraction import IdentifierExtractionPipeline
+from vcs.vcs import VCS
 from vcs.version_strategy import VersionStrategyBase
 
 
@@ -19,16 +21,17 @@ class TestPipeline(unittest.TestCase):
         with initialize(version_base='1.3', config_path="../../config/"):
             self.cfg = compose(config_name="test.yaml")
 
-        self.project: Project = ProjectBuilder().build('Waikato|weka-3.8',
-                                                       f'{self.cfg.test_data_path}/repository',
-                                                       ['java'],
-                                                       'https://github.com/Waikato/weka-3.8')
+        name = 'Waikato|weka-3.8'
+        self.project = Project(name=name,
+                               dir_path=Path(f'{self.cfg.test_data_path}/repository/{name}'),
+                               languages=['java'],
+                               remote='https://github.com/Waikato/weka-3.8')
 
         self.taxonomy: KeywordTaxonomy = instantiate(self.cfg.taxonomy)
         self.lf: LFBase = instantiate(self.cfg.lf, taxonomy=self.taxonomy)
 
-        self.transformation: TransformationBase = instantiate(
-            self.cfg.transformation) if self.cfg.transformation._target_ else None
+        self.transformation: TransformationBase = instantiate(self.cfg.transformation
+                                                              ) if self.cfg.transformation._target_ else None
         self.filtering: FilteringBase = instantiate(self.cfg.filtering) if self.cfg.filtering._target_ else None
 
         self.annotation = FileAnnotationPipeline(self.lf,
@@ -37,10 +40,12 @@ class TestPipeline(unittest.TestCase):
 
         self.identifier_extraction = IdentifierExtractionPipeline()
         self.version_strategy: VersionStrategyBase = instantiate(self.cfg.version_strategy)
+        self.vcs = VCS()
 
         self.execution = FileAnnotationExecution(self.identifier_extraction,
                                                  self.annotation,
-                                                 self.version_strategy)
+                                                 self.version_strategy,
+                                                 self.vcs)
 
     def test_pipeline(self):
         print(self.execution.run(self.project))

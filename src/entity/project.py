@@ -1,8 +1,6 @@
-import os
 from pathlib import Path
-from typing import List, Union, Optional
+from typing import List, Optional
 
-from git import Repo
 from pydantic import BaseModel
 
 from entity.annotation import Annotation
@@ -10,7 +8,7 @@ from entity.file import File
 
 
 class Version(BaseModel):
-    commit_id: Optional[str]
+    commit_id: str
     files: Optional[List[File]]
     files_annotation: Optional[List[Annotation]]
     labels: Optional[List[str]]
@@ -21,42 +19,16 @@ class Project(BaseModel):
     remote: Optional[str]
     dir_path: Optional[Path]
     languages: Optional[List[str]]
-    versions: List[Version]
+    versions: Optional[List[Version]] = []
+    keywords: Optional[List[str]]
+    labels: Optional[List[str]]
 
 
-class ProjectBuilder:
-    def build(self,
-              name: str,
-              directory: Union[str, Path],
-              languages: Union[str, List[str]],
-              remote: Optional[str] = None,
-              commit_id: Optional[str] = None,
-              ) -> Project:
-
-        repo_dir = Path(directory, name)
-
-        if remote:
-            self.clone(remote, repo_dir)
-
-        repo = Repo(repo_dir)
-        a = iter(repo.iter_commits())
-        for c in a:
-            print(c.hexsha)
-        if commit_id:
-            repo.git.checkout(commit_id)
-
-        sha = repo.head.object.hexsha
-        print(sha)
+class VersionBuilder:
+    def build_version(self, repo_dir, commit_id, languages):
         files = self.load_files(repo_dir, languages)
 
-        return Project(name=name, remote=remote, dir_path=repo_dir, languages=languages, files=files, sha=sha)
-
-    @staticmethod
-    def clone(remote: str, repo_dir: Path) -> None:
-        if not os.path.exists(repo_dir):
-            Repo.clone_from(remote, repo_dir)
-
-        return
+        return Version(commit_id=commit_id, files=files)
 
     def load_files(self, repo_dir: Path, languages: List[str]) -> List[File]:
         all_paths = list(repo_dir.glob('**/*'))

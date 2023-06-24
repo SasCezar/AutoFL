@@ -12,6 +12,8 @@ from execution.file_annotation import FileAnnotationExecution
 from pipeline.file_annotation import FileAnnotationPipeline
 from pipeline.identifier_extraction import IdentifierExtractionPipeline
 from pipeline.pipeline import BatchPipeline
+from vcs.vcs import VCS
+from vcs.version_strategy import VersionStrategyBase
 
 
 @hydra.main(config_path="../conf", config_name="runs", version_base="1.3")
@@ -22,8 +24,7 @@ def extract(cfg: DictConfig):
     taxonomy: KeywordTaxonomy = instantiate(cfg.taxonomy)
     lf: LFBase = instantiate(cfg.lf, taxonomy=taxonomy)
 
-    transformation: TransformationBase = instantiate(
-        cfg.transformation) if cfg.transformation._target_ else None
+    transformation: TransformationBase = instantiate(cfg.transformation) if cfg.transformation._target_ else None
     filtering: FilteringBase = instantiate(cfg.filtering) if cfg.filtering._target_ else None
 
     annotation = FileAnnotationPipeline(lf,
@@ -31,11 +32,17 @@ def extract(cfg: DictConfig):
                                         transformation)
 
     identifier_extraction = IdentifierExtractionPipeline()
-    version_strategy = None
+    version_strategy: VersionStrategyBase = instantiate(cfg.version_strategy)
+    vcs = VCS()
 
-    execution = FileAnnotationExecution(identifier_extraction, annotation, version_strategy)
+    execution = FileAnnotationExecution(identifier_extraction,
+                                        annotation,
+                                        version_strategy,
+                                        vcs)
 
-    pipeline: BatchPipeline = instantiate(cfg.batch_pipeline)
+    pipeline: BatchPipeline = BatchPipeline(execution,
+                                            "",
+                                            exclude='')
 
     if cfg.workers > 1:
         splits = list(chunked(projects, cfg.workers))

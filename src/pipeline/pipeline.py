@@ -6,6 +6,7 @@ from typing import List, Tuple
 from tqdm import tqdm
 
 from entity.project import Project, Version
+from execution.execution import ExecutionBase
 
 
 class PipelineBase(ABC):
@@ -16,7 +17,7 @@ class PipelineBase(ABC):
 
 # TODO: Move to BATCH, and use the Execution pipeline
 class BatchPipeline:
-    def __init__(self, pipeline: PipelineBase,
+    def __init__(self, pipeline: ExecutionBase,
                  out_path: str | Path,
                  exclude=None):
         self.pipeline = pipeline

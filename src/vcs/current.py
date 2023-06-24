@@ -1,9 +1,9 @@
 from abc import ABC
 from typing import List
 
-from entity.project import Project, Version
+from git import Repo
 
 
-class CurrentVersionStrategyBase(ABC):
-    def get_versions(self, project: Project) -> List[Version]:
-        pass
+class CurrentVersionStrategy(ABC):
+    def get_versions(self, repository: Repo) -> List[str]:
+        return [repository.commit().hexsha]
