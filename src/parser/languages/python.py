@@ -1,27 +1,21 @@
-import re
+from pathlib import Path
 
-from entity.project import File
-from grammars.python.PythonLexer import PythonLexer
-from grammars.python.PythonParser import PythonParser
+from tree_sitter import Language
 
 from parser.parser import ParserBase
 
 
-class ParserPython(ParserBase, lang='python'):
+class ParserJava(ParserBase, lang='python'):
     """
-    Python code parser. The lexer and parser have been generated using a version agnostic python grammar for antlr4.
+    Java specific parser. Uses a generic grammar for multiple versions of java. The parser is generated using antlr4.
     """
 
-    def __init__(self):
-        super().__init__()
-        self.lexer = PythonLexer
-        self.parser = PythonParser
-        self.identifiers_re = re.compile(r"name (\w*)")
-        self.root = lambda x: x.file_input()
-
-    def parse(self, file: File):
-        ast = self._parse(file.content.strip().replace(r'\n\s+', r'\n'))
-        print(ast)
-        identifiers = self.identifiers_re.findall(str(ast))
-
-        return identifiers
+    def __init__(self, library_path: Path | str):
+        super().__init__(library_path)
+        self.language: Language = Language(library_path, 'java')
+        self.parser.set_language(self.language)
+        self.identifiers_pattern: str = """
+                                        ((identifier) @identifier)
+                                        ((type_identifier) @type)
+                                        """
+        self.identifiers_query = self.language.query(self.identifiers_pattern)

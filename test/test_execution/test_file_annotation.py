@@ -48,7 +48,8 @@ class TestPipeline(unittest.TestCase):
                                                  self.vcs)
 
     def test_pipeline(self):
-        print(self.execution.run(self.project))
+        lengths = [len(x.identifiers) for x in self.execution.run(self.project).versions[0].files]
+        print(lengths)
 
 
 if __name__ == '__main__':
