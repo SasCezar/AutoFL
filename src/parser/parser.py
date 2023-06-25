@@ -1,7 +1,11 @@
-from abc import ABC, abstractmethod
-from antlr4 import InputStream, CommonTokenStream, Lexer, Parser
-from entity.project import File
 import logging
+from abc import ABC
+from pathlib import Path
+from typing import List, Tuple
+
+from tree_sitter import Parser, Language, Node
+
+from entity.project import File
 from parser.languages import register
 
 logger = logging.getLogger(__name__)
@@ -12,30 +16,38 @@ class ParserBase(ABC):
     Abstract class for a programming language parser.
     """
 
-    def __init__(self):
-        self.lexer: Lexer
-        self.parser: Parser
-        self.root = lambda x: x.compilationUnit()
+    def __init__(self, languages: Path | str):
+        self.languages = languages
+        self.parser = Parser()
+        self.language: Language = None
+        self.identifiers_pattern: str = ""
+        self.identifiers_query = None
 
-    @abstractmethod
-    def parse(self, file: File):
+    def parse(self, file: File) -> List[str]:
         """
         :param file:
         :return:
         """
-        pass
+        code = bytes(file.content, "utf8")
+        tree = self.parser.parse(code)
+        identifiers_nodes = self.identifiers_query.captures(tree.root_node)
+        identifiers = self.parse_identifiers(code, identifiers_nodes)
 
-    def _parse(self, text: str):
-        input_stream = InputStream(text)
-        lexer = self.lexer(input_stream)
-        stream = CommonTokenStream(lexer)
-        parser = self.parser(stream)
-        tree = self.root(parser)
-        is_syntax_errors = tree.parser._syntaxErrors  # Binary
-        return tree.toStringTree(recog=parser), is_syntax_errors
+        return identifiers
+
+    @staticmethod
+    def parse_identifiers(code, identifiers_nodes: List[Tuple[Node, str]]) -> List[str]:
+        identifiers = []
+        for node, _ in identifiers_nodes:
+            token = code[node.start_byte:node.end_byte]
+            identifiers.append(token.decode())
+
+        return identifiers
 
     def __init_subclass__(cls, lang: str):
         ParserFactory.register(lang, parser_class=cls)
+
+
 
 
 class ParserFactory:
@@ -51,7 +63,7 @@ class ParserFactory:
     @classmethod
     def create_parser(cls, name: str, **kwargs) -> 'ParserBase':
         try:
-            return cls.registry[name]()
+            return cls.registry[name]("/home/sasce/PycharmProjects/AutoFL/notebooks/test/my-languages.so")
         except KeyError:
             raise ValueError(f"Unknown parser : {name}")
 

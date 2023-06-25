@@ -23,6 +23,7 @@ tqdm = "^4.65.0"
 yake = { git = "git@github.com:LIAAD/yake.git" }
 python-rake = "^1.5.0"
 more-itertools = "^9.1.0"
+tree-sitter = "^0.20.1"
 
 [tool.poetry.group.dev.dependencies]
 notebook = "^6.5.4"
