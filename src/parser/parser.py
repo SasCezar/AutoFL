@@ -22,6 +22,7 @@ class ParserBase(ABC):
         self.language: Language = None
         self.identifiers_pattern: str = ""
         self.identifiers_query = None
+        self.keywords = set()
 
     def parse(self, file: File) -> List[str]:
         """
@@ -30,9 +31,10 @@ class ParserBase(ABC):
         """
         code = bytes(file.content, "utf8")
         tree = self.parser.parse(code)
+        print(tree.root_node.sexp())
         identifiers_nodes = self.identifiers_query.captures(tree.root_node)
         identifiers = self.parse_identifiers(code, identifiers_nodes)
-
+        identifiers = [x for x in identifiers if x not in self.keywords]
         return identifiers
 
     @staticmethod
@@ -48,8 +50,6 @@ class ParserBase(ABC):
         ParserFactory.register(lang, parser_class=cls)
 
 
-
-
 class ParserFactory:
     """ The factory class for creating parsers"""
 
@@ -61,9 +61,9 @@ class ParserFactory:
         cls.registry[lang] = parser_class
 
     @classmethod
-    def create_parser(cls, name: str, **kwargs) -> 'ParserBase':
+    def create_parser(cls, name: str, library_path: Path | str, **kwargs) -> 'ParserBase':
         try:
-            return cls.registry[name]("/home/sasce/PycharmProjects/AutoFL/notebooks/test/my-languages.so")
+            return cls.registry[name](library_path)
         except KeyError:
             raise ValueError(f"Unknown parser : {name}")
 

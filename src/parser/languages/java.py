@@ -19,3 +19,5 @@ class ParserJava(ParserBase, lang='java'):
                                         ((type_identifier) @type)
                                         """
         self.identifiers_query = self.language.query(self.identifiers_pattern)
+
+        self.keywords = set()

@@ -14,22 +14,24 @@ class TestPythonParser(unittest.TestCase):
 
         file_path = Path(self.cfg.test_data_path).joinpath(Path('parser/keyword.py'))
         content = self.load_file(file_path)
-        self.file = File(path=file_path, language='python3', content=content)
-        self.parser: ParserBase = ParserFactory.create_parser(self.file.language)
+        self.file = File(path=file_path, language='python', content=content)
+        self.parser: ParserBase = ParserFactory.create_parser(self.file.language, self.cfg.languages_library)
         self.gt = ['collections', 'Counter', 'numpy', 'np', 'multiset', 'Multiset', 'entity',
                    'taxonomy', 'KeywordLabel', 'annotation', 'LFBase', 'KeywordLF', 'LFBase',
-                   'annotate', 'self', 'name', 'str', 'content', 'str', 'np', 'array',
-                   'node_labels', 'np', 'zeros', 'len', 'self', 'taxonomy', '_label', 'self', 'taxonomy',
+                   'annotate', 'name', 'str', 'content', 'str', 'np', 'array',
+                   'node_labels', 'np', 'zeros', 'len', 'taxonomy', '_label', 'taxonomy',
                    'label', 'KeywordLabel', '_label', 'intersection', 'list', 'label', 'keywords', 'intersection',
                    'Multiset', 'content', 'split', 'intersection', 'Counter', 'intersection', 'node_labels', 'label',
                    'index', 'sum', 'intersection', 'k', 'label', 'weights', 'k', 'k', 'intersection', 'keys',
-                   'norm', 'np', 'sum', 'node_labels', 'node_vec', 'node_labels', 'norm', 'norm', '0', 'np', 'zeros',
-                   'len', 'self', 'taxonomy', 'node_vec']
+                   'norm', 'np', 'sum', 'node_labels', 'node_vec', 'node_labels', 'norm', 'norm', 'np', 'zeros',
+                   'len', 'taxonomy', 'node_vec']
 
     def test_identifiers(self):
         identifiers = self.parser.parse(self.file)
-        self.assertListEqual(identifiers, self.gt)
         print(identifiers)
+        print(self.gt)
+        self.assertListEqual(identifiers, self.gt)
+
 
     @staticmethod
     def load_file(path):

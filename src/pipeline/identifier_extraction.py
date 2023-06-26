@@ -6,10 +6,11 @@ from pipeline.pipeline import PipelineBase
 
 
 class IdentifierExtractionPipeline(PipelineBase):
-    def __init__(self, use_cache: bool = False):
-        self.parser_factory = ParserFactory()
+    def __init__(self, languages_path, use_cache: bool = False):
+        self.parser_factory = ParserFactory
         self.parsers: Dict[str, ParserBase] = {}
         self.use_cache = use_cache
+        self.languages_path = languages_path
 
     def run(self, project: Project, version: Version) -> Tuple[Project, Version]:
         for file in version.files:
@@ -19,7 +20,7 @@ class IdentifierExtractionPipeline(PipelineBase):
                 continue
 
             if lang not in self.parsers:
-                self.parsers[lang] = self.parser_factory.create_parser(lang)
+                self.parsers[lang] = self.parser_factory.create_parser(lang, self.languages_path)
 
             file.identifiers = self.parsers[lang].parse(file)
 

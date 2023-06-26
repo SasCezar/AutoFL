@@ -4,3 +4,5 @@ data_path: ${base_path}/data
 raw_data_path: ${data_path}/raw
 repository_path: ${raw_data_path}/repository
 test_data_path: ${data_path}/test
+grammars_path: ${data_path}/grammars/
+languages_library: ${grammars_path}/my-languages.so

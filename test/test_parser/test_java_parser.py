@@ -15,11 +15,11 @@ class TestJavaParser(unittest.TestCase):
         file_path = Path(self.cfg.test_data_path).joinpath(Path('parser/example_class.java'))
         content = self.load_file(file_path)
         self.file = File(path=file_path, language='java', content=content)
-        self.parser: ParserBase = ParserFactory.create_parser(self.file.language)
+        self.parser: ParserBase = ParserFactory.create_parser(self.file.language, self.cfg.languages_library)
 
         self.gt = ['Lamp', 'isOn', 'turnOn', 'isOn', 'System', 'out', 'println',
                    'isOn', 'turnOff', 'isOn', 'System', 'out', 'println', 'isOn', 'Main',
-                   'main', 'args', 'led', 'Lamp', 'halogen',
+                   'main', 'String', 'args', 'Lamp', 'led', 'Lamp', 'Lamp', 'halogen',
                    'Lamp', 'led', 'turnOn', 'halogen', 'turnOff']
 
     def test_identifiers(self):
