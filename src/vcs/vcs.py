@@ -8,7 +8,7 @@ from entity.project import Project
 class VCS: 
     @staticmethod
     def checkout(repo: Repo, commit_id: str):
-        repo.git.checkout(commit_id)
+        repo.git.checkout(commit_id, force=True)
 
     @staticmethod
     def init(project: Project):

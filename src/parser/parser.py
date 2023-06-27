@@ -31,7 +31,6 @@ class ParserBase(ABC):
         """
         code = bytes(file.content, "utf8")
         tree = self.parser.parse(code)
-        print(tree.root_node.sexp())
         identifiers_nodes = self.identifiers_query.captures(tree.root_node)
         identifiers = self.parse_identifiers(code, identifiers_nodes)
         identifiers = [x for x in identifiers if x not in self.keywords]
