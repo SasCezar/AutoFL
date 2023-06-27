@@ -1,21 +1,38 @@
-from fastapi import FastAPI
-from fastapi.responses import JSONResponse
+import json
+from pathlib import Path
 
-from api.analysis import Analysis
-from entity.project import ProjectBuilder
+from fastapi import FastAPI
+from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
+from hydra import initialize, compose
+
+from api.execute_annotation import ExecuteAnnotation
+from entity.analysis import Analysis
+from entity.project import Project
 
 app = FastAPI()
 
 
 @app.post("/label/files")
 async def label_files(analysis: Analysis):
-    project = ProjectBuilder().build('Waikato|weka-3.8', '/home/sasce/PycharmProjects/AutoFL/test/resources/repository',
-                                     ['java'], 'https://github.com/Waikato/weka-3.8')
 
-    analysis.project = project
-    exclude_keys = {'project': {'files': {'__all__': {'content', 'identifiers'}}}}
-    analysis = {'Key': 'Value', 'BodyDICT': analysis.json(exclude=exclude_keys)}
-    return JSONResponse(content=analysis)
+    with initialize(version_base='1.3', config_path="../../config/"):
+        overrides = []
+        #overrides = [f'{key}={value}' for key, value in analysis.config.items()] if analysis.config else []
+        cfg = compose(config_name="main.yaml", overrides=overrides)
+
+    project = Project(name=analysis.name,
+                      remote=analysis.remote,
+                      dir_path=Path(f'{cfg.data_path}/repository/{analysis.name}'),
+                      languages=analysis.languages)
+
+    execution = ExecuteAnnotation(cfg)
+
+    annotations = execution.run(project)
+    #exclude_keys = {'versions': {'files': {'__all__': {'content', 'identifiers'}}}}
+    exclude_keys = {'versions': {'__all__': {'files'}}}
+    result = {'result': jsonable_encoder(annotations.dict(exclude=exclude_keys))}
+    return JSONResponse(content=result)
 
 
 @app.get("/")

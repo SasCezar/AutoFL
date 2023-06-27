@@ -19,7 +19,7 @@ pydantic = "^1.10.9"
 gitpython = "^3.1.31"
 loguru = "^0.7.0"
 tqdm = "^4.65.0"
-yake = { git = "git@github.com:LIAAD/yake.git" }
+#yake = { git = "git@github.com:LIAAD/yake.git" }
 python-rake = "^1.5.0"
 more-itertools = "^9.1.0"
 tree-sitter = "^0.20.1"

@@ -1,12 +1,10 @@
-from typing import List
+from typing import List, Dict, Optional
 
 from pydantic import BaseModel
 
-from entity.project import Project
-
 
 class Analysis(BaseModel):
-    project: Project
     name: str
     remote: str
     languages: List[str]
+    config: Optional[Dict[str, str]]

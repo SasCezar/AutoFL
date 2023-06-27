@@ -21,7 +21,7 @@ class FileAnnotationPipeline(PipelineBase):
         self.transformation = transformation
 
     def run(self, project: Project, version: Version) -> Tuple[Project, Version]:
-        res = []
+        res = {}
         for file in tqdm(version.files, desc=f"Labelling files for {project.name} @ version: {version.commit_id}"):
 
             label_vec = self.lf.annotate(file.path, " ".join(file.identifiers))
@@ -36,7 +36,7 @@ class FileAnnotationPipeline(PipelineBase):
             if not np.linalg.norm(label_vec):
                 unannotated = 1
 
-            res.append(Annotation(file=file.path, distribution=list(label_vec), labels=[], unannotated=unannotated))
+            res[file.path] = (Annotation(distribution=list(label_vec), labels=[], unannotated=unannotated))
 
         version.files_annotation = res
         return project, version

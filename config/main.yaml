@@ -1,8 +1,12 @@
 # @package _global_
 defaults:
   - _self_
-  - local: default
-
+  - local: docker
+  - taxonomy: small
+  - lf: keyword
+  - filtering: none
+  - transformation: none
+  - version_strategy: latest_strategy
 
 hydra:
   output_subdir: null

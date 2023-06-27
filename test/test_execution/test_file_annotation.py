@@ -1,6 +1,7 @@
 import unittest
 from pathlib import Path
 
+from fastapi.encoders import jsonable_encoder
 from hydra import initialize, compose
 from hydra.utils import instantiate
 
@@ -38,7 +39,7 @@ class TestPipeline(unittest.TestCase):
                                                  self.filtering,
                                                  self.transformation)
 
-        self.identifier_extraction = IdentifierExtractionPipeline()
+        self.identifier_extraction = IdentifierExtractionPipeline(self.cfg.languages_library)
         self.version_strategy: VersionStrategyBase = instantiate(self.cfg.version_strategy)
         self.vcs = VCS()
 
@@ -48,7 +49,10 @@ class TestPipeline(unittest.TestCase):
                                                  self.vcs)
 
     def test_pipeline(self):
-        lengths = [len(x.identifiers) for x in self.execution.run(self.project).versions[0].files]
+        res = self.execution.run(self.project)
+        exclude_keys = {'versions': {'__all__': {'files'}}}
+        print( jsonable_encoder(res.dict(exclude=exclude_keys)))
+        lengths = [len(x.identifiers) for x in res.versions[0].files]
         print(lengths)
 
 
