@@ -28,10 +28,7 @@ class TestPythonParser(unittest.TestCase):
 
     def test_identifiers(self):
         identifiers = self.parser.parse(self.file)
-        print(identifiers)
-        print(self.gt)
         self.assertListEqual(identifiers, self.gt)
-
 
     @staticmethod
     def load_file(path):
