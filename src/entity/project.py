@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 from entity.annotation import Annotation
 from entity.file import File
-from parser.language import Language
+from parser.extensions import Extension
 
 
 class Version(BaseModel):
@@ -18,7 +18,7 @@ class Project(BaseModel):
     name: str
     remote: Optional[str]
     dir_path: Optional[Path]
-    languages: Optional[List[Language]]
+    languages: Optional[List[str]]
     versions: Optional[List[Version]] = []
     keywords: Optional[List[str]]
     labels: Optional[List[str]]
@@ -55,7 +55,7 @@ class VersionBuilder:
     def get_languages_ext(languages):
         extensions = set()
         for lang in languages:
-            exts = Language[lang.lower()].value
+            exts = Extension[lang.lower()].value
             extensions.update(exts)
 
         return extensions
