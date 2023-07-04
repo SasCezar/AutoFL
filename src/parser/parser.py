@@ -1,14 +1,11 @@
-import logging
-from abc import ABC
+from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import List, Tuple
 
-from tree_sitter import Parser, Language, Node
+from tree_sitter import Parser, Language, Node, Tree
 
 from entity.project import File
 from parser.languages import register
-
-logger = logging.getLogger(__name__)
 
 
 class ParserBase(ABC):
@@ -24,7 +21,7 @@ class ParserBase(ABC):
         self.identifiers_query = None
         self.keywords = set()
 
-    def parse(self, file: File) -> List[str]:
+    def parse(self, file: File) -> Tuple[List[str], str]:
         """
         :param file:
         :return:
@@ -32,18 +29,24 @@ class ParserBase(ABC):
         code = bytes(file.content, "utf8")
         tree = self.parser.parse(code)
         identifiers_nodes = self.identifiers_query.captures(tree.root_node)
-        identifiers = self.parse_identifiers(code, identifiers_nodes)
+        identifiers = self.get_node_text(code, identifiers_nodes)
         identifiers = [x for x in identifiers if x not in self.keywords]
-        return identifiers
+        package = self.get_package(file.path, code, tree)
+        return identifiers, package
 
     @staticmethod
-    def parse_identifiers(code, identifiers_nodes: List[Tuple[Node, str]]) -> List[str]:
+    def get_node_text(code: bytes, identifiers_nodes: List[Tuple[Node, str]]) -> List[str]:
         identifiers = []
         for node, _ in identifiers_nodes:
             token = code[node.start_byte:node.end_byte]
             identifiers.append(token.decode())
 
         return identifiers
+
+    def get_package(self, file: Path, code: bytes, root: Tree) -> str:
+        package = '.'
+
+        return package
 
     def __init_subclass__(cls, lang: str):
         ParserFactory.register(lang, parser_class=cls)

@@ -13,6 +13,7 @@ class IdentifierExtractionPipeline(PipelineBase):
         self.languages_path = languages_path
 
     def run(self, project: Project, version: Version) -> Tuple[Project, Version]:
+        version.files_packages = {}
         for file in version.files:
             lang = file.language.strip('.')
 
@@ -22,6 +23,8 @@ class IdentifierExtractionPipeline(PipelineBase):
             if lang not in self.parsers:
                 self.parsers[lang] = self.parser_factory.create_parser(lang, self.languages_path)
 
-            file.identifiers = self.parsers[lang].parse(file)
+            identifiers, package = self.parsers[lang].parse(file)
+            file.identifiers = identifiers
+            version.files_packages[file.path] = package
 
         return project, version

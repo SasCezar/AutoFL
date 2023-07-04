@@ -1,4 +1,3 @@
 _target_: entity.taxonomy.KeywordTaxonomy
-path: ${}
-keywords_path: ${}
-
+path: ${data_path}/taxonomy/gitranking_java/labels.json
+keywords_path: ${data_path}/taxonomy/gitranking_java/keywords

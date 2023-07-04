@@ -12,6 +12,7 @@ class Version(BaseModel):
     commit_id: str
     files: Optional[List[File]]
     files_annotation: Optional[Dict[str, List[Annotation]]]
+    files_packages: Optional[Dict[str, str]]
 
 
 class Project(BaseModel):
@@ -37,7 +38,7 @@ class VersionBuilder:
         files = []
         for path in filtered_paths:
             rel_path = path.relative_to(repo_dir)
-            language = path.suffix
+            language = self.language_from_ext(path.suffix, languages)
             content = self.read_file(path)
             file = File(path=rel_path, language=language, content=content)
             files.append(file)
@@ -46,8 +47,12 @@ class VersionBuilder:
 
     @staticmethod
     def read_file(path: Path) -> str:
-        with open(path, 'rt') as inf:
-            content = ' '.join(inf.readlines())
+        try:
+            with open(path, 'rt') as inf:
+                content = ' '.join(inf.readlines())
+        except:
+            with open(path, 'rt', encoding='windows-1252') as inf:
+                content = ' '.join(inf.readlines())
 
         return content
 
@@ -59,3 +64,9 @@ class VersionBuilder:
             extensions.update(exts)
 
         return extensions
+
+    @staticmethod
+    def language_from_ext(extension, languages):
+        for lang in languages:
+            if extension in Extension[lang.lower()].value:
+                return lang

@@ -9,3 +9,4 @@ class File(BaseModel):
     language: str
     content: Optional[str]
     identifiers: Optional[List[str]]
+    package: Optional[str]

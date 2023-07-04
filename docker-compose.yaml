@@ -12,3 +12,20 @@ services:
       - type: bind
         source: .
         target: /autofl
+
+  ui:
+#    profiles:
+#      - ui
+    build:
+      context: autofl-ui/
+      dockerfile: ./docker/Dockerfile
+    ports:
+      - "8501:8501"
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+    volumes:
+      - type: bind
+        source: ./autofl-ui/
+        target: /autofl-ui
+    links:
+      - 'api:auto-fl'

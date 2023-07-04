@@ -1,3 +1,5 @@
+from typing import List
+
 import hydra
 from hydra.utils import instantiate
 from joblib import delayed, Parallel
@@ -7,8 +9,10 @@ from omegaconf import DictConfig
 from annotation import LFBase
 from annotation.filtering import FilteringBase
 from annotation.transformation import TransformationBase
+from entity.project import Project
 from entity.taxonomy import KeywordTaxonomy
 from execution.file_annotation import FileAnnotationExecution
+from loader.loader import LoaderBase
 from pipeline.file_annotation import FileAnnotationPipeline
 from pipeline.identifier_extraction import IdentifierExtractionPipeline
 from pipeline.pipeline import BatchPipeline
@@ -18,8 +22,8 @@ from vcs.version_strategy import VersionStrategyBase
 
 @hydra.main(config_path="../conf", config_name="runs", version_base="1.3")
 def extract(cfg: DictConfig):
-    loader = instantiate(cfg.loader)
-    projects = loader.load()
+    loader: LoaderBase = instantiate(cfg.loader)
+    projects: List[Project] = loader.load()
 
     taxonomy: KeywordTaxonomy = instantiate(cfg.taxonomy)
     lf: LFBase = instantiate(cfg.lf, taxonomy=taxonomy)
@@ -31,7 +35,7 @@ def extract(cfg: DictConfig):
                                         filtering,
                                         transformation)
 
-    identifier_extraction = IdentifierExtractionPipeline()
+    identifier_extraction = IdentifierExtractionPipeline(cfg.languages_library)
     version_strategy: VersionStrategyBase = instantiate(cfg.version_strategy)
     vcs = VCS()
 
