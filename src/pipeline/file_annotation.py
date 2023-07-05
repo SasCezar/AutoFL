@@ -22,6 +22,7 @@ class FileAnnotationPipeline(PipelineBase):
 
     def run(self, project: Project, version: Version) -> Tuple[Project, Version]:
         res = {}
+        project.taxonomy = {index: self.lf.taxonomy.id_to_label[index].name for index in self.lf.taxonomy.id_to_label}
         for file in tqdm(version.files, desc=f"Labelling files for {project.name} @ version: {version.commit_id}"):
 
             label_vec = self.lf.annotate(file.path, " ".join(file.identifiers))

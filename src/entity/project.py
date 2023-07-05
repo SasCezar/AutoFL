@@ -23,6 +23,7 @@ class Project(BaseModel):
     versions: Optional[List[Version]] = []
     keywords: Optional[List[str]]
     labels: Optional[List[str]]
+    taxonomy: Optional[Dict[int, str]]
 
 
 class VersionBuilder:
