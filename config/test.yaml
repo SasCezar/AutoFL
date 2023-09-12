@@ -5,3 +5,8 @@ defaults:
   - taxonomy: small
   - annotator: default
   - version_strategy: latest
+
+hydra:
+  output_subdir: null
+  run:
+    dir: .

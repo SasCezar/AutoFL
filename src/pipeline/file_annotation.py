@@ -15,13 +15,15 @@ from pipeline.pipeline import PipelineBase
 class FileAnnotationPipeline(PipelineBase):
     def __init__(self,
                  annotators: List[Annotator],
-                 ensemble: Union[EnsembleBase, callable]):
+                 ensemble: Union[EnsembleBase, callable],
+                 taxonomy):
         self.annotators = annotators
         self.ensemble = ensemble
+        self.taxonomy = taxonomy
 
     def run(self, project: Project, version: Version) -> Tuple[Project, Version]:
         res = {}
-
+        project.taxonomy = {index: self.taxonomy.id_to_label[index].name for index in self.taxonomy.id_to_label}
         for file in tqdm(version.files, desc=f"Labelling files for {project.name} @ version: {version.commit_id}"):
             file_label_vecs = []
             lfs_unannotated = []
@@ -31,10 +33,7 @@ class FileAnnotationPipeline(PipelineBase):
                 file_label_vecs.append(label_vec)
 
             unannotated = bool(all(lfs_unannotated))
-
             label_vec = self.ensemble(file_label_vecs)
-            if label_vec is None:
-                print(label_vec)
             res[str(file.path)] = Annotation(distribution=list(label_vec), labels=[], unannotated=unannotated)
 
         version.files_annotation = res

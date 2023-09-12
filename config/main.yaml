@@ -3,10 +3,8 @@ defaults:
   - _self_
   - local: docker
   - taxonomy: gitranking
-  - lfs: keyword
-  - filtering: none
-  - transformation: none
-  - version_strategy: latest_strategy
+  - annotator: default
+  - version_strategy: latest
 
 hydra:
   output_subdir: null

@@ -6,10 +6,7 @@ from joblib import delayed, Parallel
 from more_itertools import chunked
 from omegaconf import DictConfig
 
-from annotation import LFBase
 from annotation.annotator import Annotator
-from annotation.filtering import FilteringBase
-from annotation.transformation import TransformationBase
 from ensemble.ensemble import EnsembleBase
 from entity.project import Project
 from entity.taxonomy import KeywordTaxonomy
@@ -29,15 +26,12 @@ def extract(cfg: DictConfig):
     projects: List[Project] = loader.load()
 
     taxonomy: KeywordTaxonomy = instantiate(cfg.taxonomy)
-    lfs: List[LFBase] = instantiate_annotators(cfg.lfs, taxonomy)
-    ensemble: EnsembleBase = instantiate(cfg.Ensemble)
-    annotator: Annotator = Annotator(lfs, ensemble)
-    transformation: TransformationBase = instantiate(cfg.transformation) if cfg.transformation._target_ else None
-    filtering: FilteringBase = instantiate(cfg.filtering) if cfg.filtering._target_ else None
+    ensemble: EnsembleBase = instantiate(cfg.annotator.ensemble)
+    annotators: List[Annotator] = instantiate_annotators(cfg.annotator.annotators, taxonomy)
 
-    annotation = FileAnnotationPipeline(annotator,
-                                        filtering,
-                                        transformation)
+    annotation = FileAnnotationPipeline(annotators,
+                                        ensemble,
+                                        taxonomy)
 
     identifier_extraction = IdentifierExtractionPipeline(cfg.languages_library)
     version_strategy: VersionStrategyBase = instantiate(cfg.version_strategy)

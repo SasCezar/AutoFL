@@ -3,10 +3,7 @@ from typing import List
 from hydra.utils import instantiate
 from omegaconf import DictConfig
 
-from annotation import LFBase
 from annotation.annotator import Annotator
-from annotation.filtering import FilteringBase
-from annotation.transformation import TransformationBase
 from ensemble.ensemble import EnsembleBase
 from entity.project import Project
 from entity.taxonomy import KeywordTaxonomy
@@ -22,10 +19,10 @@ class RunAnalysis:
     def __init__(self, cfg: DictConfig):
         self.taxonomy: KeywordTaxonomy = instantiate(cfg.taxonomy)
 
-        self.ensemble: EnsembleBase = instantiate(cfg.aggregator)
-        self.annotators: List[Annotator] = instantiate_annotators(cfg.annotators, self.taxonomy)
+        self.ensemble: EnsembleBase = instantiate(cfg.annotator.ensemble)
+        self.annotators: List[Annotator] = instantiate_annotators(cfg.annotator.annotators, self.taxonomy)
 
-        self.annotation_pipeline = FileAnnotationPipeline(self.annotators, self.ensemble)
+        self.annotation_pipeline = FileAnnotationPipeline(self.annotators, self.ensemble, self.taxonomy)
 
         self.identifier_extraction = IdentifierExtractionPipeline(cfg.languages_library)
         self.version_strategy: VersionStrategyBase = instantiate(cfg.version_strategy)

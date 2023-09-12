@@ -27,11 +27,11 @@ class TestPipeline(unittest.TestCase):
             self.cfg = compose(config_name="test.yaml")
 
         self.taxonomy: KeywordTaxonomy = instantiate(self.cfg.taxonomy)
-        print(self.cfg)
+
         self.ensemble: EnsembleBase = instantiate(self.cfg.annotator.ensemble)
         self.annotators: List[Annotator] = instantiate_annotators(self.cfg.annotator.annotators, self.taxonomy)
 
-        self.annotation_pipeline = FileAnnotationPipeline(self.annotators, self.ensemble)
+        self.annotation_pipeline = FileAnnotationPipeline(self.annotators, self.ensemble, self.taxonomy)
 
         self.identifier_extraction = IdentifierExtractionPipeline(self.cfg.languages_library)
         self.version_strategy: VersionStrategyBase = instantiate(self.cfg.version_strategy)

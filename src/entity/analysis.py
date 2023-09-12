@@ -10,4 +10,4 @@ class Analysis(BaseModel):
     name: str
     remote: str
     languages: List[str]
-    config: Optional[Dict[str, str]]
+    config: Optional[Dict[str, str]] = None
