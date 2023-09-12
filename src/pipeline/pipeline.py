@@ -30,7 +30,7 @@ class BatchPipeline:
     def run(self, projects: List[Project]) -> None:
         for project in tqdm(projects):
             project = self.pipeline.run(project)
-            project_dict = json.dumps(project.dict(exclude=self.exclude))
+            project_dict = project.model_dump_json(exclude=self.exclude)
 
             out_file = self.out_path.joinpath(f'{project.name}.json')
 

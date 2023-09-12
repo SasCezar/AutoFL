@@ -8,8 +8,17 @@ from annotation import LFBase
 
 
 class KeywordLF(LFBase):
-
+    """
+    Labelling function that uses keywords.
+    """
     def annotate(self, name: str, content: str) -> np.array:
+        """
+        Compute the probability for the file given the name and the content.
+
+        :param name: Filename
+        :param content: Content of the file (usually identifiers)
+        :return:
+        """
         node_labels = np.zeros(len(self.taxonomy))
         for _label in self.taxonomy:
             label: KeywordLabel = _label

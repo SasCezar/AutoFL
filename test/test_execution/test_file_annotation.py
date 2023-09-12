@@ -50,7 +50,7 @@ class TestPipeline(unittest.TestCase):
                           remote='https://github.com/Waikato/weka-3.8')
         res = self.execution.run(project)
         self.assertEqual(len(res.versions[0].files), 3088)
-        print(jsonable_encoder(res.dict(exclude=self.exclude_keys)))
+        print(jsonable_encoder(res.model_dump(exclude=self.exclude_keys)))
 
     def test_pipeline_python(self):
         project = Project(name='tiangolo|fastapi',
@@ -58,7 +58,7 @@ class TestPipeline(unittest.TestCase):
                           languages=['python'],
                           remote='https://github.com/tiangolo/fastapi')
         res = self.execution.run(project)
-        print(jsonable_encoder(res.dict(exclude=self.exclude_keys)))
+        print(jsonable_encoder(res.model_dump(exclude=self.exclude_keys)))
 
     def test_pipeline_c(self):
         project = Project(name='tporadowski|redis',
@@ -66,7 +66,7 @@ class TestPipeline(unittest.TestCase):
                           languages=['c'],
                           remote='https://github.com/tporadowski/redis')
         res = self.execution.run(project)
-        print(jsonable_encoder(res.dict(exclude=self.exclude_keys)))
+        print(jsonable_encoder(res.model_dump(exclude=self.exclude_keys)))
 
 
 if __name__ == '__main__':

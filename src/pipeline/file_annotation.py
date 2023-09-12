@@ -3,7 +3,7 @@ from typing import Tuple
 import numpy as np
 from tqdm import tqdm
 
-from annotation import LFBase
+from annotation.annotator import Annotator
 from annotation.filtering import FilteringBase
 from annotation.transformation import TransformationBase
 from entity.annotation import Annotation
@@ -13,10 +13,10 @@ from pipeline.pipeline import PipelineBase
 
 class FileAnnotationPipeline(PipelineBase):
     def __init__(self,
-                 lf: LFBase,
+                 annotator: Annotator,
                  filtering: FilteringBase,
                  transformation: TransformationBase):
-        self.lf = lf
+        self.annotator = annotator
         self.filtering = filtering
         self.transformation = transformation
 
@@ -25,7 +25,7 @@ class FileAnnotationPipeline(PipelineBase):
         project.taxonomy = {index: self.lf.taxonomy.id_to_label[index].name for index in self.lf.taxonomy.id_to_label}
         for file in tqdm(version.files, desc=f"Labelling files for {project.name} @ version: {version.commit_id}"):
 
-            label_vec = self.lf.annotate(file.path, " ".join(file.identifiers))
+            label_vec = self.annotator.annotate(file.path, " ".join(file.identifiers))
             unannotated = 0
 
             if self.filtering:
@@ -37,7 +37,7 @@ class FileAnnotationPipeline(PipelineBase):
             if not np.linalg.norm(label_vec):
                 unannotated = 1
 
-            res[file.path] = (Annotation(distribution=list(label_vec), labels=[], unannotated=unannotated))
+            res[file.path] = Annotation(distribution=list(label_vec), labels=[], unannotated=unannotated)
 
         version.files_annotation = res
         return project, version

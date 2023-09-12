@@ -9,6 +9,9 @@ from annotation import LFBase
 
 
 class SimilarityLF(LFBase):
+    """
+    Labelling function that uses vector similarity to label examples.
+    """
     def __init__(self, taxonomy: TaxonomyBase, embedding):
         super().__init__(taxonomy)
         self.embedding = embedding

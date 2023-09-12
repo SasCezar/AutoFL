@@ -3,7 +3,7 @@ defaults:
   - _self_
   - local: docker
   - taxonomy: gitranking
-  - lf: keyword
+  - lfs: keyword
   - filtering: none
   - transformation: none
   - version_strategy: latest_strategy

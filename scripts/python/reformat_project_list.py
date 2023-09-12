@@ -25,7 +25,7 @@ def reformat(cfg: DictConfig):
                 if label not in labels:
                     all_labels[label] = len(all_labels)
 
-            outf.write(project.json() + '\n')
+            outf.write(project.model_dump_json() + '\n')
 
     with open(labels_out, 'wt') as outf:
         text = json.dumps(all_labels, ensure_ascii=False, indent=4)

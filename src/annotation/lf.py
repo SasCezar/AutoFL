@@ -6,9 +6,22 @@ from entity.taxonomy import TaxonomyBase
 
 
 class LFBase(ABC):
+    """
+    Abstract labelling function. Uses to annotate
+    """
     def __init__(self, taxonomy: TaxonomyBase):
+        """
+        Taxonomy containing labels to annotate the examples with.
+        :param taxonomy:
+        """
         self.taxonomy = taxonomy
         self.content = True
 
-    def annotate(self, name, content) -> np.array:
+    def annotate(self, name: str, content: str) -> np.array:
+        """
+        Annotate an example given the file name and it's content.
+        :param name:
+        :param content:
+        :return:
+        """
         pass

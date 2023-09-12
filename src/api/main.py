@@ -6,7 +6,7 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from hydra import initialize, compose
 
-from api.execute_annotation import ExecuteAnnotation
+from api.run_analysis import RunAnalysis
 from entity.analysis import Analysis
 from entity.project import Project
 
@@ -26,7 +26,7 @@ async def label_files(analysis: Analysis):
                       dir_path=Path(f'{cfg.data_path}/repository/{analysis.name}'),
                       languages=analysis.languages)
 
-    execution = ExecuteAnnotation(cfg)
+    execution = RunAnalysis(cfg)
 
     annotations = execution.run(project)
     #exclude_keys = {'versions': {'files': {'__all__': {'content', 'identifiers'}}}}
