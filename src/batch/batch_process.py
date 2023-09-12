@@ -18,7 +18,7 @@ from loader.loader import LoaderBase
 from pipeline.file_annotation import FileAnnotationPipeline
 from pipeline.identifier_extraction import IdentifierExtractionPipeline
 from pipeline.pipeline import BatchPipeline
-from utils.instantiators import instantiate_lfs
+from utils.instantiators import instantiate_annotators
 from vcs.vcs import VCS
 from vcs.version_strategy import VersionStrategyBase
 
@@ -29,7 +29,7 @@ def extract(cfg: DictConfig):
     projects: List[Project] = loader.load()
 
     taxonomy: KeywordTaxonomy = instantiate(cfg.taxonomy)
-    lfs: List[LFBase] = instantiate_lfs(cfg.lfs, taxonomy)
+    lfs: List[LFBase] = instantiate_annotators(cfg.lfs, taxonomy)
     ensemble: EnsembleBase = instantiate(cfg.Ensemble)
     annotator: Annotator = Annotator(lfs, ensemble)
     transformation: TransformationBase = instantiate(cfg.transformation) if cfg.transformation._target_ else None

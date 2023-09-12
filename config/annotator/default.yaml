@@ -1,0 +1,6 @@
+# @package annotator
+defaults:
+  - keyword_25_tp
+  - keyword_50_tp
+  - ensemble: avg
+  - _self_

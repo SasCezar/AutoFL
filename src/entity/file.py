@@ -10,6 +10,6 @@ class File(BaseModel):
     """
     path: Path
     language: str
-    content: Optional[str]
-    identifiers: Optional[List[str]]
-    package: Optional[str]
+    content: Optional[str] = None
+    identifiers: Optional[List[str]] = None
+    package: Optional[str] = None

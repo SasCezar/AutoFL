@@ -1,9 +1,7 @@
 # @package _global_
 defaults:
   - _self_
-  - local: docker
+  - local: default
   - taxonomy: small
-  - lfs: keyword
-  - filtering: none
-  - transformation: none
+  - annotator: default
   - version_strategy: latest

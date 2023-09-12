@@ -1,18 +1,22 @@
 import unittest
 from pathlib import Path
+from typing import List
 
 from fastapi.encoders import jsonable_encoder
 from hydra import initialize, compose
 from hydra.utils import instantiate
 
 from annotation import LFBase
+from annotation.annotator import Annotator
 from annotation.filtering import FilteringBase
 from annotation.transformation import TransformationBase
+from ensemble.ensemble import EnsembleBase
 from entity.project import Project
 from entity.taxonomy import KeywordTaxonomy
 from execution.file_annotation import FileAnnotationExecution
 from pipeline.file_annotation import FileAnnotationPipeline
 from pipeline.identifier_extraction import IdentifierExtractionPipeline
+from utils.instantiators import instantiate_annotators
 from vcs.vcs import VCS
 from vcs.version_strategy import VersionStrategyBase
 
@@ -23,22 +27,18 @@ class TestPipeline(unittest.TestCase):
             self.cfg = compose(config_name="test.yaml")
 
         self.taxonomy: KeywordTaxonomy = instantiate(self.cfg.taxonomy)
-        self.lf: LFBase = instantiate(self.cfg.lf, taxonomy=self.taxonomy)
+        print(self.cfg)
+        self.ensemble: EnsembleBase = instantiate(self.cfg.annotator.ensemble)
+        self.annotators: List[Annotator] = instantiate_annotators(self.cfg.annotator.annotators, self.taxonomy)
 
-        self.transformation: TransformationBase = instantiate(self.cfg.transformation
-                                                              ) if self.cfg.transformation._target_ else None
-        self.filtering: FilteringBase = instantiate(self.cfg.filtering) if self.cfg.filtering._target_ else None
-
-        self.annotation = FileAnnotationPipeline(self.lf,
-                                                 self.filtering,
-                                                 self.transformation)
+        self.annotation_pipeline = FileAnnotationPipeline(self.annotators, self.ensemble)
 
         self.identifier_extraction = IdentifierExtractionPipeline(self.cfg.languages_library)
         self.version_strategy: VersionStrategyBase = instantiate(self.cfg.version_strategy)
         self.vcs = VCS()
 
         self.execution = FileAnnotationExecution(self.identifier_extraction,
-                                                 self.annotation,
+                                                 self.annotation_pipeline,
                                                  self.version_strategy,
                                                  self.vcs)
         self.exclude_keys = {'versions': {'__all__': {'files'}}}

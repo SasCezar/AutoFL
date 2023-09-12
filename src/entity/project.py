@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Union
 
 from pydantic import BaseModel
 
@@ -10,20 +10,20 @@ from parser.extensions import Extension
 
 class Version(BaseModel):
     commit_id: str
-    files: Optional[List[File]]
-    files_annotation: Optional[Dict[str, List[Annotation]]]
-    files_packages: Optional[Dict[str, str]]
+    files: Optional[List[File]] = None
+    files_annotation: Optional[Dict[str, Annotation]] = None
+    files_packages: Optional[Dict[Union[str | Path], Union[str | Path]]] = None
 
 
 class Project(BaseModel):
     name: str
-    remote: Optional[str]
-    dir_path: Optional[Path]
-    languages: Optional[List[str]]
+    remote: Optional[str] = None
+    dir_path: Optional[Path] = None
+    languages: Optional[List[str]] = None
     versions: Optional[List[Version]] = []
-    keywords: Optional[List[str]]
-    labels: Optional[List[str]]
-    taxonomy: Optional[Dict[int, str]]
+    keywords: Optional[List[str]] = None
+    labels: Optional[List[str]] = None
+    taxonomy: Optional[Dict[int, str]] = None
 
 
 class VersionBuilder:

@@ -9,7 +9,12 @@ class EnsembleBase(ABC):
         pass
 
     def __call__(self, annotations: List[Union[np.array, List]], *args, **kwargs):
-        self.run(annotations)
+        return self.run(annotations)
 
     def run(self, annotations: List[Union[np.array, List]]):
         pass
+
+
+class EnsembleNone(EnsembleBase):
+    def run(self, annotations: List[Union[np.array, List]]):
+        return annotations

@@ -4,15 +4,18 @@ from hydra.utils import instantiate
 from loguru import logger
 from omegaconf import DictConfig
 
-from annotation import LFBase
+from annotation.annotator import Annotator
 
 
-def instantiate_lfs(lfs_cfg: DictConfig, taxonomy):
-    lfs: List[LFBase] = []
+def instantiate_annotators(annotators_cfg: DictConfig, taxonomy):
+    annotators: List[Annotator] = []
 
-    for _, cb_conf in lfs_cfg.items():
-        if isinstance(cb_conf, DictConfig) and "_target_" in cb_conf:
-            logger.info(f"Instantiating callback <{cb_conf._target_}>")
-            lfs.append(instantiate(cb_conf, taxonomy=taxonomy))
+    for name, cb_conf in annotators_cfg.items():
+        if isinstance(cb_conf, DictConfig):
+            logger.info(f"Instantiating annotator <{name}>")
+            lf = instantiate(cb_conf['lf'], taxonomy=taxonomy)
+            filtering = instantiate(cb_conf['filtering']) if cb_conf['filtering']['_target_'] else None
+            transformation = instantiate(cb_conf['transformation']) if cb_conf['transformation']['_target_'] else None
+            annotators.append(Annotator(lf, filtering, transformation))
 
-    return lfs
+    return annotators
