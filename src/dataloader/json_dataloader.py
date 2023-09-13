@@ -1,14 +1,13 @@
 import json
+from typing import List
 
-import pandas as pd
-
+from dataloader.dataloader import DataLoaderBase
 from entity.project import Project
-from loader.loader import LoaderBase
 
 
-class JSONProjectLoader(LoaderBase):
+class JSONProjectLoader(DataLoaderBase):
     def load(self):
-        projects = []
+        projects: List[Project] = []
         with open(self.path, 'rt') as inf:
             for line in inf:
                 obj = json.loads(line)
@@ -17,9 +16,3 @@ class JSONProjectLoader(LoaderBase):
                 projects.append(project)
 
         return projects
-
-
-class CSVProjectLoader(JSONProjectLoader):
-    def load(self):
-        project_list = pd.read_csv(self.path)
-

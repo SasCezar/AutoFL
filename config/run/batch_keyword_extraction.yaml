@@ -1,0 +1,7 @@
+defaults:
+  #- /loader: JSON
+  - annotator: default
+
+
+out_file:
+exclude: {}

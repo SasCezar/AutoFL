@@ -1,8 +1,9 @@
+# @package _global_
 defaults:
-  #- /loader: JSON
-  - /lf: keyword
-  - /transformation: none
-  - /filtering: none
+  - /dataloader: gitranking
+  - /annotator: default
+  - /taxonomy: small
+  - /version_strategy: latest
 
 
 out_file:

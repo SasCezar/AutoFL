@@ -19,7 +19,7 @@ def reformat(cfg: DictConfig):
     with open(file_out, 'wt') as outf:
         for name, language, labels in zip(df["full_name"].tolist(), df["language"].tolist(), df["labels"].tolist()):
             labels = eval(labels)
-            project = Project(name=name, languages=[language], labels=labels)
+            project = Project(name=name, languages=[language], predicted_labels=labels)
 
             for label in labels:
                 if label not in labels:
