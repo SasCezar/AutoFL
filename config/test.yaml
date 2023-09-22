@@ -5,6 +5,7 @@ defaults:
   - taxonomy: small
   - annotator: default
   - version_strategy: latest
+  - dataloader: gitranking
 
 hydra:
   output_subdir: null

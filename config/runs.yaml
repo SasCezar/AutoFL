@@ -1,9 +1,10 @@
 # @package _global_
 defaults:
   - _self_
+  - local: default
   - run: batch_file_annotation
 
-n_workers: 2
+n_workers: 1
 
 hydra:
   output_subdir: null

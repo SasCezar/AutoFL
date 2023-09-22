@@ -1,0 +1,2 @@
+_target_: dataloader.gitranking.GitRankingCSVDataLoader
+path: /home/sasce/PycharmProjects/AutoFL/data/raw/project_list.csv

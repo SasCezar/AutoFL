@@ -13,8 +13,12 @@ class ParserBase(ABC):
     Abstract class for a programming language parser.
     """
 
-    def __init__(self, languages: Path | str):
-        self.languages = languages
+    def __init__(self, library_path: Path | str):
+        """
+        :param library_path: Path to the tree-sitter languages.so file. The file has to contain the
+        language parser. See tree-sitter for more details
+        """
+        self.library_path = library_path
         self.parser = Parser()
         self.language: Language = None
         self.identifiers_pattern: str = ""

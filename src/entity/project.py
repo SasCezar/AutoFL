@@ -22,8 +22,9 @@ class Project(BaseModel):
     languages: Optional[List[str]] = None
     versions: Optional[List[Version]] = []
     keywords: Optional[List[str]] = None
-    labels: Optional[List[str]] = None
     taxonomy: Optional[Dict[int, str]] = None
+    predicted_labels: Optional[List[str]] = None
+    dev_labels: Optional[List[str]] = None
 
 
 class VersionBuilder:
