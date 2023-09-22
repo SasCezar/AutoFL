@@ -31,7 +31,7 @@ For the project level
 We also offer a web UI that is available at the following page (when running locally):
 [ http://0.0.0.0:8501](http://0.0.0.0:8501)
 
-![UI](./autofl-ui/resources/ui-screenshots/landing-page.png)
+![UI](resources/ui-screenshots/landing-page.png)
 
 For more details, check the [UI repo](https://github.com/SasCezar/autofl-ui)
 
