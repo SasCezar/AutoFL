@@ -13,9 +13,9 @@ class KeywordLF(LFBase):
     """
     def annotate(self, name: str, content: str) -> np.array:
         """
-        Compute the probability for the file given the name and the content.
+        Compute the probability for the file given the name and/or the content.
 
-        :param name: Filename
+        :param name: Source file name
         :param content: Content of the file (usually identifiers)
         :return:
         """

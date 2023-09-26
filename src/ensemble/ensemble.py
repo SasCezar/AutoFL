@@ -5,6 +5,9 @@ import numpy as np
 
 
 class EnsembleBase(ABC):
+    """
+
+    """
     def __init__(self):
         pass
 
@@ -16,5 +19,6 @@ class EnsembleBase(ABC):
 
 
 class EnsembleNone(EnsembleBase):
+
     def run(self, annotations: List[Union[np.array, List]]):
         return annotations

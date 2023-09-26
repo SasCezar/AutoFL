@@ -3,8 +3,8 @@ from pathlib import Path
 
 
 class DataLoaderBase(ABC):
-    def __init__(self, path: str | Path):
-        self.path = Path(path)
+    def __init__(self, file_path: str | Path):
+        self.file_path = Path(file_path)
 
     @abstractmethod
     def load(self):
