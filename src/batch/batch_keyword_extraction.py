@@ -20,6 +20,7 @@ from vcs.vcs import VCS
 from vcs.version_strategy import VersionStrategyBase
 
 
+# TODO
 @hydra.main(config_path="../../config", config_name="runs", version_base="1.3")
 def extract_keywords(cfg: DictConfig):
     dataset: DataLoaderBase = instantiate(cfg.loader)

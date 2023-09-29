@@ -24,6 +24,10 @@ class KeywordLabel(LabelBase):
 
 
 class TaxonomyBase(ABC):
+    """
+    Class defining the taxonomy of the project. Each taxonomy has a path, a mapping between the label name and the label
+    index and a mapping between the label index and the label name.
+    """
     def __init__(self, path: Union[str, Path]):
         self.path = path
         self.name_to_label: Dict[str, LabelBase] = {}
@@ -61,6 +65,9 @@ class TaxonomyBase(ABC):
 
 
 class KeywordTaxonomy(TaxonomyBase):
+    """
+    Class defining a taxonomy with keywords and weights for each label.
+    """
     def __init__(self, path: Union[str, Path], keywords_path: Union[str, Path]):
         super().__init__(path)
         self.keywords_path: str = keywords_path
