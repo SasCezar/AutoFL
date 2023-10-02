@@ -1,0 +1,3 @@
+_target_: writer.file.FileWriter
+out_path: out_path
+exclude: null

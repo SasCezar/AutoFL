@@ -1,10 +1,12 @@
-from abc import ABC
+from typing import List
 
 from entity.project import Project
+from writer.writer import WriterBase
 
 
-class FileWriter(ABC):
+class FileWriter(WriterBase):
     def __init__(self, out_path, exclude):
+        super().__init__()
         self.out_path = out_path
         self.exclude = exclude
 
@@ -15,3 +17,7 @@ class FileWriter(ABC):
 
         with open(out_file, 'wt') as outf:
             outf.write(project_dict)
+
+    def write_bulk(self, projects: List[Project]):
+        for project in projects:
+            self.write(project)

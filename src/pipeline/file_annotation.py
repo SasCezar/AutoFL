@@ -31,6 +31,6 @@ class FileAnnotationPipeline(PipelineBase):
 
             unannotated = bool(all(lfs_unannotated))
             label_vec = self.ensemble(file_label_vecs)
-            file.annotation = Annotation(distribution=list(label_vec), labels=[], unannotated=unannotated)
+            file.annotation = Annotation(distribution=list(label_vec), unannotated=unannotated)
 
         return project, version

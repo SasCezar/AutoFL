@@ -18,6 +18,7 @@ from pipeline.pipeline import BatchPipeline
 from utils.instantiators import instantiate_annotators
 from vcs.vcs import VCS
 from vcs.version_strategy import VersionStrategyBase
+from writer.writer import WriterBase
 
 
 @hydra.main(config_path="../../config", config_name="runs", version_base="1.3")
@@ -43,9 +44,10 @@ def extract(cfg: DictConfig):
                                         version_strategy,
                                         vcs)
 
+    writer: WriterBase = instantiate(cfg.writer)
     pipeline: BatchPipeline = BatchPipeline(execution,
-                                            "/home/sasce/PycharmProjects/AutoFL/data/out",
-                                            exclude='')
+                                            writer,
+                                            cache_size=cfg.cache_size)
 
     if cfg.n_workers > 1:
         splits = list(chunked(projects, cfg.workers))

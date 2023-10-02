@@ -13,5 +13,4 @@ db.createUser(
 
 use ${MONGO_INITDB_DATABASE}
 db.createCollection("projects")
-db.projects.createIndex()
 EOF

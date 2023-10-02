@@ -1,8 +1,9 @@
 from datetime import datetime
 from pathlib import Path
-from typing import List, Optional, Dict, Union
+from typing import List, Optional, Dict, Union, TypedDict
 
 from pydantic import BaseModel
+from pydantic_mongo import ObjectIdField, AbstractRepository
 
 from entity.annotation import Annotation
 from entity.file import File
@@ -25,6 +26,7 @@ class Project(BaseModel):
     Class representing a project. Each project has a name, a remote (url), a directory path, a list of languages,
     a list of versions, a list of keywords, a taxonomy and a list of predicted labels and developer assigned labels.
     """
+    id: ObjectIdField = None
     name: str
     remote: Optional[str] = None
     dir_path: Optional[Path] = None
@@ -34,6 +36,11 @@ class Project(BaseModel):
     taxonomy: Optional[Dict[int, str]] = None
     predicted_labels: Optional[List[str]] = None
     dev_labels: Optional[List[str]] = None
+
+
+class ProjectRepository(AbstractRepository[Project]):
+    class Meta:
+        collection_name = 'projects'
 
 
 class VersionBuilder:

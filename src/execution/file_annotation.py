@@ -24,17 +24,17 @@ class FileAnnotationExecution(ExecutionBase):
     def run(self, project: Project) -> Project:
         repo = self.vcs.init(project)
 
-        version_ids = self.version_strategy.get_versions(repo)
-        logger.info(f'Found {len(version_ids)} versions for project {project.name}')
+        versions = self.version_strategy.get_versions(repo)
+        logger.info(f'Found {len(versions)} versions for project {project.name}')
 
-        if not version_ids:
+        if not versions:
             logger.info('No versions found')
             return project
 
-        for version_id in version_ids:
-            logger.info(f'Analyzing version {version_id}')
-            self.vcs.checkout(repo, version_id)
-            version = self.version_builder.build_version(project.dir_path, project.languages, version_id)
+        for version in versions:
+            logger.info(f'Analyzing version {version.commit_id}')
+            self.vcs.checkout(repo, version.commit_id)
+            version = self.version_builder.build_version(project.dir_path, project.languages, version)
 
             project.versions.append(version)
 

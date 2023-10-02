@@ -7,17 +7,18 @@ from more_itertools import chunked
 from omegaconf import DictConfig
 
 from annotation.annotator import Annotator
+from dataloader.dataloader import DataLoaderBase
 from ensemble.ensemble import EnsembleBase
 from entity.project import Project
 from entity.taxonomy import KeywordTaxonomy
 from execution.file_annotation import FileAnnotationExecution
-from dataloader.dataloader import DataLoaderBase
 from pipeline.file_annotation import FileAnnotationPipeline
 from pipeline.identifier_extraction import IdentifierExtractionPipeline
 from pipeline.pipeline import BatchPipeline
 from utils.instantiators import instantiate_annotators
 from vcs.vcs import VCS
 from vcs.version_strategy import VersionStrategyBase
+from writer.writer import WriterBase
 
 
 # TODO
@@ -43,9 +44,10 @@ def extract_keywords(cfg: DictConfig):
                                         version_strategy,
                                         vcs)
 
+    writer: WriterBase = instantiate(cfg.writer)
     pipeline: BatchPipeline = BatchPipeline(execution,
-                                            "",
-                                            exclude='')
+                                            writer,
+                                            cache_size=cfg.cache_size)
 
     if cfg.workers > 1:
         splits = list(chunked(projects, cfg.workers))
