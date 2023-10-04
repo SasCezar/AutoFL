@@ -15,6 +15,7 @@ class CPPParser(ParserBase, lang=Extension.cpp.name):
         super().__init__(library_path)
         self.language: Language = Language(library_path, Extension.cpp.name)
         self.parser.set_language(self.language)
+        # TODO Fix, doesn't work - It doesn't find the namespaced identifiers
         self.identifiers_pattern: str = """
                                         ((identifier) @identifier)
                                         ((type_identifier) @type)

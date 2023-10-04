@@ -424,25 +424,5 @@ namespace op
         }
     }
 
-    template <typename T>
-    void BodyPartConnectorCaffe<T>::Backward_gpu(const std::vector<ArrayCpuGpu<T>*>& top,
-                                                 const std::vector<bool>& propagate_down,
-                                                 const std::vector<ArrayCpuGpu<T>*>& bottom)
-    {
-        try
-        {
-            UNUSED(top);
-            UNUSED(propagate_down);
-            UNUSED(bottom);
-            #ifdef USE_CAFFE
-                NOT_IMPLEMENTED;
-            #endif
-        }
-        catch (const std::exception& e)
-        {
-            error(e.what(), __LINE__, __FUNCTION__, __FILE__);
-        }
-    }
-
     COMPILE_TEMPLATE_FLOATING_TYPES_CLASS(BodyPartConnectorCaffe);
 }

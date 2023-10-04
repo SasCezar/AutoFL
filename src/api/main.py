@@ -23,7 +23,7 @@ async def label_files(analysis: Analysis):
 
     project = Project(name=analysis.name,
                       remote=analysis.remote,
-                      dir_path=Path(f'{cfg.data_path}/repository/{analysis.name}'),
+                      dir_path=f'{cfg.data_path}/repository/{analysis.name}',
                       languages=analysis.languages)
 
     execution = RunAnalysis(cfg)

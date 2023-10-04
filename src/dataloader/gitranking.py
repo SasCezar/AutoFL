@@ -27,6 +27,7 @@ class GitRankingCSVDataLoader(DataLoaderBase):
         dataset = pd.read_csv(self.file_path)
 
         dataset['labels'] = dataset['labels'].apply(ast.literal_eval)
+        dataset['language'] = dataset['language'].fillna('')
         if self.languages:
             dataset = dataset[dataset['language'].isin(self.languages)]
         for name, language, labels in zip(dataset['full_name'], dataset['language'], dataset['labels']):
@@ -34,7 +35,7 @@ class GitRankingCSVDataLoader(DataLoaderBase):
             projects.append(Project(name=folder_name,
                                     remote=f"{self.remote}/{name}",
                                     dev_labels=labels,
-                                    dir_path=self.projects_path.joinpath(folder_name),
+                                    dir_path=str(self.projects_path.joinpath(folder_name)),
                                     languages=[language.lower()])
                             )
 

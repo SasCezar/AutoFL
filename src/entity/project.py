@@ -29,7 +29,7 @@ class Project(BaseModel):
     id: ObjectIdField = None
     name: str
     remote: Optional[str] = None
-    dir_path: Optional[Path] = None
+    dir_path: Optional[str] = None
     languages: Optional[List[str]] = None
     versions: Optional[List[Version]] = []
     keywords: Optional[List[str]] = None
@@ -59,11 +59,11 @@ class VersionBuilder:
         filtered_paths = [Path(x) for x in all_paths if x.is_file() and x.suffix.lower() in extensions]
         files = {}
         for path in filtered_paths:
-            rel_path = path.relative_to(repo_dir)
+            rel_path = str(path.relative_to(repo_dir))
             language = self.language_from_ext(path.suffix, languages)
             content = self.read_file(path)
             file = File(path=rel_path, language=language, content=content)
-            files[str(rel_path)] = file
+            files[rel_path] = file
 
         return files
 

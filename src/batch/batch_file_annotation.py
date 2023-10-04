@@ -46,8 +46,7 @@ def extract(cfg: DictConfig):
 
     writer: WriterBase = instantiate(cfg.writer)
     pipeline: BatchPipeline = BatchPipeline(execution,
-                                            writer,
-                                            cache_size=cfg.cache_size)
+                                            writer)
 
     if cfg.n_workers > 1:
         splits = list(chunked(projects, cfg.workers))

@@ -22,6 +22,7 @@ class BatchPipeline:
                  cache_size=500):
         self.pipeline = pipeline
         self.writer = writer
+        self.cache_size = cache_size
         # if exclude is None:
         #     exclude = {}
         # self.exclude = exclude
@@ -30,5 +31,9 @@ class BatchPipeline:
         project_cache: List[Project] = []
         for project in tqdm(projects):
             project = self.pipeline.run(project)
+            project_cache.append(project)
             if len(project_cache) >= self.cache_size:
                 self.writer.write_bulk(project_cache)
+                project_cache = []
+        if project_cache:
+            self.writer.write_bulk(project_cache)

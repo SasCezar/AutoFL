@@ -1,4 +1,4 @@
-// From https://github.com/orangeduck/Corange/blob/master/src/cgraphics.c
+// Adapted from https://github.com/orangeduck/Corange/blob/master/src/cgraphics.c
 #include "cgraphics.h"
 #include "casset.h"
 
@@ -40,25 +40,6 @@ static void graphics_viewport_start() {
 
 }
 
-void graphics_init() {
-
-  int error = SDL_InitSubSystem(SDL_INIT_VIDEO);
-
-  if (error == -1) {
-    error("Cannot initialize SDL video!");
-  }
-
-  window_flags = SDL_WINDOW_OPENGL;
-  window_multisamples = 4;
-  window_multisamplesbuffs = 1;
-  window_antialiasing = 1;
-
-  graphics_viewport_start();
-
-  SDL_GL_PrintInfo();
-  SDL_GL_PrintExtensions();
-}
-
 SDL_GLContext* graphics_context_new() {
   SDL_GL_SetAttribute(SDL_GL_SHARE_WITH_CURRENT_CONTEXT, 1);
   return SDL_GL_CreateContext(screen);
@@ -68,22 +49,6 @@ void graphics_context_delete(SDL_GLContext* context) {
   SDL_GL_DeleteContext(context);
 }
 
-void graphics_context_current(SDL_GLContext* context) {
-  SDL_GL_MakeCurrent(screen, context);
-}
-
-void graphics_set_antialiasing(int quality) {
-  window_antialiasing = quality;
-}
-
-int graphics_get_antialiasing() {
-  return window_antialiasing;
-}
-
-void graphics_finish() {
-  SDL_GL_DeleteContext(context);
-  SDL_DestroyWindow(screen);
-}
 
 void graphics_set_multisamples(int multisamples) {
   window_multisamples = multisamples;
@@ -94,24 +59,6 @@ void graphics_set_multisamples(int multisamples) {
   }
 }
 
-int graphics_get_multisamples() {
-  return window_multisamples;
-}
-
-void graphics_set_vsync(bool vsync) {
-  SDL_GL_SetSwapInterval(vsync);
-}
-
-void graphics_set_fullscreen(bool fullscreen) {
-  if (fullscreen) {
-    window_flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
-  } else {
-    window_flags &= !SDL_WINDOW_FULLSCREEN_DESKTOP;
-
-  }
-
-}
-
 bool graphics_get_fullscreen() {
   if (window_flags & SDL_WINDOW_FULLSCREEN_DESKTOP) {
     return true;
@@ -120,48 +67,10 @@ bool graphics_get_fullscreen() {
   }
 }
 
-void graphics_viewport_set_size(int w, int h) {
-  SDL_SetWindowSize(screen, w, h);
-  glViewport(0, 0, w, h);
-}
-
-int graphics_viewport_height() {
-  int w, h;
-  SDL_GetWindowSize(screen, &w, &h);
-  return h;
-}
-
-int graphics_viewport_width() {
-  int w, h;
-  SDL_GetWindowSize(screen, &w, &h);
-  return w;
-}
-
-float graphics_viewport_ratio() {
-  int w, h;
-  SDL_GetWindowSize(screen, &w, &h);
-  return (float)h / (float)w;
-}
-
-void graphics_viewport_set_title(const char* title) {
-  SDL_SetWindowTitle(screen, title);
-}
-
-void graphics_viewport_set_icon(fpath icon) {
-  SDL_Surface* window_icon = SDL_LoadBMP(asset_hndl_new(icon).path.ptr);
-  SDL_SetWindowIcon(screen, window_icon);
-  SDL_FreeSurface(window_icon);
-}
-
-const char* graphics_viewport_title() {
-  return SDL_GetWindowTitle(screen);
-}
-
 static char timestamp_string[256];
 static char screenshot_string[256];
 
 void graphics_viewport_screenshot() {
-
   unsigned char* image_data = malloc( sizeof(unsigned char) * graphics_viewport_width() * graphics_viewport_height() * 4 );
   glReadPixels( 0, 0, graphics_viewport_width(), graphics_viewport_height(), GL_BGRA, GL_UNSIGNED_BYTE, image_data );
 
@@ -182,16 +91,4 @@ void graphics_viewport_screenshot() {
 
   image_delete(i);
 
-}
-
-void graphics_set_cursor_hidden(bool hidden) {
-  SDL_ShowCursor(hidden ? SDL_DISABLE : SDL_ENABLE);
-}
-
-bool graphics_get_cursor_hidden() {
-  return (SDL_ShowCursor(SDL_QUERY) == SDL_ENABLE ? false : true);
-}
-
-void graphics_swap() {
-  SDL_GL_SwapWindow(screen);
 }

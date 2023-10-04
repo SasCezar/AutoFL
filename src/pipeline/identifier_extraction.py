@@ -13,7 +13,8 @@ class IdentifierExtractionPipeline(PipelineBase):
         self.languages_path = languages_path
 
     def run(self, project: Project, version: Version) -> Tuple[Project, Version]:
-        for file in version.files:
+        for file_name in version.files:
+            file = version.files[file_name]
             lang = file.language.strip('.')
 
             if file.identifiers and not self.force:

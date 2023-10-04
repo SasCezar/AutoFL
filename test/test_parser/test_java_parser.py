@@ -14,7 +14,8 @@ class TestJavaParser(unittest.TestCase):
 
         file_path = Path(self.cfg.test_data_path).joinpath(Path('parser/example_class.java'))
         content = self.load_file(file_path)
-        self.file = File(path=file_path, language='java', content=content)
+        rel_path = str(file_path.relative_to(self.cfg.test_data_path))
+        self.file = File(path=rel_path, language='java', content=content)
         self.parser: ParserBase = ParserFactory.create_parser(self.file.language, self.cfg.languages_library)
 
         self.gt = ['Lamp', 'isOn', 'turnOn', 'isOn', 'System', 'out', 'println',
@@ -23,8 +24,14 @@ class TestJavaParser(unittest.TestCase):
                    'Lamp', 'led', 'turnOn', 'halogen', 'turnOff']
 
     def test_identifiers(self):
-        identifiers = self.parser.parse(self.file)
+        identifiers, _ = self.parser.parse(self.file)
         self.assertListEqual(identifiers, self.gt)
+
+    def test_packages(self):
+        # TODO
+        # _, packages = self.parser.parse(self.file)
+        # self.assertListEqual(packages, self.gt_packages)
+        pass
 
     @staticmethod
     def load_file(path):

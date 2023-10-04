@@ -1,4 +1,3 @@
-from pathlib import Path
 from typing import Optional, List
 
 from pydantic import BaseModel
@@ -10,7 +9,7 @@ class File(BaseModel):
     """
     Class defining a file. Each file has a path, a language, a content, a list of identifiers and a package.
     """
-    path: Path
+    path: str
     language: str
     content: Optional[str] = None
     identifiers: Optional[List[str]] = None

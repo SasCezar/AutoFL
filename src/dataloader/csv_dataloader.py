@@ -10,5 +10,5 @@ class CSVProjectLoader(DataLoaderBase):
     def load(self):
         projects: List[Project] = []
 
-        project_list = pd.read_csv(self.path)
+        project_list = pd.read_csv(self.file_path)
         pass

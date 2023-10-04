@@ -14,7 +14,8 @@ class TestPythonParser(unittest.TestCase):
 
         file_path = Path(self.cfg.test_data_path).joinpath(Path('parser/keyword.py'))
         content = self.load_file(file_path)
-        self.file = File(path=file_path, language='python', content=content)
+        rel_path = str(file_path.relative_to(self.cfg.test_data_path))
+        self.file = File(path=rel_path, language='python', content=content)
         self.parser: ParserBase = ParserFactory.create_parser(self.file.language, self.cfg.languages_library)
         self.gt = ['collections', 'Counter', 'numpy', 'np', 'multiset', 'Multiset', 'entity',
                    'taxonomy', 'KeywordLabel', 'annotation', 'LFBase', 'KeywordLF', 'LFBase',
@@ -27,9 +28,14 @@ class TestPythonParser(unittest.TestCase):
                    'len', 'taxonomy', 'node_vec']
 
     def test_identifiers(self):
-        identifiers = self.parser.parse(self.file)
+        identifiers, _ = self.parser.parse(self.file)
         self.assertListEqual(identifiers, self.gt)
 
+    def test_packages(self):
+        # TODO
+        # _, packages = self.parser.parse(self.file)
+        # self.assertListEqual(packages, self.gt_packages)
+        pass
     @staticmethod
     def load_file(path):
         with open(path, 'rt') as inf:

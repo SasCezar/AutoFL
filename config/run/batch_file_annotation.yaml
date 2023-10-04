@@ -4,6 +4,7 @@ defaults:
   - /annotator: default
   - /taxonomy: small
   - /version_strategy: latest
+  - /writer: mongo
 
 
 out_file:

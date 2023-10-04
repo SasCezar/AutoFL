@@ -1,3 +1,5 @@
+import json
+from pathlib import Path
 from typing import List
 
 from entity.project import Project
@@ -5,13 +7,19 @@ from writer.writer import WriterBase
 
 
 class FileWriter(WriterBase):
-    def __init__(self, out_path, exclude):
+    def __init__(self, out_path: str | Path, exclude: str, indent: None | int = None):
+        """
+        :param out_path:
+        :param exclude: String of a dict of fields to exclude
+        :param indent:
+        """
         super().__init__()
-        self.out_path = out_path
-        self.exclude = exclude
+        self.out_path = Path(out_path)
+        self.exclude = json.loads(exclude)
+        self.indent = indent
 
     def write(self, project: Project):
-        project_dict = project.model_dump_json(exclude=self.exclude)
+        project_dict = project.model_dump_json(exclude=self.exclude, indent=self.indent)
 
         out_file = self.out_path.joinpath(f'{project.name}.json')
 

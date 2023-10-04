@@ -47,7 +47,7 @@ class ParserBase(ABC):
 
         return identifiers
 
-    def get_package(self, file: Path, code: bytes, root: Tree) -> str:
+    def get_package(self, file: str, code: bytes, root: Tree) -> str:
         package = '.'
 
         return package
@@ -67,7 +67,7 @@ class ParserFactory:
         cls.registry[lang] = parser_class
 
     @classmethod
-    def create_parser(cls, name: str, library_path: Path | str, **kwargs) -> 'ParserBase':
+    def create_parser(cls, name: str, library_path: Path | str, **kwargs) -> ParserBase:
         try:
             return cls.registry[name](library_path)
         except KeyError:

@@ -6,10 +6,7 @@ from fastapi.encoders import jsonable_encoder
 from hydra import initialize, compose
 from hydra.utils import instantiate
 
-from annotation import LFBase
 from annotation.annotator import Annotator
-from annotation.filtering import FilteringBase
-from annotation.transformation import TransformationBase
 from ensemble.ensemble import EnsembleBase
 from entity.project import Project
 from entity.taxonomy import KeywordTaxonomy
@@ -45,7 +42,7 @@ class TestPipeline(unittest.TestCase):
 
     def test_pipeline_java(self):
         project = Project(name='Waikato|weka-3.8',
-                          dir_path=Path(f'{self.cfg.test_data_path}/repository/Waikato|weka-3.8'),
+                          dir_path=f'{self.cfg.test_data_path}/repository/Waikato|weka-3.8',
                           languages=['java'],
                           remote='https://github.com/Waikato/weka-3.8')
         res = self.execution.run(project)
@@ -54,7 +51,7 @@ class TestPipeline(unittest.TestCase):
 
     def test_pipeline_python(self):
         project = Project(name='tiangolo|fastapi',
-                          dir_path=Path(f'{self.cfg.test_data_path}/repository/tiangolo|fastapi'),
+                          dir_path=f'{self.cfg.test_data_path}/repository/tiangolo|fastapi',
                           languages=['python'],
                           remote='https://github.com/tiangolo/fastapi')
         res = self.execution.run(project)
@@ -62,7 +59,7 @@ class TestPipeline(unittest.TestCase):
 
     def test_pipeline_c(self):
         project = Project(name='tporadowski|redis',
-                          dir_path=Path(f'{self.cfg.test_data_path}/repository/tporadowski|redis'),
+                          dir_path=f'{self.cfg.test_data_path}/repository/tporadowski|redis',
                           languages=['c'],
                           remote='https://github.com/tporadowski/redis')
         res = self.execution.run(project)
