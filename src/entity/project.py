@@ -1,6 +1,6 @@
 from datetime import datetime
 from pathlib import Path
-from typing import List, Optional, Dict, Union, TypedDict
+from typing import List, Optional, Dict, Union, TypedDict, Any
 
 from pydantic import BaseModel
 from pydantic_mongo import ObjectIdField, AbstractRepository
@@ -26,14 +26,14 @@ class Project(BaseModel):
     Class representing a project. Each project has a name, a remote (url), a directory path, a list of languages,
     a list of versions, a list of keywords, a taxonomy and a list of predicted labels and developer assigned labels.
     """
-    id: ObjectIdField = None
     name: str
+    cfg: Optional[Dict[str, Any]] = None
     remote: Optional[str] = None
     dir_path: Optional[str] = None
     languages: Optional[List[str]] = None
     versions: Optional[List[Version]] = []
     keywords: Optional[List[str]] = None
-    taxonomy: Optional[Dict[int, str]] = None
+    taxonomy: Optional[Dict[str, str]] = None
     predicted_labels: Optional[List[str]] = None
     dev_labels: Optional[List[str]] = None
 

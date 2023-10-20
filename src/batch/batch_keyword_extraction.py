@@ -45,9 +45,7 @@ def extract_keywords(cfg: DictConfig):
                                         vcs)
 
     writer: WriterBase = instantiate(cfg.writer)
-    pipeline: BatchPipeline = BatchPipeline(execution,
-                                            writer,
-                                            cache_size=cfg.cache_size)
+    pipeline: BatchPipeline = BatchPipeline(execution, loader, writer, cache_size=cfg.cache_size)
 
     if cfg.workers > 1:
         splits = list(chunked(projects, cfg.workers))

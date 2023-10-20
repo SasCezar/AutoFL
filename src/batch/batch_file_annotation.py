@@ -1,3 +1,4 @@
+from functools import partial
 from typing import List
 
 import hydra
@@ -23,17 +24,16 @@ from writer.writer import WriterBase
 
 @hydra.main(config_path="../../config", config_name="runs", version_base="1.3")
 def extract(cfg: DictConfig):
-    print(cfg)
-    dataloader: DataLoaderBase = instantiate(cfg.dataloader,  languages=['Java'])
-    projects: List[Project] = dataloader.load()[:3]
-
+    dataloader: DataLoaderBase = instantiate(cfg.dataloader)
+    projects: List[Project] = dataloader.project_list
     taxonomy: KeywordTaxonomy = instantiate(cfg.taxonomy)
     ensemble: EnsembleBase = instantiate(cfg.annotator.ensemble)
     annotators: List[Annotator] = instantiate_annotators(cfg.annotator.annotators, taxonomy)
 
     annotation = FileAnnotationPipeline(annotators,
                                         ensemble,
-                                        taxonomy)
+                                        taxonomy,
+                                        cfg=cfg.annotator)
 
     identifier_extraction = IdentifierExtractionPipeline(cfg.languages_library)
     version_strategy: VersionStrategyBase = instantiate(cfg.version_strategy)
@@ -44,15 +44,21 @@ def extract(cfg: DictConfig):
                                         version_strategy,
                                         vcs)
 
-    writer: WriterBase = instantiate(cfg.writer)
-    pipeline: BatchPipeline = BatchPipeline(execution,
-                                            writer)
+    pipeline = partial(run, execution, cfg)
 
     if cfg.n_workers > 1:
         splits = list(chunked(projects, cfg.workers))
-        Parallel(n_jobs=cfg.workers)(delayed(pipeline.run)(x) for x in splits)
+        Parallel(n_jobs=cfg.workers)(delayed(pipeline)(x) for x in splits)
     else:
-        pipeline.run(projects)
+        pipeline(projects)
+
+
+def run(execution, cfg, projects):
+    dataloader: DataLoaderBase = instantiate(cfg.dataloader)
+    writer: WriterBase = instantiate(cfg.writer)
+    pipeline: BatchPipeline = BatchPipeline(execution, dataloader, writer)
+
+    pipeline.run(projects)
 
 
 if __name__ == '__main__':

@@ -51,33 +51,34 @@ services:
       ME_CONFIG_BASICAUTH_USERNAME: user
       ME_CONFIG_BASICAUTH_PASSWORD: password
       ME_CONFIG_MONGODB_URL: mongodb://<user>:<password>@<mongo-container-name>:<container-port>/
-      #ME_CONFIG_MONGODB_URL: mongodb://root:root@localhost:27017/?authSource=admin
 
-  #  db:
-  ##    profiles:
-  ##      - database
-  #    image: postgres
-  #    restart: always
-  #    environment:
-  #      POSTGRES_DB: "auto_fl"
-  #      POSTGRES_USER: "postgres"
-  #      POSTGRES_PASSWORD: "temp"
-  #    healthcheck:
-  #      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
-  #      interval: 1s
-  #      timeout: 5s
-  #      retries: 10
-  #    volumes:
-  #      - ./postgres-data:/var/lib/postgresql/data
-  #      - ./docker/init-database.sh:/docker-entrypoint-initdb.d/init-database.sh
-  #
-  #  adminer:
-  ##    profiles:
-  ##      - database
-  #    image: adminer
-  #    restart: always
-  #    ports:
-  #      - 8080:8080
+  db:
+    #    profiles:
+    #      - database
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: "auto_fl"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "temp"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}" ]
+      interval: 1s
+      timeout: 5s
+      retries: 10
+    ports:
+        - 5432:5432
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+      - ./docker/sql:/docker-entrypoint-initdb.d/
+
+  adminer:
+    #    profiles:
+    #      - database
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
 
   ui:
     #    profiles:
@@ -95,7 +96,3 @@ services:
         target: /autofl-ui
     links:
       - 'api:auto-fl'
-
-#volumes:
-#  postgres-data:
-#    external: false

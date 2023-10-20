@@ -1,11 +1,17 @@
 from abc import ABC, abstractmethod
-from pathlib import Path
+from typing import Iterable
+
+from entity.project import Project
 
 
 class DataLoaderBase(ABC):
-    def __init__(self, file_path: str | Path):
-        self.file_path = Path(file_path)
+    def __init__(self, cfg: dict = None):
+        self._project_list = None
+
+    @property
+    def project_list(self):
+        return self._project_list
 
     @abstractmethod
-    def load(self):
+    def load(self, projects_list: list[str] | list[Project] = None) -> Iterable[Project]:
         pass

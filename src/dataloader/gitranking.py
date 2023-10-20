@@ -1,6 +1,6 @@
 import ast
 from pathlib import Path
-from typing import List
+from typing import List, Iterable
 
 import pandas as pd
 
@@ -13,7 +13,8 @@ class GitRankingCSVDataLoader(DataLoaderBase):
                  projects_path: str | Path,
                  languages: List[str] | str = None,
                  remote: str = 'https://github.com'):
-        super().__init__(file_path)
+        super().__init__()
+        self.file_path = Path(file_path)
         self.projects_path = Path(projects_path)
         self.remote = remote
         if languages is None:
@@ -21,16 +22,14 @@ class GitRankingCSVDataLoader(DataLoaderBase):
         if isinstance(languages, str):
             languages = [languages]
         self.languages = languages
+        self.dataset = self.load_dataset()
+        self._project_list = self.dataset['full_name'].tolist()
 
-    def load(self):
+    def load(self, projects_list: list[str] | list[Project] = None) -> Iterable[Project]:
         projects: List[Project] = []
-        dataset = pd.read_csv(self.file_path)
-
-        dataset['labels'] = dataset['labels'].apply(ast.literal_eval)
-        dataset['language'] = dataset['language'].fillna('')
-        if self.languages:
-            dataset = dataset[dataset['language'].isin(self.languages)]
-        for name, language, labels in zip(dataset['full_name'], dataset['language'], dataset['labels']):
+        dataset = self.dataset[self.dataset['full_name'].isin(projects_list)]
+        items = zip(dataset['full_name'], dataset['language'], dataset['labels'])
+        for name, language, labels in items:
             folder_name = name.replace("/", "|")
             projects.append(Project(name=folder_name,
                                     remote=f"{self.remote}/{name}",
@@ -40,3 +39,12 @@ class GitRankingCSVDataLoader(DataLoaderBase):
                             )
 
         return projects
+
+    def load_dataset(self):
+        dataset = pd.read_csv(self.file_path)
+        dataset['labels'] = dataset['labels'].apply(ast.literal_eval)
+        dataset['language'] = dataset['language'].fillna('')
+        if self.languages:
+            dataset = dataset[dataset['language'].isin(self.languages)]
+
+        return dataset

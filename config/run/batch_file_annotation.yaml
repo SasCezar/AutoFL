@@ -4,7 +4,7 @@ defaults:
   - /annotator: default
   - /taxonomy: small
   - /version_strategy: latest
-  - /writer: mongo
+  - /writer: postgres
 
 
 out_file:

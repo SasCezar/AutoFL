@@ -2,8 +2,10 @@ from abc import ABC
 from pathlib import Path
 from typing import List, Tuple
 
+from loguru import logger
 from tqdm import tqdm
 
+from dataloader.dataloader import DataLoaderBase
 from entity.project import Project, Version
 from execution.execution import ExecutionBase
 from writer.writer import WriterBase
@@ -18,19 +20,27 @@ class PipelineBase(ABC):
 # TODO: Move to BATCH, and use the Execution pipeline
 class BatchPipeline:
     def __init__(self, pipeline: ExecutionBase,
+                 loader: DataLoaderBase,
                  writer: WriterBase,
-                 cache_size=500):
+                 cache_size=2):
         self.pipeline = pipeline
+        self.loader = loader
         self.writer = writer
         self.cache_size = cache_size
         # if exclude is None:
         #     exclude = {}
         # self.exclude = exclude
 
-    def run(self, projects: List[Project]) -> None:
+    def run(self, projects_list: List) -> None:
         project_cache: List[Project] = []
+        projects = self.loader.load(projects_list)
         for project in tqdm(projects):
-            project = self.pipeline.run(project)
+            try:
+                project = self.pipeline.run(project)
+            except Exception as e:
+                logger.info(f"Error processing {project.name}: {e} - Skipping project")
+                continue
+
             project_cache.append(project)
             if len(project_cache) >= self.cache_size:
                 self.writer.write_bulk(project_cache)

@@ -1,5 +1,6 @@
-from typing import Tuple, List, Union
+from typing import Tuple, List, Union, Any, Dict
 
+from omegaconf import OmegaConf
 from tqdm import tqdm
 
 from annotation.annotator import Annotator
@@ -13,13 +14,16 @@ class FileAnnotationPipeline(PipelineBase):
     def __init__(self,
                  annotators: List[Annotator],
                  ensemble: Union[EnsembleBase, callable],
-                 taxonomy):
+                 taxonomy,
+                 cfg=None):
+
         self.annotators = annotators
         self.ensemble = ensemble
         self.taxonomy = taxonomy
+        self.cfg = OmegaConf.to_container(cfg, resolve=True) if cfg else {}
 
     def run(self, project: Project, version: Version) -> Tuple[Project, Version]:
-
+        project.cfg = self.cfg
         project.taxonomy = {str(index): self.taxonomy.id_to_label[index].name for index in self.taxonomy.id_to_label}
         for file_name in tqdm(version.files, desc=f"Labelling files for {project.name} @ version: {version.commit_id}"):
             file = version.files[file_name]
