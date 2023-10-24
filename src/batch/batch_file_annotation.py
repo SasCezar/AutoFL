@@ -5,7 +5,7 @@ import hydra
 from hydra.utils import instantiate
 from joblib import delayed, Parallel
 from more_itertools import chunked
-from omegaconf import DictConfig
+from omegaconf import DictConfig, OmegaConf
 
 from annotation.annotator import Annotator
 from ensemble.ensemble import EnsembleBase
@@ -25,7 +25,8 @@ from writer.writer import WriterBase
 @hydra.main(config_path="../../config", config_name="runs", version_base="1.3")
 def extract(cfg: DictConfig):
     dataloader: DataLoaderBase = instantiate(cfg.dataloader)
-    projects: List[Project] = dataloader.project_list
+    annot_cfg = OmegaConf.to_container(cfg.annotator, resolve=True) if cfg else {}
+    projects: List[Project] = dataloader.find_projects(annot_cfg)
     taxonomy: KeywordTaxonomy = instantiate(cfg.taxonomy)
     ensemble: EnsembleBase = instantiate(cfg.annotator.ensemble)
     annotators: List[Annotator] = instantiate_annotators(cfg.annotator.annotators, taxonomy)
@@ -33,7 +34,7 @@ def extract(cfg: DictConfig):
     annotation = FileAnnotationPipeline(annotators,
                                         ensemble,
                                         taxonomy,
-                                        cfg=cfg.annotator)
+                                        cfg=annot_cfg)
 
     identifier_extraction = IdentifierExtractionPipeline(cfg.languages_library)
     version_strategy: VersionStrategyBase = instantiate(cfg.version_strategy)

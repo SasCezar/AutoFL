@@ -1,12 +1,12 @@
-from abc import ABC
 from typing import List
 
 from git import Repo
 
 from entity.project import Version
+from vcs.version_strategy import VersionStrategyBase
 
 
-class LatestVersionStrategy(ABC):
+class LatestVersionStrategy(VersionStrategyBase):
     """
     Strategy to get the latest version of a project from a VCS repository (e.g. git)
     """

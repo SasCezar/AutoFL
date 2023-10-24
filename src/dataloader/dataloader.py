@@ -5,7 +5,7 @@ from entity.project import Project
 
 
 class DataLoaderBase(ABC):
-    def __init__(self, cfg: dict = None):
+    def __init__(self):
         self._project_list = None
 
     @property
@@ -13,5 +13,9 @@ class DataLoaderBase(ABC):
         return self._project_list
 
     @abstractmethod
-    def load(self, projects_list: list[str] | list[Project] = None) -> Iterable[Project]:
+    def load(self, projects_list: list[str] = None) -> Iterable[Project]:
+        pass
+
+    @abstractmethod
+    def find_projects(self, cfg: dict = None):
         pass

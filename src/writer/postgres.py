@@ -28,7 +28,7 @@ class PostgresWriter(WriterBase):
             for version in project.versions:
                 value = {"name": project.name,
                          "version_sha": version.commit_id,
-                         "version_num": 5,
+                         "version_num": 11,
                          "config": project.cfg,
                          "project": black_project.model_dump_json(),  # TODO: Exclude versions
                          "version": version.model_dump_json()}

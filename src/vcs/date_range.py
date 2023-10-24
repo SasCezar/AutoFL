@@ -1,13 +1,13 @@
-from abc import ABC
 from datetime import datetime
 from typing import List
 
 from git import Repo
 
 from entity.project import Version
+from vcs.version_strategy import VersionStrategyBase
 
 
-class DateRangeVersionStrategy(ABC):
+class DateRangeVersionStrategy(VersionStrategyBase):
     """
     Strategy to get the versions of a project from a VCS repository (e.g. git) in a given date range every N days.
     """

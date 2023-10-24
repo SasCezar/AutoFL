@@ -23,7 +23,6 @@ class GitRankingCSVDataLoader(DataLoaderBase):
             languages = [languages]
         self.languages = languages
         self.dataset = self.load_dataset()
-        self._project_list = self.dataset['full_name'].tolist()
 
     def load(self, projects_list: list[str] | list[Project] = None) -> Iterable[Project]:
         projects: List[Project] = []
@@ -48,3 +47,6 @@ class GitRankingCSVDataLoader(DataLoaderBase):
             dataset = dataset[dataset['language'].isin(self.languages)]
 
         return dataset
+
+    def find_projects(self, cfg: dict = None):
+        return self.dataset['full_name'].tolist()

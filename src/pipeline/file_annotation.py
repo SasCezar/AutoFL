@@ -20,7 +20,7 @@ class FileAnnotationPipeline(PipelineBase):
         self.annotators = annotators
         self.ensemble = ensemble
         self.taxonomy = taxonomy
-        self.cfg = OmegaConf.to_container(cfg, resolve=True) if cfg else {}
+        self.cfg = cfg if cfg else {}
 
     def run(self, project: Project, version: Version) -> Tuple[Project, Version]:
         project.cfg = self.cfg

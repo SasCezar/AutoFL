@@ -1,4 +1,5 @@
 CREATE TABLE project (
+    id SERIAL NOT NULL,
     name VARCHAR NOT NULL,
     version_sha VARCHAR NOT NULL,
     version_num INT NOT NULL,
