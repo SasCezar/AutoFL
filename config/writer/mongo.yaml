@@ -1,2 +1,0 @@
-_target_: writer.mongo.MongoWriter
-host: "mongodb://user:password@localhost:27017/default_db?authSource=admin"

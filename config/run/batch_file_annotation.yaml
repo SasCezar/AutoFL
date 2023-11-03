@@ -5,7 +5,3 @@ defaults:
   - /taxonomy: small
   - /version_strategy: latest
   - /writer: postgres
-
-
-out_file:
-exclude: {}

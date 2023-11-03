@@ -1,0 +1,5 @@
+_target_: keyword_extraction.rake.RAKEKeywordExtraction
+stopwords_path: ${base_path}/data/raw/java_stopwords.txt
+minCharacters: 3
+maxWords: 1
+minFrequency: 1

@@ -5,8 +5,10 @@ from fastapi import FastAPI
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from hydra import initialize, compose
+from hydra.utils import instantiate
 
 from api.run_analysis import RunAnalysis
+from dataloader.postgres_dataloader import PostgresProjectLoader
 from entity.analysis import Analysis
 from entity.project import Project
 
@@ -26,10 +28,18 @@ async def label_files(analysis: Analysis):
                       dir_path=f'{cfg.data_path}/repository/{analysis.name}',
                       languages=analysis.languages)
 
-    execution = RunAnalysis(cfg)
+    dataloader: PostgresProjectLoader | None = None
+    if cfg.dataloader is not None:
+        dataloader: PostgresProjectLoader = instantiate(cfg.dataloader)
 
-    annotations = execution.run(project)
-    #exclude_keys = {'versions': {'files': {'__all__': {'content', 'identifiers'}}}}
+    annotations = None
+    if dataloader:
+        annotations = dataloader.load_single(project)
+
+    if not annotations:
+        execution = RunAnalysis(cfg)
+
+        annotations = execution.run(project)
     exclude_keys = {'versions': {'__all__': {'files'}}}
     result = {'result': jsonable_encoder(annotations.dict(exclude=exclude_keys))}
     return JSONResponse(content=result)

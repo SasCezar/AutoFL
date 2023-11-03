@@ -14,44 +14,6 @@ services:
         source: .
         target: /autofl
 
-  mongo:
-    image: mongo
-    #restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: root
-      MONGO_INITDB_DATABASE: development
-      MONGO_INITDB_USER: user
-      MONGO_INITDB_PWD: password
-    ports:
-      - "27017:27017"
-    healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
-      interval: 10s
-      timeout: 10s
-      retries: 5
-      start_period: 40s
-    command: [ "-f", "/etc/mongod.conf" ]
-    volumes:
-      - ./mongodb/mongod.conf:/etc/mongod.conf
-      - ./mongodb/initdb.d/:/docker-entrypoint-initdb.d/
-      - ./mongodb/data/db/:/data/db/
-
-  mongo-express:
-    image: mongo-express
-    #restart: always
-    ports:
-      - "8081:8081"
-    environment:
-      ME_CONFIG_MONGODB_ENABLE_ADMIN: true
-      ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      ME_CONFIG_MONGODB_ADMINPASSWORD: root
-      ME_CONFIG_MONGODB_SERVER: mongo
-      ME_CONFIG_MONGODB_PORT: 27017
-      ME_CONFIG_BASICAUTH_USERNAME: user
-      ME_CONFIG_BASICAUTH_PASSWORD: password
-      ME_CONFIG_MONGODB_URL: mongodb://<user>:<password>@<mongo-container-name>:<container-port>/
-
   db:
     #    profiles:
     #      - database
@@ -67,7 +29,7 @@ services:
       timeout: 5s
       retries: 10
     ports:
-        - 5432:5432
+        - "5432:5432"
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
       - ./docker/sql:/docker-entrypoint-initdb.d/
@@ -78,7 +40,7 @@ services:
     image: adminer
     restart: always
     ports:
-      - 8080:8080
+      - "8080:8080"
 
   ui:
     #    profiles:

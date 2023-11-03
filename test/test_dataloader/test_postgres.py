@@ -25,3 +25,8 @@ class TestPostgres(unittest.TestCase):
         self.assertIsInstance(projects[0], Project)
         self.assertGreater(len(projects[0].versions), 0)
         self.assertIsInstance(projects[0].versions[0], Version)
+
+    def test_load_single(self):
+        dataloader: PostgresProjectLoader = instantiate(self.cfg.dataloader)
+        project = dataloader.load_single("GoogleCloudPlatform|dataflow-opinion-analysis")
+        print(len(project.versions))

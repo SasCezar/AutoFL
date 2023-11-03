@@ -18,6 +18,7 @@ class Version(BaseModel):
     commit_id: str
     commit_num: int = None
     commit_date: datetime = None
+    keywords: Optional[List[str]] = None
     files: Optional[Dict[str, File]] = None
 
 
@@ -32,7 +33,6 @@ class Project(BaseModel):
     dir_path: Optional[str] = None
     languages: Optional[List[str]] = None
     versions: Optional[List[Version]] = []
-    keywords: Optional[List[str]] = None
     taxonomy: Optional[Dict[str, str]] = None
     predicted_labels: Optional[List[str]] = None
     dev_labels: Optional[List[str]] = None
