@@ -14,6 +14,6 @@ class KeywordExtractionPipeline(PipelineBase):
         for file in version.files:
             content.extend(file.identifiers)
 
-        project.keywords = self.keyword_extractor.get_keywords(" ".join(content))
+        version.keywords = self.keyword_extractor.get_keywords(" ".join(content))
 
         return project, version

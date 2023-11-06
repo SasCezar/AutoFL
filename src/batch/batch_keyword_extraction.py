@@ -1,56 +1,56 @@
+from functools import partial
 from typing import List
 
 import hydra
 from hydra.utils import instantiate
 from joblib import delayed, Parallel
 from more_itertools import chunked
-from omegaconf import DictConfig
+from omegaconf import DictConfig, OmegaConf
 
-from annotation.annotator import Annotator
-from ensemble.ensemble import EnsembleBase
-from entity.project import Project
-from entity.taxonomy import KeywordTaxonomy
-from execution.file_annotation import FileAnnotationExecution
 from dataloader.dataloader import DataLoaderBase
-from pipeline.file_annotation import FileAnnotationPipeline
+from entity.project import Project
+from execution.keyword_extraction import KeywordExtractionExecution
 from pipeline.identifier_extraction import IdentifierExtractionPipeline
+from pipeline.keyword_extraction import KeywordExtractionPipeline
 from pipeline.pipeline import BatchPipeline
-from utils.instantiators import instantiate_annotators
 from vcs.vcs import VCS
 from vcs.version_strategy import VersionStrategyBase
+from writer.writer import WriterBase
 
 
 @hydra.main(config_path="../../config", config_name="runs", version_base="1.3")
 def extract_keywords(cfg: DictConfig):
-    dataset: DataLoaderBase = instantiate(cfg.loader)
-    projects: List[Project] = dataset.load()
+    dataloader: DataLoaderBase = instantiate(cfg.dataloader)
+    keyword_cfg = OmegaConf.to_container(cfg.annotator, resolve=True) if cfg else {}
+    projects: List[Project] = dataloader.find_projects(keyword_cfg)
 
-    taxonomy: KeywordTaxonomy = instantiate(cfg.taxonomy)
-    ensemble: EnsembleBase = instantiate(cfg.annotator.ensemble)
-    annotators: List[Annotator] = instantiate_annotators(cfg.annotator.annotators, taxonomy)
-
-    annotation = FileAnnotationPipeline(annotators,
-                                        ensemble,
-                                        taxonomy)
+    keyword_extractor = instantiate(cfg.keyword_extraction)
+    keyword_extraction = KeywordExtractionPipeline(keyword_extractor)
 
     identifier_extraction = IdentifierExtractionPipeline(cfg.languages_library)
     version_strategy: VersionStrategyBase = instantiate(cfg.version_strategy)
     vcs = VCS()
 
-    execution = FileAnnotationExecution(identifier_extraction,
-                                        annotation,
-                                        version_strategy,
-                                        vcs)
+    execution = KeywordExtractionExecution(identifier_extraction,
+                                           keyword_extraction,
+                                           version_strategy,
+                                           vcs)
 
-    pipeline: BatchPipeline = BatchPipeline(execution,
-                                            "",
-                                            exclude='')
+    pipeline = partial(run, execution, cfg)
 
-    if cfg.workers > 1:
+    if cfg.n_workers > 1:
         splits = list(chunked(projects, cfg.workers))
-        Parallel(n_jobs=cfg.workers)(delayed(pipeline.run)(x) for x in splits)
+        Parallel(n_jobs=cfg.workers)(delayed(pipeline)(x) for x in splits)
     else:
-        pipeline.run(projects)
+        pipeline(projects)
+
+
+def run(execution, cfg, projects):
+    dataloader: DataLoaderBase = instantiate(cfg.dataloader)
+    writer: WriterBase = instantiate(cfg.writer)
+    pipeline: BatchPipeline = BatchPipeline(execution, dataloader, writer)
+
+    pipeline.run(projects)
 
 
 if __name__ == '__main__':

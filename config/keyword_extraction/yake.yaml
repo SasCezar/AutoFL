@@ -1,0 +1,5 @@
+_target_: keyword_extraction.yake.YAKEKeywordExtraction
+stopwords_path: ${base_path}/data/raw/java_stopwords.txt
+n: 1
+top: 50
+min_characters: 3

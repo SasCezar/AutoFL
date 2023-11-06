@@ -6,18 +6,18 @@ from pipeline.pipeline import PipelineBase
 
 
 class IdentifierExtractionPipeline(PipelineBase):
-    def __init__(self, languages_path, use_cache: bool = False):
+    def __init__(self, languages_path, force: bool = False):
         self.parser_factory = ParserFactory
         self.parsers: Dict[str, ParserBase] = {}
-        self.use_cache = use_cache
+        self.force = force
         self.languages_path = languages_path
 
     def run(self, project: Project, version: Version) -> Tuple[Project, Version]:
-        version.files_packages = {}
-        for file in version.files:
+        for file_name in version.files:
+            file = version.files[file_name]
             lang = file.language.strip('.')
 
-            if file.identifiers or self.use_cache:
+            if file.identifiers and not self.force:
                 continue
 
             if lang not in self.parsers:
@@ -25,6 +25,6 @@ class IdentifierExtractionPipeline(PipelineBase):
 
             identifiers, package = self.parsers[lang].parse(file)
             file.identifiers = identifiers
-            version.files_packages[file.path] = package
+            file.package = package
 
         return project, version

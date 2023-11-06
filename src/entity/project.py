@@ -1,49 +1,62 @@
+from datetime import datetime
 from pathlib import Path
-from typing import List, Optional, Dict, Union
+from typing import List, Optional, Dict, Any
 
 from pydantic import BaseModel
 
-from entity.annotation import Annotation
 from entity.file import File
 from parser.extensions import Extension
 
 
 class Version(BaseModel):
+    """
+    Class representing a version. Each version has a commit id (sha), a commit number describing the position of the
+    commit in the project's history, a commit date and a map of files.
+    """
     commit_id: str
-    files: Optional[List[File]] = None
-    files_annotation: Optional[Dict[str, Annotation]] = None
-    files_packages: Optional[Dict[Union[str | Path], Union[str | Path]]] = None
+    commit_num: int = None
+    commit_date: datetime = None
+    keywords: Optional[List[str]] = None
+    files: Optional[Dict[str, File]] = None
 
 
 class Project(BaseModel):
+    """
+    Class representing a project. Each project has a name, a remote (url), a directory path, a list of languages,
+    a list of versions, a list of keywords, a taxonomy and a list of predicted labels and developer assigned labels.
+    """
     name: str
+    cfg: Optional[Dict[str, Any]] = None
     remote: Optional[str] = None
-    dir_path: Optional[Path] = None
+    dir_path: Optional[str] = None
     languages: Optional[List[str]] = None
     versions: Optional[List[Version]] = []
-    keywords: Optional[List[str]] = None
-    taxonomy: Optional[Dict[int, str]] = None
+    taxonomy: Optional[Dict[str, str]] = None
     predicted_labels: Optional[List[str]] = None
     dev_labels: Optional[List[str]] = None
 
 
 class VersionBuilder:
-    def build_version(self, repo_dir, commit_id, languages):
-        files = self.load_files(repo_dir, languages)
+    """
+    Class responsible for building a version from a given commit id and a list of languages.
+    """
 
-        return Version(commit_id=commit_id, files=files)
+    def build_version(self, repo_dir: Path | str, languages: List[str], version: Version) -> Version:
+        files = self.load_files(Path(repo_dir), languages)
+        version.files = files
+        return version
 
-    def load_files(self, repo_dir: Path, languages: List[str]) -> List[File]:
+    def load_files(self, repo_dir: Path, languages: List[str]) -> Dict[str, File]:
         extensions = self.get_languages_ext(languages)
         all_paths = list(repo_dir.glob('**/*'))
         filtered_paths = [Path(x) for x in all_paths if x.is_file() and x.suffix.lower() in extensions]
-        files = []
+        files = {}
         for path in filtered_paths:
-            rel_path = path.relative_to(repo_dir)
+            rel_path = str(path.relative_to(repo_dir))
             language = self.language_from_ext(path.suffix, languages)
             content = self.read_file(path)
             file = File(path=rel_path, language=language, content=content)
-            files.append(file)
+            files[rel_path] = file
 
         return files
 

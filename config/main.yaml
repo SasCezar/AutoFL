@@ -5,6 +5,7 @@ defaults:
   - taxonomy: gitranking
   - annotator: default
   - version_strategy: latest
+  - dataloader: postgres
 
 hydra:
   output_subdir: null

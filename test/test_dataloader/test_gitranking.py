@@ -9,7 +9,7 @@ from dataloader.gitranking import GitRankingCSVDataLoader
 class TestGitRanking(unittest.TestCase):
     def setUp(self) -> None:
         with initialize(version_base='1.3', config_path="../../config/"):
-            self.cfg = compose(config_name="test.yaml")
+            self.cfg = compose(config_name="test.yaml", overrides=["dataloader=gitranking"])
 
     def test_load(self):
         dataloader: GitRankingCSVDataLoader = instantiate(self.cfg.dataloader)

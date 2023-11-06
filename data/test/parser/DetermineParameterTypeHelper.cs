@@ -1,4 +1,4 @@
-// From: https://github.com/JosefPihrt/Roslynator/blob/main/src/CSharp/DetermineParameterTypeHelper.cs
+// Adapted from: https://github.com/JosefPihrt/Roslynator/blob/main/src/CSharp/DetermineParameterTypeHelper.cs
 
 // Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
@@ -58,51 +58,6 @@ internal static class DetermineParameterTypeHelper
         }
 
         return ImmutableArray<ITypeSymbol>.Empty;
-    }
-
-    private static SymbolInfo GetSymbolInfo(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
-    {
-        if (node is ExpressionSyntax expression)
-            return semanticModel.GetSymbolInfo(expression, cancellationToken);
-
-        if (node is ConstructorInitializerSyntax constructorInitializer)
-            return semanticModel.GetSymbolInfo(constructorInitializer, cancellationToken);
-
-        return default;
-    }
-
-    private static ITypeSymbol DetermineParameterType(
-        ISymbol symbol,
-        ArgumentSyntax argument,
-        BaseArgumentListSyntax argumentList)
-    {
-        IParameterSymbol parameterSymbol = DetermineParameterSymbol(symbol, argument, argumentList);
-
-        if (parameterSymbol is null)
-            return null;
-
-        RefKind refKind = parameterSymbol.RefKind;
-
-        if (refKind == RefKind.Out)
-        {
-            if (!argument.RefOrOutKeyword.IsKind(SyntaxKind.OutKeyword))
-                return null;
-        }
-        else if (refKind == RefKind.Ref)
-        {
-            if (!argument.RefOrOutKeyword.IsKind(SyntaxKind.RefKeyword))
-                return null;
-        }
-
-        ITypeSymbol typeSymbol = parameterSymbol.Type;
-
-        if (parameterSymbol.IsParams
-            && typeSymbol is IArrayTypeSymbol arrayType)
-        {
-            return arrayType.ElementType;
-        }
-
-        return typeSymbol;
     }
 
     private static IParameterSymbol DetermineParameterSymbol(

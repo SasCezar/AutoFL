@@ -1,7 +1,6 @@
+# @package _global_
 defaults:
-  #- /loader: JSON
-  - annotator: default
-
-
-out_file:
-exclude: {}
+  - /dataloader: gitranking
+  - keyword_extraction: yake
+  - /version_strategy: latest
+  - /writer: postgres

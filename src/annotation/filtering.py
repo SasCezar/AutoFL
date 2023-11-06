@@ -25,6 +25,10 @@ class JSDFiltering(FilteringBase):
     If the score is lower than a threshold (noisy annotation), the annotation is filtered.
     """
     def __init__(self, threshold: float):
+        """
+
+        :param threshold: JSD threshold used to filter the file
+        """
         self.threshold = threshold
 
     def filter(self, distribution: np.array) -> bool:
@@ -43,6 +47,10 @@ class ThresholdFiltering(FilteringBase):
     If is not high enough, then the annotation is filtered.
     """
     def __init__(self, threshold: float):
+        """
+
+        :param threshold: Noise threshold used to filter the file
+        """
         self.threshold = threshold
 
     def filter(self, distribution: np.array) -> bool:

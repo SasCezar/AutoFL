@@ -7,7 +7,13 @@ from omegaconf import DictConfig
 from annotation.annotator import Annotator
 
 
-def instantiate_annotators(annotators_cfg: DictConfig, taxonomy):
+def instantiate_annotators(annotators_cfg: DictConfig, taxonomy) -> List[Annotator]:
+    """
+    Instantiates the annotators from the configuration.
+    :param annotators_cfg:
+    :param taxonomy:
+    :return:
+    """
     annotators: List[Annotator] = []
 
     for name, cb_conf in annotators_cfg.items():

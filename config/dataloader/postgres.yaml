@@ -1,0 +1,5 @@
+_target_: dataloader.postgres_dataloader.PostgresProjectLoader
+host: localhost
+db: auto_fl
+user: postgres
+password: temp

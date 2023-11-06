@@ -1,12 +1,14 @@
-import json
 from abc import ABC
 from pathlib import Path
 from typing import List, Tuple
 
+from loguru import logger
 from tqdm import tqdm
 
+from dataloader.dataloader import DataLoaderBase
 from entity.project import Project, Version
 from execution.execution import ExecutionBase
+from writer.writer import WriterBase
 
 
 class PipelineBase(ABC):
@@ -18,21 +20,30 @@ class PipelineBase(ABC):
 # TODO: Move to BATCH, and use the Execution pipeline
 class BatchPipeline:
     def __init__(self, pipeline: ExecutionBase,
-                 out_path: str | Path,
-                 exclude=None):
+                 loader: DataLoaderBase,
+                 writer: WriterBase,
+                 cache_size=2):
         self.pipeline = pipeline
-        self.out_path = Path(out_path)
-        self.out_path.mkdir(parents=True, exist_ok=True)
-        if exclude is None:
-            exclude = {}
-        self.exclude = exclude
+        self.loader = loader
+        self.writer = writer
+        self.cache_size = cache_size
+        # if exclude is None:
+        #     exclude = {}
+        # self.exclude = exclude
 
-    def run(self, projects: List[Project]) -> None:
+    def run(self, projects_list: List) -> None:
+        project_cache: List[Project] = []
+        projects = self.loader.load(projects_list)
         for project in tqdm(projects):
-            project = self.pipeline.run(project)
-            project_dict = project.model_dump_json(exclude=self.exclude)
+            try:
+                project = self.pipeline.run(project)
+            except Exception as e:
+                logger.info(f"Error processing {project.name}: {e} - Skipping project")
+                continue
 
-            out_file = self.out_path.joinpath(f'{project.name}.json')
-
-            with open(out_file, 'wt') as outf:
-                outf.write(project_dict)
+            project_cache.append(project)
+            if len(project_cache) >= self.cache_size:
+                self.writer.write_bulk(project_cache)
+                project_cache = []
+        if project_cache:
+            self.writer.write_bulk(project_cache)

@@ -20,8 +20,8 @@ class LFBase(ABC):
     def annotate(self, name: str, content: str) -> np.array:
         """
         Annotate an example given the file name and it's content.
-        :param name:
-        :param content:
+        :param name: Source file name
+        :param content: Content of the file (usually identifiers)
         :return:
         """
         pass

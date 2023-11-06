@@ -21,4 +21,4 @@ class CParser(ParserBase, lang=Extension.c.name):
                                         """
         self.identifiers_query = self.language.query(self.identifiers_pattern)\
 
-        self.keywords = set('malloc')
+        self.keywords = {'malloc'}

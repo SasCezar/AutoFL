@@ -1,0 +1,3 @@
+_target_: writer.file.FileWriter
+out_path: ${data_path}/out/
+exclude: null

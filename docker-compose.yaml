@@ -1,3 +1,4 @@
+version: "3.8"
 services:
   api:
     build:
@@ -5,7 +6,7 @@ services:
       dockerfile: ./docker/Dockerfile
     ports:
       - "8000:8000"
-      - "30000:8888"
+      - "8888:8888"
     stdin_open: true # docker run -i
     tty: true        # docker run -t
     volumes:
@@ -13,9 +14,37 @@ services:
         source: .
         target: /autofl
 
+  db:
+    #    profiles:
+    #      - database
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: "auto_fl"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "temp"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}" ]
+      interval: 1s
+      timeout: 5s
+      retries: 10
+    ports:
+        - "5432:5432"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+      - ./docker/sql:/docker-entrypoint-initdb.d/
+
+  adminer:
+    #    profiles:
+    #      - database
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+
   ui:
-#    profiles:
-#      - ui
+    #    profiles:
+    #      - ui
     build:
       context: autofl-ui/
       dockerfile: ./docker/Dockerfile

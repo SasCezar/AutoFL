@@ -1,23 +1,22 @@
-from abc import ABC
 from datetime import datetime
 from typing import List
 
 from git import Repo
 
+from entity.project import Version
+from vcs.version_strategy import VersionStrategyBase
 
-class DateRangeVersionStrategy(ABC):
+
+class DateRangeVersionStrategy(VersionStrategyBase):
+    """
+    Strategy to get the versions of a project from a VCS repository (e.g. git) in a given date range every N days.
+    """
     def __init__(self, start_date: str, end_date: str, interval_days: int):
         self.start_date = datetime.strptime(start_date, '%d/%m/%y')
         self.end_date = datetime.strptime(end_date, '%d/%m/%y')
         self.interval_days = interval_days
 
-    def get_versions(self, repository: Repo) -> List[str]:
-        # start = int(datetime.strptime('01/01/2018', '%d/%m/%Y').timestamp())
-        # print(start)
-        # end = int(datetime.strptime('01/01/2019', '%d/%m/%Y').timestamp())
-        # range_comm = list(repository.iter_commits(f"--min-age={start} --max-age={end}"))
-        # print(len(range_comm))
-        # raise
+    def get_versions(self, repository: Repo) -> List[Version]:
         commits = []
         for commit in repository.iter_commits('--all'):
             version_date = datetime.fromtimestamp(commit.authored_date)
@@ -30,5 +29,6 @@ class DateRangeVersionStrategy(ABC):
                 if delta.days >= self.interval_days:
                     commits.append(commit)
 
-        commits = [commit.hexsha for commit in commits]
+        commits = [Version(commit_id=commit.hexsha, commit_num=len(commits) - i,
+                           commit_date=commit.committed_datetime, files=None) for i, commit in enumerate(commits)]
         return commits

@@ -10,12 +10,12 @@ from vcs.version_strategy import VersionStrategyBase
 
 class FileAnnotationExecution(ExecutionBase):
     def __init__(self,
-                 identifier_extraction: IdentifierExtractionPipeline,
+                 identifier_extraction_pipeline: IdentifierExtractionPipeline,
                  annotation_pipeline: FileAnnotationPipeline,
                  version_strategy: VersionStrategyBase,
                  vcs: VCS
                  ):
-        self.identifier_extraction = identifier_extraction
+        self.identifier_extraction_pipeline = identifier_extraction_pipeline
         self.annotation_pipeline = annotation_pipeline
         self.version_strategy = version_strategy
         self.vcs = vcs
@@ -24,21 +24,21 @@ class FileAnnotationExecution(ExecutionBase):
     def run(self, project: Project) -> Project:
         repo = self.vcs.init(project)
 
-        version_ids = self.version_strategy.get_versions(repo)
-        logger.info(f'Found {len(version_ids)} versions for project {project.name}')
+        versions = self.version_strategy.get_versions(repo)
+        logger.info(f'Found {len(versions)} versions for project {project.name}')
 
-        if not version_ids:
+        if not versions:
             logger.info('No versions found')
             return project
 
-        for version_id in version_ids:
-            logger.info(f'Analyzing version {version_id}')
-            self.vcs.checkout(repo, version_id)
-            version = self.version_builder.build_version(project.dir_path, version_id, project.languages)
+        for version in versions:
+            logger.info(f'Analyzing version {version.commit_id}')
+            self.vcs.checkout(repo, version.commit_id)
+            version = self.version_builder.build_version(project.dir_path, project.languages, version)
 
             project.versions.append(version)
 
-            project, version = self.identifier_extraction.run(project, version)
+            project, version = self.identifier_extraction_pipeline.run(project, version)
             project, version = self.annotation_pipeline.run(project, version)
 
         return project

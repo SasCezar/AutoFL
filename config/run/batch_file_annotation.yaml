@@ -4,7 +4,4 @@ defaults:
   - /annotator: default
   - /taxonomy: small
   - /version_strategy: latest
-
-
-out_file:
-exclude: {}
+  - /writer: postgres

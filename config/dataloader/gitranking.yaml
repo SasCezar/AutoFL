@@ -1,2 +1,4 @@
 _target_: dataloader.gitranking.GitRankingCSVDataLoader
-path: /home/sasce/PycharmProjects/AutoFL/data/raw/project_list.csv
+file_path: /home/sasce/PycharmProjects/AutoFL/data/raw/project_list.csv
+projects_path: ${repository_path}
+languages: [Java]

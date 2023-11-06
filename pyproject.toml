@@ -6,23 +6,28 @@ authors = ["Cezar Sas <cezar.sas@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.10"
-fastapi = "^0.103.1"
+python = ">=3.10,<3.13"
+fastapi = "^0.104.1"
 gunicorn = "^21.2.0"
-uvicorn = "^0.23.2"
-pandas = "^2.1.0"
+uvicorn = "^0.24.0"
+pandas = "^2.1.2"
 hydra-core = "^1.3.2"
 setuptools = "^68.2.0"
 multiset = "^3.0.1"
-scikit-learn = "^1.3.0"
-pydantic = "^2.3.0"
-gitpython = "^3.1.35"
+scikit-learn = "^1.3.2"
+pydantic = "^2.4.2"
+gitpython = "^3.1.40"
 loguru = "^0.7.1"
 tqdm = "^4.66.1"
 #yake = { git = "git@github.com:LIAAD/yake.git" }
 python-rake = "^1.5.0"
 more-itertools = "^10.1.0"
 tree-sitter = "^0.20.2"
+pymongo = "^4.5.0"
+pydantic-mongo = "^2.0.2"
+sqlalchemy = "^2.0.21"
+psycopg = {extras = ["binary"], version = "^3.1.12"}
+
 
 [tool.poetry.group.dev.dependencies]
 notebook = "^6.5.4"

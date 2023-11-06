@@ -39,10 +39,10 @@ For more details, check the [UI repo](https://github.com/SasCezar/autofl-ui)
 
 - Annotation (UI/API/Script)
   - File
-  - Package (**TODO**)
-  - Project (**TODO**)
+  - Package (**UI-only**)
+  - Project (**UI-only**)
 - Batch Analysis (Script Only)
-- Temporal Annotation (**TODO**)
+- Temporal Analysis (**TODO**)
 - Classification (**TODO**)
 
 ## Development
@@ -99,3 +99,22 @@ class PythonParser(ParserBase, lang=Extension.python.name):  # The lang argument
 
 A custom class that does not rely on tree-sitter can be also used, however, there are more methods from ParserBase that need to be
 changed. Check the implementation.
+
+
+## Cite
+
+If you use this work please cite us:
+
+### Tool 
+```text
+@software{Sas_AutoFL_2023,
+          author = {Sas, Cezar and Capiluppi, Andrea},
+          month = sep,
+          title = {{AutoFL}},
+          url = {https://github.com/SasCezar/AutoFL},
+          version = {0.1.1},
+          year = {2023}
+}
+```
+
+### Paper
