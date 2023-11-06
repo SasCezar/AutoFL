@@ -35,6 +35,7 @@ class Project(BaseModel):
     predicted_labels: Optional[List[str]] = None
     dev_labels: Optional[List[str]] = None
 
+
 class VersionBuilder:
     """
     Class responsible for building a version from a given commit id and a list of languages.
