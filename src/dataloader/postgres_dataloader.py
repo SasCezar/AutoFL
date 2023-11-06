@@ -2,8 +2,6 @@ import json
 from typing import Iterable
 
 import sqlalchemy
-from sqlalchemy.orm import Session
-
 from dataloader.dataloader import DataLoaderBase
 from entity.project import Project, Version
 
@@ -15,7 +13,7 @@ class PostgresProjectLoader(DataLoaderBase):
         self.db = db
         self.user = user
         self.password = password
-        self.engine = sqlalchemy.create_engine(f'postgresql+psycopg://{user}:{password}@{host}/{db}')
+        self.engine = sqlalchemy.create_engine(f'postgresql+psycopg://{user}:{password}@db/{db}')
         #self.connection = self.engine.connect()
         self.metadata = sqlalchemy.MetaData()
         self.projects = sqlalchemy.Table('project', self.metadata,
@@ -47,7 +45,10 @@ class PostgresProjectLoader(DataLoaderBase):
         :return:
         """
         with self.engine.connect() as conn:
-            query = sqlalchemy.select(self.projects.c.id).where(self.projects.c.config == cfg)
+            if cfg is None:
+                query = sqlalchemy.select(self.projects.c.id)
+            else:
+                query = sqlalchemy.select(self.projects.c.id).where(self.projects.c.config == cfg)
             result = conn.execute(query)
             for row in result:
                 yield row[0]

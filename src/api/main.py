@@ -6,6 +6,7 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from hydra import initialize, compose
 from hydra.utils import instantiate
+from sqlalchemy import create_engine
 
 from api.run_analysis import RunAnalysis
 from dataloader.postgres_dataloader import PostgresProjectLoader
@@ -34,14 +35,16 @@ async def label_files(analysis: Analysis):
 
     annotations = None
     if dataloader:
-        annotations = dataloader.load_single(project)
+        annotations = dataloader.load_single(project.name)
 
     if not annotations:
         execution = RunAnalysis(cfg)
 
         annotations = execution.run(project)
-    exclude_keys = {'versions': {'__all__': {'files'}}}
-    result = {'result': jsonable_encoder(annotations.dict(exclude=exclude_keys))}
+    #exclude_keys = {'versions': {'__all__': {'files'}}}
+    #result = {'result': jsonable_encoder(annotations.dict(exclude=exclude_keys))}
+    result = {'result': jsonable_encoder(annotations.dict())}
+    print(result)
     return JSONResponse(content=result)
 
 

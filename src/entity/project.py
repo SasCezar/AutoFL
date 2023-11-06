@@ -1,11 +1,9 @@
 from datetime import datetime
 from pathlib import Path
-from typing import List, Optional, Dict, Union, TypedDict, Any
+from typing import List, Optional, Dict, Any
 
 from pydantic import BaseModel
-from pydantic_mongo import ObjectIdField, AbstractRepository
 
-from entity.annotation import Annotation
 from entity.file import File
 from parser.extensions import Extension
 
@@ -36,12 +34,6 @@ class Project(BaseModel):
     taxonomy: Optional[Dict[str, str]] = None
     predicted_labels: Optional[List[str]] = None
     dev_labels: Optional[List[str]] = None
-
-
-class ProjectRepository(AbstractRepository[Project]):
-    class Meta:
-        collection_name = 'projects'
-
 
 class VersionBuilder:
     """
