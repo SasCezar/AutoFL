@@ -3,14 +3,19 @@ from collections import Counter
 import numpy as np
 from multiset import Multiset
 
-from entity.taxonomy import KeywordLabel
+from entity.taxonomy import KeywordLabel, TaxonomyBase
 from annotation import LFBase
 
 
 class KeywordLF(LFBase):
     """
-    Labelling function that uses keywords.
+    Labelling function that uses identifiers and keywords.
     """
+
+    def __init__(self, taxonomy: TaxonomyBase, key: str):
+        super().__init__(taxonomy)
+        self.key = key
+
     def annotate(self, name: str, content: str) -> np.array:
         """
         Compute the probability for the file given the name and/or the content.
@@ -22,9 +27,9 @@ class KeywordLF(LFBase):
         node_labels = np.zeros(len(self.taxonomy))
         for _label in self.taxonomy:
             label: KeywordLabel = _label
-            intersection = list(label.keywords.intersection(Multiset(content.split())))
+            intersection = list(label.keywords[self.key].intersection(Multiset(content.split())))
             intersection = Counter(intersection)
-            node_labels[label.index] = sum([intersection[k] * label.weights[k]
+            node_labels[label.index] = sum([intersection[k] * label.weights[self.key][k]
                                             for k in intersection.keys()])
 
         norm = np.sum(node_labels)

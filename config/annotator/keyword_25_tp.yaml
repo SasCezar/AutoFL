@@ -1,5 +1,0 @@
-# @package annotator.annotators.keyword_25_tp
-defaults:
-  - lf: keyword
-  - filtering: jsd25
-  - transformation: none

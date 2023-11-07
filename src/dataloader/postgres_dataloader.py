@@ -53,14 +53,16 @@ class PostgresProjectLoader(DataLoaderBase):
             for row in result:
                 yield row[0]
 
-    def load_single(self, project: str):
+    def load_single(self, project: str, cfg: dict):
         """
         Executes sql alchemy query to load a single project and all versions from the database
         :param project:
+        :param cfg:
         :return:
         """
         with self.engine.connect() as conn:
-            query = sqlalchemy.select(self.projects).where(self.projects.c.name == project)
+            query = sqlalchemy.select(self.projects).where((self.projects.c.name == project) &
+                                                           (self.projects.c.config == cfg))
             result = list(conn.execute(query))
             project = Project(**json.loads(result[0][5]))
             project.versions = []

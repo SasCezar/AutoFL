@@ -2,6 +2,6 @@
 defaults:
   - /dataloader: gitranking
   - /annotator: default
-  - /taxonomy: small
+  - /taxonomy: gitranking
   - /version_strategy: latest
   - /writer: postgres

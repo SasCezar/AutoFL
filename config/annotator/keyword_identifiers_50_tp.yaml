@@ -1,0 +1,5 @@
+# @package annotator.annotators.keyword_identifiers_50_tp
+defaults:
+  - lf: keyword_identifiers
+  - filtering: jsd50
+  - transformation: top_labels

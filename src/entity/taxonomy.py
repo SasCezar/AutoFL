@@ -19,8 +19,8 @@ class LabelBase(ABC):
 class KeywordLabel(LabelBase):
     index: int
     name: str
-    keywords: set
-    weights: Dict[str, float]
+    keywords: Dict[str, set]
+    weights: Dict[str, Dict[str, float]]
 
 
 class TaxonomyBase(ABC):
@@ -32,7 +32,6 @@ class TaxonomyBase(ABC):
         self.path = path
         self.name_to_label: Dict[str, LabelBase] = {}
         self.id_to_label: Dict[int: LabelBase] = {}
-
         self.n = 0
 
     @abstractmethod
@@ -81,16 +80,19 @@ class KeywordTaxonomy(TaxonomyBase):
         with open(self.path, 'rt') as inf:
             labels = json.load(inf)
 
-        keywords_files = [Path(x) for x in glob.glob(f"{self.keywords_path}/*.csv")]
-        keywords = {}
+        keywords_folders = []
+        keywords = defaultdict(dict)
         weights = defaultdict(dict)
-        for file in keywords_files:
-            kw_weight = list(zip(pd.read_csv(file)['keyword'], pd.read_csv(file)['tfidf']))
-            keywords[file.stem] = set([kw for kw, _ in kw_weight])
-            for kw, w in kw_weight:
-                weights[file.stem][kw] = w
+        for folder in keywords_folders:
+            keywords_files = [Path(x) for x in glob.glob(f"{self.keywords_path}/{folder}/*.csv")]
+            for file in keywords_files:
+                kw_weight = list(zip(pd.read_csv(file)['keyword'], pd.read_csv(file)['tfidf']))
+                keywords[folder][file.stem] = set([kw for kw, _ in kw_weight])
+                for kw, w in kw_weight:
+                    weights[folder][file.stem][kw] = w
 
-        for name, idx in labels.items():
-            label = KeywordLabel(index=idx, name=name, keywords=keywords[name], weights=weights[name])
-            self.name_to_label[name] = label
-            self.id_to_label[idx] = label
+        for folder in keywords_folders:
+            for name, idx in labels.items():
+                    label = KeywordLabel(index=idx, name=name, keywords=keywords[folder][name], weights=weights[folder][name])
+                    self.name_to_label[name] = label
+                    self.id_to_label[idx] = label

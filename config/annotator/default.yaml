@@ -1,6 +1,6 @@
 # @package annotator
 defaults:
-  - keyword_25_tp
-  - keyword_50_tp
-  - ensemble: avg
+  - keyword_identifiers_50_tp
+  - keyword_identifiers_25_tp
+  - ensemble: voting
   - _self_
