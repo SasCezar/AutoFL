@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "autofl"
-version = "0.1.1"
+version = "0.2.0"
 description = ""
 authors = ["Cezar Sas <cezar.sas@gmail.com>"]
 readme = "README.md"
@@ -23,8 +23,6 @@ yake = { git = "git@github.com:LIAAD/yake.git" }
 python-rake = "^1.5.0"
 more-itertools = "^10.1.0"
 tree-sitter = "^0.20.2"
-pymongo = "^4.5.0"
-pydantic-mongo = "^2.0.2"
 sqlalchemy = "^2.0.21"
 psycopg = {extras = ["binary"], version = "^3.1.12"}
 gensim = "^4.3.2"

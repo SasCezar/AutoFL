@@ -1,7 +1,8 @@
-import re
 from abc import ABC, abstractmethod
 
 import numpy
+
+from utils.utils import split_camelcase
 
 
 class AbstractEmbeddingModel(ABC):
@@ -20,8 +21,5 @@ class AbstractEmbeddingModel(ABC):
 
     def split(self, name: str):
         if self._split_camel:
-            return re.sub(
-                '([A-Z][a-z]+)|_', r' \1', re.sub('([A-Z]+)', r' \1', name)
-            ).split()
-
+            return split_camelcase(name)
         return name.split('')

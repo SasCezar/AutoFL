@@ -27,15 +27,13 @@ class FileAnnotationPipeline(PipelineBase):
         project.taxonomy = {str(index): self.taxonomy.id_to_label[index].name for index in self.taxonomy.id_to_label}
         for file_name in tqdm(version.files, desc=f"Labelling files for {project.name} @ version: {version.commit_id}"):
             file = version.files[file_name]
-            file_label_vecs = []
-            lfs_unannotated = []
+            annotations = []
             for annotator in self.annotators:
                 label_vec, unannotated = annotator.annotate(file.path, " ".join(file.identifiers))
-                lfs_unannotated.append(unannotated)
-                file_label_vecs.append(label_vec)
+                annotations.append(Annotation(distribution=list(label_vec), unannotated=unannotated))
 
-            unannotated = bool(all(lfs_unannotated))
-            label_vec = self.ensemble(file_label_vecs)
+            unannotated = bool(all([x.unannotated for x in annotations]))
+            label_vec, unannotated = self.ensemble(annotations)
             file.annotation = Annotation(distribution=list(label_vec), unannotated=unannotated)
 
         return project, version
