@@ -1,0 +1,5 @@
+# @package annotator.annotators.similarity_w2v-so_none_none
+defaults:
+  - lf: similarity_w2v-so
+  - filtering: none
+  - transformation: none

@@ -2,5 +2,6 @@
 defaults:
   - keyword_identifiers_50_tp
   - keyword_identifiers_25_tp
+  - similarity_w2v-so_none_none
   - ensemble: voting
   - _self_

@@ -11,8 +11,8 @@ class W2VEmbedding(AbstractEmbeddingModel):
     Class for embedding models using Word2Vec model.
     """
 
-    def __init__(self, path: str, model: str = 'W2V-Unk'):
-        super().__init__()
+    def __init__(self, path: str, model: str = 'W2V-Unk', split_camel: bool = False):
+        super().__init__(split_camel)
         self._name = f'{model}'
         self.model = KeyedVectors.load_word2vec_format(path, binary=True)
 

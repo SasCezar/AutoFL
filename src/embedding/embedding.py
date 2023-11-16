@@ -22,4 +22,4 @@ class AbstractEmbeddingModel(ABC):
     def split(self, name: str):
         if self._split_camel:
             return split_camelcase(name)
-        return name.split('')
+        return name.split(' ')

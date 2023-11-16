@@ -1,0 +1,6 @@
+_target_: annotation.similarity.SimilarityLF
+embedding:
+  _target_: embedding.gensim_w2v.W2VEmbedding
+  path: ${models_path}/w2v-so/SO_vectors_200.bin
+  model: "W2V-SO"
+  split_camel: false

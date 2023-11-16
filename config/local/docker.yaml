@@ -6,3 +6,4 @@ repository_path: ${raw_data_path}/repository
 test_data_path: ${data_path}/test
 grammars_path: ${data_path}/grammars/
 languages_library: ${grammars_path}/languages.so
+models_path: ${data_path}/models

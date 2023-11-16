@@ -45,6 +45,7 @@ class TestAnnotationExecution(unittest.TestCase):
                                              self.project_annotation_pipeline,
                                              self.version_strategy,
                                              self.vcs)
+
         self.exclude_keys = {'versions': {'__all__': {'files'}}}
 
     def test_pipeline_java(self):
