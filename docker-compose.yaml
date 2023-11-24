@@ -15,8 +15,6 @@ services:
         target: /autofl
 
   db:
-    #    profiles:
-    #      - database
     image: postgres
     restart: always
     environment:
@@ -31,20 +29,16 @@ services:
     ports:
         - "5432:5432"
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data
+      - ../auto_fl_db:/var/lib/postgresql/data
       - ./docker/sql:/docker-entrypoint-initdb.d/
 
   adminer:
-    #    profiles:
-    #      - database
     image: adminer
     restart: always
     ports:
       - "8080:8080"
 
   ui:
-    #    profiles:
-    #      - ui
     build:
       context: autofl-ui/
       dockerfile: ./docker/Dockerfile
