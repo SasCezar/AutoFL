@@ -53,9 +53,9 @@ class AnnotationExecution(ExecutionBase):
                 project, version = self.file_annotation_pipeline.run(project, version)
 
             if self.package_annotation_pipeline:
-                project, version = self.package_annotation_pipeline
+                project, version = self.package_annotation_pipeline.run(project, version)
 
             if self.project_annotation_pipeline:
-                project, version = self.project_annotation_pipeline
+                project, version = self.project_annotation_pipeline.run(project, version)
 
         return project

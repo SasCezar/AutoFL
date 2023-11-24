@@ -1,0 +1,5 @@
+# @package annotator.annotators.keyword_name_none_none
+defaults:
+  - lf: keyword_name
+  - filtering: none
+  - transformation: none

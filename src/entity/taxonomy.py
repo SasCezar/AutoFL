@@ -32,7 +32,6 @@ class TaxonomyBase(ABC):
         self.path = path
         self.name_to_label: Dict[str, LabelBase] = {}
         self.id_to_label: Dict[int: LabelBase] = {}
-
         self.n = 0
 
     @abstractmethod
@@ -81,16 +80,24 @@ class KeywordTaxonomy(TaxonomyBase):
         with open(self.path, 'rt') as inf:
             labels = json.load(inf)
 
-        keywords_files = [Path(x) for x in glob.glob(f"{self.keywords_path}/*.csv")]
-        keywords = {}
-        weights = defaultdict(dict)
-        for file in keywords_files:
-            kw_weight = list(zip(pd.read_csv(file)['keyword'], pd.read_csv(file)['tfidf']))
-            keywords[file.stem] = set([kw for kw, _ in kw_weight])
-            for kw, w in kw_weight:
-                weights[file.stem][kw] = w
+        keywords_folders = glob.glob(f"{self.keywords_path}/*")
+        keywords = defaultdict(lambda: defaultdict(set))
+        weights = defaultdict(lambda: defaultdict(dict))
 
-        for name, idx in labels.items():
-            label = KeywordLabel(index=idx, name=name, keywords=keywords[name], weights=weights[name])
-            self.name_to_label[name] = label
-            self.id_to_label[idx] = label
+        for folder_path in keywords_folders:
+            folder = Path(folder_path).stem
+            keywords_files = [Path(x) for x in glob.glob(f"{folder_path}/*.csv")]
+
+            for file in keywords_files:
+                df = pd.read_csv(file)
+                kw_weight = list(zip(df['keyword'], df['tfidf']))
+                keywords[folder][file.stem] = set([kw for kw, _ in kw_weight])
+                for kw, w in kw_weight:
+                    weights[folder][file.stem][kw] = w
+
+        for folder_path in keywords_folders:
+            folder = Path(folder_path).stem
+            for name, idx in labels.items():
+                    label = KeywordLabel(index=idx, name=name, keywords=keywords[folder][name], weights=weights[folder][name])
+                    self.name_to_label[name] = label
+                    self.id_to_label[idx] = label

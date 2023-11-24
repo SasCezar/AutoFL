@@ -3,6 +3,8 @@ from typing import List, Union
 
 import numpy as np
 
+from entity.annotation import Annotation
+
 
 class EnsembleBase(ABC):
     """
@@ -14,10 +16,10 @@ class EnsembleBase(ABC):
     def __init__(self):
         pass
 
-    def __call__(self, annotations: List[Union[np.array, List]], *args, **kwargs):
+    def __call__(self, annotations: List[Union[np.array, Annotation]], *args, **kwargs):
         return self.run(annotations)
 
-    def run(self, annotations: List[Union[np.array, List]]):
+    def run(self, annotations: List[Annotation]):
         pass
 
 
@@ -25,5 +27,5 @@ class EnsembleNone(EnsembleBase):
     """
     Ensemble method that does not do anything. This is useful for single annotator experiments.
     """
-    def run(self, annotations: List[Union[np.array, List]]):
+    def run(self, annotations: List[Annotation]):
         return annotations

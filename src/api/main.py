@@ -1,12 +1,9 @@
-import json
-from pathlib import Path
-
 from fastapi import FastAPI
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from hydra import initialize, compose
 from hydra.utils import instantiate
-from sqlalchemy import create_engine
+from omegaconf import OmegaConf
 
 from api.run_analysis import RunAnalysis
 from dataloader.postgres_dataloader import PostgresProjectLoader
@@ -23,7 +20,7 @@ async def label_files(analysis: Analysis):
         overrides = []
         #overrides = [f'{key}={value}' for key, value in analysis.config.items()] if analysis.config else []
         cfg = compose(config_name="main.yaml", overrides=overrides)
-
+    annot_cfg = OmegaConf.to_container(cfg.annotator, resolve=True) if cfg else {}
     project = Project(name=analysis.name,
                       remote=analysis.remote,
                       dir_path=f'{cfg.data_path}/repository/{analysis.name}',
@@ -34,17 +31,19 @@ async def label_files(analysis: Analysis):
         dataloader: PostgresProjectLoader = instantiate(cfg.dataloader)
 
     annotations = None
-    if dataloader:
-        annotations = dataloader.load_single(project.name)
+    try:
+        if dataloader:
+            annotations = dataloader.load_single(project.name, annot_cfg)
+    except:
+        print("Error loading project from database")
 
     if not annotations:
         execution = RunAnalysis(cfg)
-
         annotations = execution.run(project)
+
     #exclude_keys = {'versions': {'__all__': {'files'}}}
     #result = {'result': jsonable_encoder(annotations.dict(exclude=exclude_keys))}
     result = {'result': jsonable_encoder(annotations.dict())}
-    print(result)
     return JSONResponse(content=result)
 
 

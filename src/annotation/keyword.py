@@ -3,14 +3,19 @@ from collections import Counter
 import numpy as np
 from multiset import Multiset
 
-from entity.taxonomy import KeywordLabel
+from entity.taxonomy import KeywordLabel, TaxonomyBase
 from annotation import LFBase
 
 
 class KeywordLF(LFBase):
     """
-    Labelling function that uses keywords.
+    Labelling function that uses identifiers and keywords.
     """
+
+    def __init__(self, taxonomy: TaxonomyBase, key: str):
+        super().__init__(taxonomy)
+        self.key = key
+
     def annotate(self, name: str, content: str) -> np.array:
         """
         Compute the probability for the file given the name and/or the content.

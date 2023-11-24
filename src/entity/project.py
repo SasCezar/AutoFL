@@ -18,6 +18,7 @@ class Version(BaseModel):
     commit_date: datetime = None
     keywords: Optional[List[str]] = None
     files: Optional[Dict[str, File]] = None
+    package_annotation: Optional[Dict[str, list]] = {}
 
 
 class Project(BaseModel):
@@ -32,6 +33,7 @@ class Project(BaseModel):
     languages: Optional[List[str]] = None
     versions: Optional[List[Version]] = []
     taxonomy: Optional[Dict[str, str]] = None
+    project_annotation: Optional[Dict[str, list]] = {}
     predicted_labels: Optional[List[str]] = None
     dev_labels: Optional[List[str]] = None
 
