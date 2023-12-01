@@ -15,7 +15,7 @@ class PostgresWriter(WriterBase):
         self.db = db
         self.user = user
         self.password = password
-        self.engine = sqlalchemy.create_engine(f'postgresql+psycopg://{user}:{password}@{host}/{db}')
+        self.engine = sqlalchemy.create_engine(f'postgresql+psycopg://{user}:{password}@db/{db}')
         #self.connection = self.engine.connect()
         self.metadata = sqlalchemy.MetaData()
         self.projects = sqlalchemy.Table('project', self.metadata,
@@ -28,7 +28,7 @@ class PostgresWriter(WriterBase):
             for version in project.versions:
                 value = {"name": project.name,
                          "version_sha": version.commit_id,
-                         "version_num": 11,
+                         "version_num": version.commit_num,
                          "config": project.cfg,
                          "project": black_project.model_dump_json(),  # TODO: Exclude versions
                          "version": version.model_dump_json()}
