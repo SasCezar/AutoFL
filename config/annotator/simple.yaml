@@ -1,0 +1,7 @@
+# @package annotator
+defaults:
+  - keyword_identifiers_50_tp
+  - keyword_identifiers_25_tp
+  - keyword_name_none_none
+  - ensemble: voting
+  - _self_

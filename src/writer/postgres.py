@@ -15,8 +15,7 @@ class PostgresWriter(WriterBase):
         self.db = db
         self.user = user
         self.password = password
-        self.engine = sqlalchemy.create_engine(f'postgresql+psycopg://{user}:{password}@db/{db}')
-        #self.connection = self.engine.connect()
+        self.engine = sqlalchemy.create_engine(f'postgresql+psycopg://{user}:{password}@{host}/{db}')
         self.metadata = sqlalchemy.MetaData()
         self.projects = sqlalchemy.Table('project', self.metadata,
                                          autoload_with=self.engine)

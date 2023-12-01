@@ -1,5 +1,5 @@
 _target_: writer.postgres.PostgresWriter
-host: localhost
+host: db
 db: auto_fl
 user: postgres
 password: temp

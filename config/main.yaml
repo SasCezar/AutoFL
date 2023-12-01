@@ -3,7 +3,7 @@ defaults:
   - _self_
   - local: docker
   - taxonomy: gitranking
-  - annotator: default
+  - annotator: simple
   - version_strategy: latest
   - dataloader: postgres
   - writer: postgres
