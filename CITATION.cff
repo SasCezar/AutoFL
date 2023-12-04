@@ -9,6 +9,6 @@ authors:
   orcid: "https://orcid.org/0000-0001-9469-6050"
 title: "AutoFL"
 version: 0.2.1
-doi:
+doi: "10.5281/zenodo.10255368"
 date-released: 2023-09-01
 url: "https://github.com/SasCezar/AutoFL"
