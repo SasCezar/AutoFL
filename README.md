@@ -1,4 +1,5 @@
 # AutoFL
+[![DOI](https://zenodo.org/badge/644095707.svg)](https://zenodo.org/doi/10.5281/zenodo.10255367)
 
 Automatic source code file annotation using weak labelling.
 
@@ -152,6 +153,8 @@ However, this tool is more up to date, is easier to use, configurable, and also 
           title = {{AutoFL}},
           url = {https://github.com/SasCezar/AutoFL},
           version = {0.2.1},
-          year = {2023}
+          year = {2023},
+          url = {https://doi.org/10.5281/zenodo.10255368},
+          doi = {10.5281/zenodo.10255368}
 }
 ```
