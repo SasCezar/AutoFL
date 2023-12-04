@@ -24,19 +24,21 @@ in the project folder.
 ### API Endpoint
 You can analyze the files of project by making a request to the endpoint:
 ```shell
-
+curl -X POST -d '{"name": "<PROJECT_NAME>", "remote": "<PROJECT_REMOTE>", "languages": ["<PROGRAMMING_LANGUAGE>"]}' localhost:8000/label/files  -H "content-type: application/json"
 ```
-For example, to analyze the files of [](), you can make the following request:
+For example, to analyze the files of [https://github.com/mickleness/pumpernickel](https://github.com/mickleness/pumpernickel), you can make the following request:
 ```shell
-curl -X POST "http://l
+curl -X POST -d '{"name": "pumpernickel", "remote": "https://github.com/mickleness/pumpernickel", "languages": ["java"]}' localhost:8000/label/files  -H "content-type: application/json"
 ```
 
 ### UI
 
-We also offer a web UI that is available at the following page (when running locally):
-[http://0.0.0.0:8501](http://0.0.0.0:8501)
+The tool also offers a web UI that is available at the following page (when running locally):
+[http://localhost:8501](http://localhost:8501)
 
 ![UI](resources/ui-screenshots/landing-page.png)
+
+For more details, check the [UI repo](https://github.com/SasCezar/autofl-ui)
 
 [//]: # (For more details, check the [UI repo]&#40;https://github.com/SasCezar/autofl-ui&#41;)
 
@@ -44,8 +46,8 @@ We also offer a web UI that is available at the following page (when running loc
 
 - Annotation (UI/API/Script)
   - File
-  - Package (**UI-only** - API/Script)
-  - Project (**UI-only** - API/Script)
+  - Package (**UI-only** - API WIP - Script Untested)
+  - Project (**UI-only** - API WIP - Script Untested)
 - Batch Analysis (Script Only)
 - Temporal Analysis (**TODO**)
 - Classification (**TODO**)
@@ -116,7 +118,7 @@ changed. Check the implementation of [ParserBase](src/parser/parser.py).
 ## Disclaimer
 
 The project is still in development, and it might not work as expected in some cases.
-It has been developed and tested on Ubuntu 22.04, while it uses Docker, it might not work on other operating systems as 
+It has been developed and tested on ```Ubuntu 22.04```, while it uses Docker, it might not work on other operating systems as 
 intended.
 
 In case of any problems, please open an issue, make a pull request, or contact me at ```c.a.sas@rug.nl```.
@@ -128,17 +130,19 @@ If you use this work please cite us:
 
 ### Paper
 ```text
-@misc{sas2023multigranular,
+@article{sas2023multigranular,
       title={Multi-granular Software Annotation using File-level Weak Labelling}, 
       author={Cezar Sas and Andrea Capiluppi},
-      year={2023},
-      eprint={2311.11607},
-      archivePrefix={arXiv},
-      primaryClass={cs.SE}
+  journal   = {Empirical Software Engineering},
+  volume    = {29},
+  number    = {12},
+  year      = {2023},
+  url       = {https://doi.org/10.1007/s10664-023-10423-7},
+  doi       = {10.1007/s10664-023-10423-7}
 }
 ```
 **Note**: The code used in the paper is available in the [https://github.com/SasCezar/CodeGraphClassification](https://github.com/SasCezar/CodeGraphClassification) repository. 
-However, this tool is more up to date and is easier to use, configurable, and a more production level code.
+However, this tool is more up to date, is easier to use, configurable, and also offers a UI.
 
 ### Tool 
 ```text
@@ -147,7 +151,7 @@ However, this tool is more up to date and is easier to use, configurable, and a 
           month = sep,
           title = {{AutoFL}},
           url = {https://github.com/SasCezar/AutoFL},
-          version = {0.1.1},
+          version = {0.2.0},
           year = {2023}
 }
 ```
