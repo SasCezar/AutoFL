@@ -151,7 +151,7 @@ However, this tool is more up to date, is easier to use, configurable, and also 
           month = sep,
           title = {{AutoFL}},
           url = {https://github.com/SasCezar/AutoFL},
-          version = {0.2.0},
+          version = {0.2.1},
           year = {2023}
 }
 ```
