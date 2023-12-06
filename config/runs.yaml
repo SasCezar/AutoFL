@@ -1,8 +1,11 @@
 # @package _global_
 defaults:
   - _self_
-  - local: default
-  - run: batch_file_annotation
+  - local: local
+  - run: batch_annotation
+
+package_annotation: True
+project_annotation: True
 
 n_workers: 1
 

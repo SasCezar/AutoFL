@@ -27,9 +27,6 @@ class BatchPipeline:
         self.loader = loader
         self.writer = writer
         self.cache_size = cache_size
-        # if exclude is None:
-        #     exclude = {}
-        # self.exclude = exclude
 
     def run(self, projects_list: List) -> None:
         project_cache: List[Project] = []
@@ -40,6 +37,8 @@ class BatchPipeline:
             except Exception as e:
                 logger.info(f"Error processing {project.name}: {e} - Skipping project")
                 continue
+
+            print(project)
 
             project_cache.append(project)
             if len(project_cache) >= self.cache_size:
