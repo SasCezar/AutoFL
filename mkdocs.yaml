@@ -1,0 +1,38 @@
+### Site metadata ###
+
+site_name: AutoFL - Documentation
+site_description: Documentation for AutoFL
+site_url: http://127.0.0.1:8000/
+
+repo_url: https://github.com/SasCezar/AutoFL
+edit_uri: edit/master/docs/docs
+
+### Build settings ###
+
+theme: readthedocs
+
+plugins:
+  - search
+
+  - gen-files:
+      scripts:
+        - scripts/python/gen_ref_pages.py
+
+  - literate-nav:
+      nav_file: SUMMARY.md
+      implicit_index: false
+      tab_length: 4
+
+  - section-index
+
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          paths: [ src ]
+          options:
+            docstring_style: sphinx
+
+nav:
+  - Home: index.md
+  - Code Reference: reference/SUMMARY.md
