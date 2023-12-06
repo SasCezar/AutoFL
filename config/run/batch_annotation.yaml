@@ -4,4 +4,4 @@ defaults:
   - /annotator: default
   - /taxonomy: gitranking
   - /version_strategy: latest
-  - /writer: postgres
+  - /writer: postgres_local

@@ -1,11 +1,14 @@
 # @package _global_
 defaults:
   - _self_
-  - local: default
+  - local: local
   - taxonomy: small
   - annotator: default
   - version_strategy: latest
   - dataloader: gitranking
+
+package_annotation: True
+project_annotation: True
 
 hydra:
   output_subdir: null

@@ -8,6 +8,9 @@ defaults:
   - dataloader: postgres
   - writer: postgres
 
+package_annotation: True
+project_annotation: True
+
 hydra:
   output_subdir: null
   run:

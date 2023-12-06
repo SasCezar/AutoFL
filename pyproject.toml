@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "autofl"
-version = "0.2.1"
+version = "0.3.0"
 description = ""
 authors = ["Cezar Sas <cezar.sas@gmail.com>"]
 readme = "README.md"
