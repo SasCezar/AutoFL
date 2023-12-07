@@ -1,0 +1,41 @@
+# yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
+
+### Site metadata ###
+
+site_name: AutoFL
+site_description: Documentation for AutoFL
+site_url: https://sascezar.github.io/AutoFL
+
+repo_url: https://github.com/SasCezar/AutoFL
+edit_uri: edit/main/docs/docs
+
+### Build settings ###
+
+theme:
+  name: material
+
+plugins:
+  - search
+
+  - gen-files:
+      scripts:
+        - scripts/python/gen_ref_pages.py
+
+  - literate-nav:
+      nav_file: SUMMARY.md
+      implicit_index: false
+      tab_length: 4
+
+  - section-index
+
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          paths: [ src ]
+          options:
+            docstring_style: sphinx
+
+nav:
+  - Home: index.md
+  - Code Reference: reference/SUMMARY.md
