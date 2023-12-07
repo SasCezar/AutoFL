@@ -2,10 +2,10 @@
 
 site_name: AutoFL - Documentation
 site_description: Documentation for AutoFL
-site_url: http://127.0.0.1:8000/
+site_url: sascezar.gitlab.io/AutoFL
 
 repo_url: https://github.com/SasCezar/AutoFL
-edit_uri: edit/master/docs/docs
+edit_uri: edit/main/docs/docs
 
 ### Build settings ###
 

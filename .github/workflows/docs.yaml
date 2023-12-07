@@ -2,28 +2,33 @@ name: mkdocs
 
 on:
   push:
-    branches: [ dev-doc ]
-  pull_request:
-    branches: [ main ]
+    branches:
+      - main
+      - dev-doc
+permissions:
+  contents: write
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [ "3.10" ]
-
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+      - uses: actions/checkout@v4
+      - name: Configure Git Credentials
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+      - uses: actions/setup-python@v4
         with:
-          python-version: ${{ matrix.python-version }}
-          architecture: x64
+          python-version: 3.x
+      - run: echo "cache_id=$(date --utc '+%V')" >> $GITHUB_ENV
+      - uses: actions/cache@v3
+        with:
+          key: mkdocs-material-${{ env.cache_id }}
+          path: .cache
+          restore-keys: |
+            mkdocs-material-
 
       - name: Install requirements
         run: python3 -m pip install -r mkdocs_requirements.txt
-
       - name: Deploy 🚀
         run: python3 -m mkdocs gh-deploy --force
