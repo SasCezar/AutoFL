@@ -1,6 +1,8 @@
+# yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
+
 ### Site metadata ###
 
-site_name: AutoFL - Documentation
+site_name: AutoFL
 site_description: Documentation for AutoFL
 site_url: https://sascezar.github.io/AutoFL
 
@@ -9,7 +11,8 @@ edit_uri: edit/main/docs/docs
 
 ### Build settings ###
 
-theme: readthedocs
+theme:
+  name: material
 
 plugins:
   - search

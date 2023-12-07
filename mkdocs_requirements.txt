@@ -4,3 +4,4 @@ mkdocs-gen-files==0.5.0
 mkdocstrings-python==1.7.5
 mkdocs-literate-nav==0.6.1
 mkdocs-section-index==0.3.8
+mkdocs-material==9.4.14
