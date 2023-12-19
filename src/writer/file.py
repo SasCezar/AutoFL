@@ -15,7 +15,7 @@ class FileWriter(WriterBase):
         """
         super().__init__()
         self.out_path = Path(out_path)
-        self.exclude = json.loads(exclude)
+        self.exclude = None
         self.indent = indent
 
     def write(self, project: Project):

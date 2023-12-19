@@ -1,5 +1,5 @@
+import traceback
 from abc import ABC
-from pathlib import Path
 from typing import List, Tuple
 
 from loguru import logger
@@ -22,7 +22,7 @@ class BatchPipeline:
     def __init__(self, pipeline: ExecutionBase,
                  loader: DataLoaderBase,
                  writer: WriterBase,
-                 cache_size=2):
+                 cache_size=1):
         self.pipeline = pipeline
         self.loader = loader
         self.writer = writer
@@ -36,9 +36,8 @@ class BatchPipeline:
                 project = self.pipeline.run(project)
             except Exception as e:
                 logger.info(f"Error processing {project.name}: {e} - Skipping project")
+                traceback.print_exc()
                 continue
-
-            print(project)
 
             project_cache.append(project)
             if len(project_cache) >= self.cache_size:

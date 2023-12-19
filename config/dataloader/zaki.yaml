@@ -1,0 +1,3 @@
+_target_: dataloader.zaki.ZakiProjectLoader
+file_path: /home/sasce/PycharmProjects/AutoFL/data/raw/zaki_data.csv
+projects_path: ${repository_path}

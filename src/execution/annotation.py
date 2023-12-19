@@ -34,6 +34,9 @@ class AnnotationExecution(ExecutionBase):
         repo = self.vcs.init(project)
 
         versions: List[Version] = self.version_strategy.get_versions(repo)
+        versions_ids = [v.commit_id for v in versions]
+        versions.extend([v for v in project.versions if v.commit_id not in versions_ids])
+        project.versions = []
         logger.info(f'Found {len(versions)} versions for project {project.name}')
 
         if not versions:

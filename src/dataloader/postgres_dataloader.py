@@ -21,7 +21,6 @@ class PostgresProjectLoader(DataLoaderBase):
     def load(self, projects_list: list[str] = None) -> Iterable[Project]:
         """
         Executes sql alchemy query to load all projects from the database that are in the projects_list
-        :param cfg:
         :param projects_list:
         :return:
         """
