@@ -1,0 +1,6 @@
+keyword,doc_freq,total_freq,tfidf
+bert,1,42,0.95
+tokenizer,1,24,0.28
+full,1,6,0.07
+wordpiece,1,6,0.14
+basic,1,6,0.03
