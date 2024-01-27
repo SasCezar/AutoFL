@@ -19,8 +19,8 @@ def get_modules(pom_path):
 
 def best_annotation(annotations, taxonomy):
     module_annot = np.mean(annotations, axis=0)
-    sorted_labels = np.argsort(module_annot)[::-1]
-    return module_annot, [taxonomy[x] for x in sorted_labels]
+    #sorted_labels = np.argsort(module_annot)[::-1]
+    return module_annot, [taxonomy[x] for x in range(len(module_annot))]
 
 
 def run():
@@ -56,7 +56,6 @@ def run():
             res = {"project": project}
             annot, labels = best_annotation(modules_annotation[module], taxonomy)
             res["module"] = module
-            res['top'] = labels[0]
             res['labels'] = labels
             res['distribution'] = list(annot)
             entries.append(res)
