@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple, Union
 
 import numpy as np
 
@@ -11,7 +11,7 @@ class VotingEnsemble(EnsembleBase):
         super().__init__()
         self.k = k
 
-    def run(self, annotations: List[Annotation]):
+    def run(self, annotations: List[Annotation]) -> Tuple[Union[List | np.array], int]:
         best, n = self.extract_best(annotations)
 
         if not best:
