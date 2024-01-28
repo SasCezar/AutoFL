@@ -205,7 +205,7 @@ However, this tool is more up to date, easier to use, more configurable, and als
           month     = dec,
           title     = {{AutoFL}},
           url       = {https://github.com/SasCezar/AutoFL},
-          version   = {0.4.0},
+          version   = {0.4.1},
           year      = {2023},
           url       = {https://doi.org/10.5281/zenodo.10255368},
           doi       = {10.5281/zenodo.10255368}
