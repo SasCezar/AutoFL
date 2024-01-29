@@ -64,7 +64,8 @@ the [config](config) folder.
 The main configuration file is [main.yaml](./config/main.yaml), which contains the following options:
 
 - **local**: which environment to use, either local or docker. [Docker](./config/local/docker.yaml) is default.
-- **taxonomy**: which taxonomy to use. Currently only [gitranking](./config/taxonomy/gitranking.yaml) is supported.
+- **taxonomy**: which taxonomy to use. Currently only [gitranking](./config/taxonomy/gitranking.yaml) is supported, but
+  custom taxonomies can be added.
 - **annotator**: which annotators to use. Default is [simple](./config/annotator/simple.yaml), which allows good results
   without extra dependencies on language models.
 - **version_strategy**: which version strategy to use. Default is [latest](./config/version_strategy/latest.yaml), which
@@ -99,8 +100,6 @@ Other configuration can be defined by creating a new file in the folder of the s
 The tool is composed of multiple components, their interaction is shown in the following diagram:
 
 ![Architecture](resources/architecture/architecture.png)
-
-
 
 ### Add New Languages
 
