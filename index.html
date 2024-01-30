@@ -1,0 +1,856 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for AutoFL">
+      
+      
+      
+        <link rel="canonical" href="https://sascezar.github.io/AutoFL/">
+      
+      
+      
+        <link rel="next" href="reference/SUMMARY/">
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.14">
+    
+    
+      
+        <title>AutoFL</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.fad675c6.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#autofl" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="." title="AutoFL" class="md-header__button md-logo" aria-label="AutoFL" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AutoFL
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Home
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/SasCezar/AutoFL" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="AutoFL" class="md-nav__button md-logo" aria-label="AutoFL" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    AutoFL
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/SasCezar/AutoFL" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setup
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optional-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Optional Setup
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Usage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#api-endpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      API Endpoint
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      UI
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functionalities" class="md-nav__link">
+    <span class="md-ellipsis">
+      Functionalities
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#supported-languages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Supported Languages
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#development" class="md-nav__link">
+    <span class="md-ellipsis">
+      Development
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Development">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add-new-languages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Add New Languages
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Add New Languages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parser" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parser
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#disclaimer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disclaimer
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cite" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cite
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cite">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#paper" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paper
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tool" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tool
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="reference/SUMMARY/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Code Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setup
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optional-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Optional Setup
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Usage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#api-endpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      API Endpoint
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      UI
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functionalities" class="md-nav__link">
+    <span class="md-ellipsis">
+      Functionalities
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#supported-languages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Supported Languages
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#development" class="md-nav__link">
+    <span class="md-ellipsis">
+      Development
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Development">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add-new-languages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Add New Languages
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Add New Languages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parser" class="md-nav__link">
+    <span class="md-ellipsis">
+      Parser
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#disclaimer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disclaimer
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cite" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cite
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cite">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#paper" class="md-nav__link">
+    <span class="md-ellipsis">
+      Paper
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tool" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tool
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="autofl">AutoFL</h1>
+<p><a href="https://www.gnu.org/licenses/gpl-3.0"><img alt="License: GPL v3" src="https://img.shields.io/badge/License-GPLv3-blue.svg" /></a>
+<a href="https://zenodo.org/doi/10.5281/zenodo.10255367"><img alt="DOI" src="https://zenodo.org/badge/644095707.svg" /></a>
+<a href="https://img.shields.io/badge/Docker-blue"><img alt="Docker" src="https://img.shields.io/badge/Docker-blue.svg" /></a></p>
+<p>Automatic source code file annotation using weak labelling.</p>
+<h2 id="setup">Setup</h2>
+<p>Clone the repository and the UI submodule <a href="https://github.com/SasCezar/autofl-ui">autofl-ui</a> by running the following command:</p>
+<pre><code class="language-bash">git clone --recursive git@github.com:SasCezar/AutoFL.git AutoFL
+</code></pre>
+<h3 id="optional-setup">Optional Setup</h3>
+<p>To make use of certain feature like semantic based labelling functions, you need to download the model.
+For example, for <strong>w2v-so</strong>, you can download the model from <a href="https://github.com/vefstathiou/SO_word2vec">here</a>, and place it in the <a href="data/models/w2v-so">data/models/w2v-so</a> folder, or a custom
+path that you can use in the configs.</p>
+<h2 id="usage">Usage</h2>
+<p>Run docker the docker compose file <a href="docker-compose.yaml">docker-compose.yaml</a> by executing:</p>
+<pre><code class="language-shell">docker compose up
+</code></pre>
+<p>in the project folder.</p>
+<h3 id="api-endpoint">API Endpoint</h3>
+<p>You can analyze the files of project by making a request to the endpoint:</p>
+<pre><code class="language-shell">curl -X POST -d '{&quot;name&quot;: &quot;&lt;PROJECT_NAME&gt;&quot;, &quot;remote&quot;: &quot;&lt;PROJECT_REMOTE&gt;&quot;, &quot;languages&quot;: [&quot;&lt;PROGRAMMING_LANGUAGE&gt;&quot;]}' localhost:8000/label/files  -H &quot;content-type: application/json&quot;
+</code></pre>
+<p>For example, to analyze the files of <a href="https://github.com/mickleness/pumpernickel">https://github.com/mickleness/pumpernickel</a>, you can make the following request:</p>
+<pre><code class="language-shell">curl -X POST -d '{&quot;name&quot;: &quot;pumpernickel&quot;, &quot;remote&quot;: &quot;https://github.com/mickleness/pumpernickel&quot;, &quot;languages&quot;: [&quot;java&quot;]}' localhost:8000/label/files  -H &quot;content-type: application/json&quot;
+</code></pre>
+<h3 id="ui">UI</h3>
+<p>The tool also offers a web UI that is available at the following page (when running locally):
+<a href="http://localhost:8501">http://localhost:8501</a></p>
+<p><img alt="UI" src="resources/ui-screenshots/landing-page.png" /></p>
+<p>For more details, check the <a href="https://github.com/SasCezar/autofl-ui">UI repo</a>.</p>
+<h2 id="configuration">Configuration</h2>
+<p>AutoFL uses <a href="https://hydra.cc/">Hydra</a> to manage the configuration. The configuration files are located in the <a href="config">config</a> folder.
+The main configuration file is <a href="./config/main.yaml">main.yaml</a>, which contains the following options:</p>
+<ul>
+<li><strong>local</strong>: which environment to use, either local or docker. <a href="./config/local/docker.yaml">Docker</a> is default.</li>
+<li><strong>taxonomy</strong>: which taxonomy to use. Currently only <a href="./config/taxonomy/gitranking.yaml">gitranking</a> is supported.</li>
+<li><strong>annotator</strong>: which annotators to use. Default is <a href="./config/annotator/simple.yaml">simple</a>, which allows good results without extra dependencies on models.</li>
+<li><strong>version_strategy</strong>: which version strategy to use. Default is <a href="./config/version_strategy/latest.yaml">latest</a>, which will only analyze the latest version of the project.</li>
+<li><strong>dataloader</strong>: which dataloader to use. Default is <a href="./config/dataloader/postgres.yaml">postgres</a> which allows the API to fetch already analysed projects.</li>
+<li><strong>writer</strong>: which writer to use. Default is <a href="./config/writer/postgres.yaml">postgres</a> which allows the API to store the results in a database.</li>
+</ul>
+<p>Other configuration can be defined by creating a new file in the folder of the specific component.</p>
+<h2 id="functionalities">Functionalities</h2>
+<ul>
+<li>Annotation (UI/API/Script)<ul>
+<li>File</li>
+<li>Package</li>
+<li>Project</li>
+</ul>
+</li>
+<li>Batch Analysis (Script Only)</li>
+<li>Temporal Analysis (<strong>TODO</strong>)</li>
+<li>Classification (<strong>TODO</strong>)</li>
+</ul>
+<h2 id="supported-languages">Supported Languages</h2>
+<ul>
+<li>Java</li>
+<li>Python (untested)</li>
+<li>C (untested)</li>
+<li>C++ (untested)</li>
+<li>C# (untested)</li>
+</ul>
+<h2 id="development">Development</h2>
+<h3 id="add-new-languages">Add New Languages</h3>
+<p>In order to support more languages, a new language specific parser is needed.
+We can create one quickly by using <a href="https://tree-sitter.github.io/tree-sitter/">tree-sitter</a>,
+and a custom parser.</p>
+<h4 id="parser">Parser</h4>
+<p>The parser needs to be in the <a href="./src/parser/languages">parser/languages</a> folder.
+It has to extend the <code>BaseParser</code> class, which has the following interface.</p>
+<pre><code class="language-python">class ParserBase(ABC):
+    &quot;&quot;&quot;
+    Abstract class for a programming language parser.
+    &quot;&quot;&quot;
+
+    def __init__(self, library_path: Path | str):
+        &quot;&quot;&quot;
+        :param library_path: Path to the tree-sitter languages.so file. The file has to contain the
+        language parser. See tree-sitter for more details
+        &quot;&quot;&quot;
+        ...
+</code></pre>
+<p>And the language specific class has to contain the logic to parse the language to get the identifiers.
+For example for Python, the class will look like this:</p>
+<pre><code class="language-python">class PythonParser(ParserBase, lang=Extension.python.name):  # The lang argument is used to register the parser in the ParserFactory class.
+    &quot;&quot;&quot;
+    Python specific parser. Uses a generic grammar for multiple versions of python. Uses tree_sitter to get the AST
+    &quot;&quot;&quot;
+
+    def __init__(self, library_path: Path | str):
+        super().__init__(library_path)
+        self.language: Language = Language(library_path, Extension.python.name)   # Creates the tree-sitter language for python
+        self.parser.set_language(self.language)                                   # Sets tree-sitter parser to parse the language
+
+        # Pattern used to match the identifiers, it depends on the Lanugage. Check tree-sitter
+        self.identifiers_pattern: str = &quot;&quot;&quot;
+                                        ((identifier) @identifier)
+                                        &quot;&quot;&quot;
+
+        # Creates the query used to find the identifiers in the AST produced by tree-sitter
+        self.identifiers_query = self.language.query(self.identifiers_pattern)
+
+        # Keyword that will be ignored, in this case, the language specific keywords as the query extracts them as well. 
+        self.keywords = set(keyword.kwlist)  # Use python's built in keyword list
+        self.keywords.update(['self', 'cls'])
+</code></pre>
+<p>A custom class that does not rely on <a href="https://github.com/tree-sitter/tree-sitter">tree-sitter</a> can be also used, however, there are more methods from ParserBase that need to be
+changed. Check the implementation of <a href="src/parser/parser.py">ParserBase</a>.</p>
+<h2 id="disclaimer">Disclaimer</h2>
+<p>The project is still in development, and it might not work as expected in some cases.
+It has been developed and tested on Docker 24.0.7 for  <code>Ubuntu 22.04</code>. While minor testing has been done on <code>Windows</code> and <code>MacOS</code>,
+not all functionalities might work due to differences in Docker for these OSs (e.g. Windows uses WSL 2).</p>
+<p>In case of any problems, please open an issue, make a pull request, or contact me at <code>c.a.sas@rug.nl</code>.</p>
+<h2 id="cite">Cite</h2>
+<p>If you use this work please cite us:</p>
+<h3 id="paper">Paper</h3>
+<pre><code class="language-text">@article{sas2024multigranular,
+         title     = {Multi-granular Software Annotation using File-level Weak Labelling}, 
+         author    = {Cezar Sas and Andrea Capiluppi},
+         journal   = {Empirical Software Engineering},
+         volume    = {29},
+         number    = {1},
+         pages     = {12},
+         year      = {2024},
+         url       = {https://doi.org/10.1007/s10664-023-10423-7},
+         doi       = {10.1007/s10664-023-10423-7}
+}
+</code></pre>
+<p><strong>Note</strong>: The code used in the paper is available in the <a href="https://github.com/SasCezar/CodeGraphClassification">https://github.com/SasCezar/CodeGraphClassification</a> repository.
+However, this tool is more up to date, is easier to use, configurable, and also offers a UI.</p>
+<h3 id="tool">Tool</h3>
+<pre><code class="language-text">@software{sas2023autofl,
+          author    = {Sas, Cezar and Capiluppi, Andrea},
+          month     = dec,
+          title     = {{AutoFL}},
+          url       = {https://github.com/SasCezar/AutoFL},
+          version   = {0.3.0},
+          year      = {2023},
+          url       = {https://doi.org/10.5281/zenodo.10255368},
+          doi       = {10.5281/zenodo.10255368}
+}
+</code></pre>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": ".", "features": [], "search": "assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="assets/javascripts/bundle.cd18aaf1.min.js"></script>
+      
+    
+  </body>
+</html>
