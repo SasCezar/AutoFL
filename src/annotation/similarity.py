@@ -4,8 +4,8 @@ import numpy as np
 from loguru import logger
 from sklearn.metrics.pairwise import cosine_similarity
 
-from embedding.embedding import AbstractEmbeddingModel
-from entity.taxonomy import TaxonomyBase
+from embedding import AbstractEmbeddingModel
+from entity import TaxonomyBase
 from annotation import LFBase
 
 

@@ -1,4 +1,3 @@
-version: "3.8"
 services:
   api:
     build:
@@ -39,16 +38,10 @@ services:
       - "8080:8080"
 
   ui:
-    build:
-      context: autofl-ui/
-      dockerfile: ./docker/Dockerfile
+    image: cezarsas/autofl-ui:latest
     ports:
       - "8501:8501"
     stdin_open: true # docker run -i
     tty: true        # docker run -t
-    volumes:
-      - type: bind
-        source: ./autofl-ui/
-        target: /autofl-ui
     links:
       - 'api:auto-fl'

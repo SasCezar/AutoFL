@@ -1,7 +1,7 @@
-import numpy
+import numpy as np
 import torch
 
-from embedding.embedding import AbstractEmbeddingModel
+from embedding.abstract import AbstractEmbeddingModel
 from sentence_transformers import SentenceTransformer
 from transformers import BertModel, BertTokenizer
 
@@ -18,7 +18,7 @@ class HuggingFaceEmbedding(AbstractEmbeddingModel):
         self.model = BertModel.from_pretrained(model)
         self.tokenizer = BertTokenizer.from_pretrained(model, do_lower_case=do_lower_case)
 
-    def get_embedding(self, text: str) -> numpy.ndarray:
+    def get_embedding(self, text: str) -> np.ndarray:
         """
         Returns the embedding of the text.
         :param text:
@@ -39,7 +39,7 @@ class SentenceTransformersEmbedding(AbstractEmbeddingModel):
         self.model = SentenceTransformer(model, device=device)
         self.model.tokenizer.add_special_tokens({'pad_token': '[PAD]'})
 
-    def get_embedding(self, text: str) -> numpy.ndarray:
+    def get_embedding(self, text: str) -> np.ndarray:
         """
         Returns the embedding of the text.
         :param text:
