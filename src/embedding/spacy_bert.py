@@ -1,6 +1,6 @@
-import numpy
+import numpy as np
 
-from embedding.embedding import AbstractEmbeddingModel
+from embedding.abstract import AbstractEmbeddingModel
 
 
 class BERTEmbedding(AbstractEmbeddingModel):
@@ -13,7 +13,7 @@ class BERTEmbedding(AbstractEmbeddingModel):
         self._name = f'{model}'
         self.model = spacy.load(model, disable=["ner", "textcat", "parser"])
 
-    def get_embedding(self, text: str) -> numpy.ndarray:
+    def get_embedding(self, text: str) -> np.ndarray:
         """
         Returns the embedding of the text.
         :param text:

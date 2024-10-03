@@ -1,9 +1,7 @@
-import re
-
-import numpy
 import numpy as np
 from gensim.models import KeyedVectors
-from embedding.embedding import AbstractEmbeddingModel
+
+from embedding import AbstractEmbeddingModel
 
 
 class W2VEmbedding(AbstractEmbeddingModel):
@@ -16,7 +14,7 @@ class W2VEmbedding(AbstractEmbeddingModel):
         self._name = f'{model}'
         self.model = KeyedVectors.load_word2vec_format(path, binary=True)
 
-    def get_embedding(self, text: str) -> numpy.ndarray:
+    def get_embedding(self, text: str) -> np.ndarray:
         """
         Returns the embedding of the text.
         :param text:
@@ -30,4 +28,4 @@ class W2VEmbedding(AbstractEmbeddingModel):
                 embeddings.append(self.model[word])
             else:
                 embeddings.append(np.zeros(self.model.vector_size))
-        return numpy.mean(embeddings, axis=0)
+        return np.mean(embeddings, axis=0)

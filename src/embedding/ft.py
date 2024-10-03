@@ -1,7 +1,7 @@
 import fasttext as ft
-import numpy
+import numpy as np
 
-from embedding.embedding import AbstractEmbeddingModel
+from embedding.abstract import AbstractEmbeddingModel
 
 
 class FastTextEmbedding(AbstractEmbeddingModel):
@@ -14,7 +14,7 @@ class FastTextEmbedding(AbstractEmbeddingModel):
         self._name = f'{model}'
         self.model = ft.load_model(path)
 
-    def get_embedding(self, text: str) -> numpy.ndarray:
+    def get_embedding(self, text: str) -> np.ndarray:
         """
         Returns the embedding of the text.
         :param text:
