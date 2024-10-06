@@ -39,11 +39,12 @@ class ParserBase(ABC):
         return identifiers, package
 
     @staticmethod
-    def get_node_text(code: bytes, identifiers_nodes: List[Tuple[Node, str]]) -> List[str]:
+    def get_node_text(code: bytes, identifiers_nodes: dict[str, list[Node]]) -> List[str]:
         identifiers = []
-        for node, _ in identifiers_nodes:
-            token = code[node.start_byte:node.end_byte]
-            identifiers.append(token.decode())
+        for type in identifiers_nodes:
+            for node in identifiers_nodes[type]:
+                token = code[node.start_byte:node.end_byte]
+                identifiers.append(token.decode())
 
         return identifiers
 

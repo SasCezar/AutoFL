@@ -29,7 +29,8 @@ class TestPythonParser(unittest.TestCase):
 
     def test_identifiers(self):
         identifiers, _ = self.parser.parse(self.file)
-        self.assertListEqual(identifiers, self.gt)
+        self.assertEqual(len(identifiers), len(self.gt))
+        self.assertSetEqual(set(identifiers), set(self.gt))
 
     def test_packages(self):
         # TODO

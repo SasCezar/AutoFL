@@ -1,8 +1,8 @@
 import keyword
 from pathlib import Path
 
-from tree_sitter import Language
-
+from tree_sitter import Language, Parser
+import tree_sitter_python as tsp
 from parser.extensions import Extension
 from parser.parser import ParserBase
 
@@ -14,8 +14,8 @@ class PythonParser(ParserBase, lang=Extension.python.name):
 
     def __init__(self, library_path: Path | str):
         super().__init__(library_path)
-        self.language: Language = Language(library_path, Extension.python.name)
-        self.parser.set_language(self.language)
+        self.language: Language = Language(tsp.language())
+        self.parser: Parser = Parser(self.language)
         self.identifiers_pattern: str = """
                                         ((identifier) @identifier)
                                         """
