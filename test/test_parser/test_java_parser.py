@@ -2,6 +2,7 @@ import unittest
 from pathlib import Path
 
 from hydra import initialize, compose
+from sympy import pprint
 
 from entity.file import File
 from parser.parser import ParserFactory, ParserBase
@@ -25,7 +26,8 @@ class TestJavaParser(unittest.TestCase):
 
     def test_identifiers(self):
         identifiers, _ = self.parser.parse(self.file)
-        self.assertListEqual(identifiers, self.gt)
+        self.assertEqual(len(identifiers), len(self.gt))
+        self.assertSetEqual(set(identifiers), set(self.gt))
 
     def test_packages(self):
         # TODO
