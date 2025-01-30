@@ -179,7 +179,7 @@ doi       = {10.1007/s10664-023-10423-7}
           url       = {https://github.com/SasCezar/AutoFL},
           version   = {0.5.0},
           year      = {2024},
-          url       = {https://doi.org/10.5281/zenodo.10255368},
-          doi       = {10.5281/zenodo.10255368}
+          url       = {https://doi.org/10.5281/zenodo.13895493},
+          doi       = {10.5281/zenodo.13895493}
 }
 ```
