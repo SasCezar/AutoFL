@@ -7,5 +7,7 @@ class Annotation(BaseModel):
     """
     Class defining the annotation assigned to a file.
     """
+
     distribution: List[float]
-    unannotated: bool
+    unannotated: int
+    raw_annotation: List[float] = None

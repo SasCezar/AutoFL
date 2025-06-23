@@ -1,7 +1,7 @@
 # @package _global_
 defaults:
   - _self_
-  - environment: docker
+  - environment: local
   - taxonomy: gitranking
   - annotator: default
   - version_strategy: latest

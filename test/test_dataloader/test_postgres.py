@@ -9,8 +9,10 @@ from entity.project import Project, Version
 
 class TestPostgres(unittest.TestCase):
     def setUp(self) -> None:
-        with initialize(version_base='1.3', config_path="../../config/"):
-            self.cfg = compose(config_name="test.yaml", overrides=["dataloader=postgres"])
+        with initialize(version_base="1.3", config_path="../../config/"):
+            self.cfg = compose(
+                config_name="test.yaml", overrides=["dataloader=postgres"]
+            )
 
     def test_load_project_name(self):
         dataloader: PostgresProjectLoader = instantiate(self.cfg.dataloader)
@@ -28,5 +30,7 @@ class TestPostgres(unittest.TestCase):
 
     def test_load_single(self):
         dataloader: PostgresProjectLoader = instantiate(self.cfg.dataloader)
-        project = dataloader.load_single("GoogleCloudPlatform|dataflow-opinion-analysis")
+        project = dataloader.load_single(
+            "GoogleCloudPlatform|dataflow-opinion-analysis"
+        )
         print(len(project.versions))

@@ -11,5 +11,6 @@ class VersionStrategyBase(ABC):
     Common interface for version strategies. A version strategy is a strategy to get the versions of a project from a
     VCS repository (e.g. git).
     """
+
     def get_versions(self, repository: Repo) -> List[Version]:
         pass

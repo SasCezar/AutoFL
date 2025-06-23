@@ -22,6 +22,6 @@ def instantiate_annotators(annotators_cfg: DictConfig, taxonomy) -> List[Annotat
             lf = instantiate(cb_conf['lf'], taxonomy=taxonomy)
             filtering = instantiate(cb_conf['filtering']) if cb_conf['filtering']['_target_'] else None
             transformation = instantiate(cb_conf['transformation']) if cb_conf['transformation']['_target_'] else None
-            annotators.append(Annotator(lf, filtering, transformation))
+            annotators.append(Annotator(lf, filtering, transformation, name))
 
     return annotators

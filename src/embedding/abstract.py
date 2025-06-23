@@ -11,7 +11,7 @@ class AbstractEmbeddingModel(ABC):
     """
 
     def __init__(self, split_camel: bool = False):
-        self._name = 'AbstractEmbeddingModel'
+        self._name = "AbstractEmbeddingModel"
         self.model = None
         self._split_camel = split_camel
 
@@ -22,4 +22,4 @@ class AbstractEmbeddingModel(ABC):
     def split(self, name: str):
         if self._split_camel:
             return split_camelcase(name)
-        return name.split(' ')
+        return name.split(" ")

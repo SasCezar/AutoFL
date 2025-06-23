@@ -15,13 +15,15 @@ class IdentifierExtractionPipeline(PipelineBase):
     def run(self, project: Project, version: Version) -> Tuple[Project, Version]:
         for file_name in version.files:
             file = version.files[file_name]
-            lang = file.language.strip('.')
+            lang = file.language.strip(".")
 
             if file.identifiers and not self.force:
                 continue
 
             if lang not in self.parsers:
-                self.parsers[lang] = self.parser_factory.create_parser(lang, self.languages_path)
+                self.parsers[lang] = self.parser_factory.create_parser(
+                    lang, self.languages_path
+                )
 
             identifiers, package = self.parsers[lang].parse(file)
             file.identifiers = identifiers

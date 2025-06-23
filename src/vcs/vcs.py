@@ -5,7 +5,7 @@ from git import Repo
 from entity.project import Project
 
 
-class VCS: 
+class VCS:
     @staticmethod
     def checkout(repo: Repo, commit_id: str):
         repo.git.checkout(commit_id, force=True)
@@ -18,4 +18,3 @@ class VCS:
             repo = Repo(project.dir_path)
 
         return repo
-

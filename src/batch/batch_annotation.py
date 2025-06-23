@@ -31,12 +31,13 @@ def annotate(cfg: DictConfig):
     projects: List[Project] = dataloader.find_projects(annot_cfg)
     taxonomy: KeywordTaxonomy = instantiate(cfg.taxonomy)
     ensemble: EnsembleBase = instantiate(cfg.annotator.ensemble)
-    annotators: List[Annotator] = instantiate_annotators(cfg.annotator.annotators, taxonomy)
+    annotators: List[Annotator] = instantiate_annotators(
+        cfg.annotator.annotators, taxonomy
+    )
 
-    file_annotation = FileAnnotationPipeline(annotators,
-                                             ensemble,
-                                             taxonomy,
-                                             cfg=annot_cfg)
+    file_annotation = FileAnnotationPipeline(
+        annotators, ensemble, taxonomy, cfg=annot_cfg
+    )
 
     package_annotation = PackageAnnotationPipeline() if cfg.package_annotation else None
     project_annotation = ProjectAnnotationPipeline() if cfg.project_annotation else None
@@ -45,12 +46,14 @@ def annotate(cfg: DictConfig):
     version_strategy: VersionStrategyBase = instantiate(cfg.version_strategy)
     vcs = VCS()
 
-    execution = AnnotationExecution(identifier_extraction,
-                                    file_annotation,
-                                    package_annotation,
-                                    project_annotation,
-                                    version_strategy,
-                                    vcs)
+    execution = AnnotationExecution(
+        identifier_extraction,
+        file_annotation,
+        package_annotation,
+        project_annotation,
+        version_strategy,
+        vcs,
+    )
 
     pipeline = partial(run, execution, cfg)
 
@@ -69,5 +72,5 @@ def run(execution, cfg, projects):
     pipeline.run(projects)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     annotate()

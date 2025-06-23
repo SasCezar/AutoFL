@@ -12,7 +12,10 @@ class CSVProjectLoader(DataLoaderBase):
         super().__init__()
         self.file_path = Path(file_path)
 
-    def load(self, projects_list: list[str] | list[Project] = None) -> Iterable[Project]:
+    def load(
+        self, projects_list: list[str] | list[Project] = None
+    ) -> Iterable[Project]:
         projects: List[Project] = []
         project_list = pd.read_csv(self.file_path)
+        projects = project_list["name"]
         return projects

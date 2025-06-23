@@ -31,10 +31,9 @@ def extract_keywords(cfg: DictConfig):
     version_strategy: VersionStrategyBase = instantiate(cfg.version_strategy)
     vcs = VCS()
 
-    execution = KeywordExtractionExecution(identifier_extraction,
-                                           keyword_extraction,
-                                           version_strategy,
-                                           vcs)
+    execution = KeywordExtractionExecution(
+        identifier_extraction, keyword_extraction, version_strategy, vcs
+    )
 
     pipeline = partial(run, execution, cfg)
 
@@ -53,5 +52,5 @@ def run(execution, cfg, projects):
     pipeline.run(projects)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     extract_keywords()

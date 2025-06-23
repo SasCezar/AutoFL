@@ -10,8 +10,15 @@ class FirstVersionStrategy(VersionStrategyBase):
     """
     Strategy to get the first version of a project from a VCS repository (e.g. git)
     """
+
     def get_versions(self, repository: Repo) -> List[Version]:
-        commits = list(repository.iter_commits('--all'))
+        commits = list(repository.iter_commits("--all"))
         commit = commits[0]
-        return [Version(commit_id=commit.hexsha, commit_num=0,
-                        commit_date=commit.committed_datetime, files=None)]
+        return [
+            Version(
+                commit_id=commit.hexsha,
+                commit_num=0,
+                commit_date=commit.committed_datetime,
+                files=None,
+            )
+        ]

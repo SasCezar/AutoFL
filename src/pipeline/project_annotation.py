@@ -21,10 +21,16 @@ class ProjectAnnotationPipeline(PipelineBase):
             project_dist.append(file.annotation.distribution)
         try:
             project_dist = np.array(project_dist)
-            project.project_annotation[version.commit_id] = list(np.mean(project_dist, axis=0))
-        except Exception as e:
-            project.project_annotation[version.commit_id] = [0.0] * len(project.taxonomy)
-            logger.error(f"Error annotating project {project.name} @ {version.commit_id}")
+            project.project_annotation[version.commit_id] = list(
+                np.mean(project_dist, axis=0)
+            )
+        except Exception:
+            project.project_annotation[version.commit_id] = [0.0] * len(
+                project.taxonomy
+            )
+            logger.error(
+                f"Error annotating project {project.name} @ {version.commit_id}"
+            )
             traceback.print_exc()
 
         return project, version

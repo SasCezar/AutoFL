@@ -5,7 +5,6 @@ from typing import List
 class KeywordExtractionBase(ABC):
     """
     Abstract class for keyword extraction
-
     """
 
     def __init__(self):

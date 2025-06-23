@@ -7,7 +7,9 @@ from utils.utils import split_camelcase
 
 
 class KeywordExtractionPipeline(PipelineBase):
-    def __init__(self, keyword_extractor: KeywordExtractionBase, split_tokens: bool = False):
+    def __init__(
+        self, keyword_extractor: KeywordExtractionBase, split_tokens: bool = False
+    ):
         self.keyword_extractor = keyword_extractor
         self.split_tokens = split_tokens
 

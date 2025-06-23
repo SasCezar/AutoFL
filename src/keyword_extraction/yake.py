@@ -26,6 +26,6 @@ class YAKEKeywordExtraction(KeywordExtractionBase):
 
     @staticmethod
     def load_stopwords(path: str) -> List[str]:
-        with open(path, 'rt') as f:
+        with open(path, "rt") as f:
             stopwords = f.read().splitlines()
         return stopwords

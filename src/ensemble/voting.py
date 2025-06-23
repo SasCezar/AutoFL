@@ -11,18 +11,20 @@ class VotingEnsemble(EnsembleBase):
         super().__init__()
         self.k = k
 
-    def run(self, annotations: List[Annotation]) -> Tuple[Union[List | np.array], int]:
+    def run(self, annotations: List[Annotation]) -> Annotation:
         best, n = self.extract_best(annotations)
 
         if not best:
-            return np.zeros(n), 1
+            return Annotation(distribution=np.zeros(n).tolist(),
+                              unannotated=1)
 
         distributions = np.zeros(n)
         for lf_top in best:
             for i, p in enumerate(lf_top):
                 distributions[p] = distributions[p] + self.vote_weight(i)
         distributions = distributions / np.linalg.norm(distributions)
-        return distributions, 0
+        return Annotation(distribution=distributions.tolist(),
+                          unannotated=0)
 
     def extract_best(self, annotations: List[Annotation]):
         best = []
@@ -30,7 +32,7 @@ class VotingEnsemble(EnsembleBase):
         for annotation in annotations:
             n = len(annotation.distribution)
             if not annotation.unannotated:
-                top = np.argsort(annotation.distribution)[::-1][:self.k]
+                top = np.argsort(annotation.distribution)[::-1][: self.k]
                 best.append(top)
         return best, n
 

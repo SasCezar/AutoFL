@@ -1,6 +1,5 @@
-from typing import List, Tuple, Union
+from typing import List
 
-import numpy as np
 
 from ensemble.ensemble import EnsembleBase
 from entity.annotation import Annotation
@@ -11,5 +10,5 @@ class NoneEnsemble(EnsembleBase):
     Ensemble method that does not do anything. This is useful for single annotator experiments.
     """
 
-    def run(self, annotations: List[Annotation]) -> Tuple[Union[List | np.array], int]:
-        return annotations[0], 0
+    def run(self, annotations: List[Annotation]) -> Annotation:
+        return Annotation(distribution=annotations[0].distribution, unannotated=0)

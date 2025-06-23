@@ -29,8 +29,9 @@ class KeywordLF(LFBase):
             label: KeywordLabel = _label
             intersection = list(label.keywords.intersection(Multiset(content.split())))
             intersection = Counter(intersection)
-            node_labels[label.index] = sum([intersection[k] * label.weights[k]
-                                            for k in intersection.keys()])
+            node_labels[label.index] = sum(
+                [intersection[k] * label.weights[k] for k in intersection.keys()]
+            )
 
         norm = np.sum(node_labels)
         node_vec = node_labels / norm if norm > 0 else np.zeros(len(self.taxonomy))

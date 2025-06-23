@@ -8,6 +8,7 @@ class FilteringBase(ABC):
     """
     Base class for annotation filtering.
     """
+
     @abstractmethod
     def filter(self, distribution: np.array) -> bool:
         """
@@ -24,6 +25,7 @@ class JSDFiltering(FilteringBase):
     Filters the annotation using the JSD between it and a uniform distribution.
     If the score is lower than a threshold (noisy annotation), the annotation is filtered.
     """
+
     def __init__(self, threshold: float):
         """
 
@@ -35,7 +37,10 @@ class JSDFiltering(FilteringBase):
         n = len(distribution)
         uniform_vec = np.ones(n) / n
 
-        if np.linalg.norm(distribution) == 0 or jensenshannon(distribution, uniform_vec) <= self.threshold:
+        if (
+            np.linalg.norm(distribution) == 0
+            or jensenshannon(distribution, uniform_vec) <= self.threshold
+        ):
             return True
 
         return False
@@ -46,9 +51,9 @@ class ThresholdFiltering(FilteringBase):
     Filter based on the probability of the most likely class.
     If is not high enough, then the annotation is filtered.
     """
+
     def __init__(self, threshold: float):
         """
-
         :param threshold: Noise threshold used to filter the file
         """
         self.threshold = threshold

@@ -13,10 +13,13 @@ class PostgresProjectLoader(DataLoaderBase):
         self.db = db
         self.user = user
         self.password = password
-        self.engine = sqlalchemy.create_engine(f'postgresql+psycopg://{user}:{password}@{host}/{db}')
+        self.engine = sqlalchemy.create_engine(
+            f"postgresql+psycopg://{user}:{password}@{host}/{db}"
+        )
         self.metadata = sqlalchemy.MetaData()
-        self.projects = sqlalchemy.Table('project', self.metadata,
-                                         autoload_with=self.engine)
+        self.projects = sqlalchemy.Table(
+            "project", self.metadata, autoload_with=self.engine
+        )
 
     def load(self, projects_list: list[str] = None) -> Iterable[Project]:
         """
@@ -27,7 +30,9 @@ class PostgresProjectLoader(DataLoaderBase):
         """
         if projects_list is not None:
             projects_list = {int(x) for x in projects_list}
-            query = sqlalchemy.select(self.projects).where((self.projects.c.id.in_(projects_list)))
+            query = sqlalchemy.select(self.projects).where(
+                (self.projects.c.id.in_(projects_list))
+            )
         else:
             query = sqlalchemy.select(self.projects)
         with self.engine.connect() as conn:
@@ -47,7 +52,9 @@ class PostgresProjectLoader(DataLoaderBase):
             if cfg is None:
                 query = sqlalchemy.select(self.projects.c.id)
             else:
-                query = sqlalchemy.select(self.projects.c.id).where(self.projects.c.config == cfg)
+                query = sqlalchemy.select(self.projects.c.id).where(
+                    self.projects.c.config == cfg
+                )
             result = conn.execute(query)
             for row in result:
                 yield row[0]
@@ -60,8 +67,9 @@ class PostgresProjectLoader(DataLoaderBase):
         :return:
         """
         with self.engine.connect() as conn:
-            query = sqlalchemy.select(self.projects).where((self.projects.c.name == project) &
-                                                           (self.projects.c.config == cfg))
+            query = sqlalchemy.select(self.projects).where(
+                (self.projects.c.name == project) & (self.projects.c.config == cfg)
+            )
             result = list(conn.execute(query))
             project = Project(**json.loads(result[0][5]))
             project.versions = []

@@ -1,5 +1,4 @@
-
-from typing import List, Union, Tuple
+from typing import List
 
 import numpy as np
 
@@ -11,10 +10,11 @@ class AverageEnsemble(EnsembleBase):
     """
     Ensemble method that averages the annotations.
     """
-    def run(self, annotations: List[Annotation]) -> Tuple[Union[List | np.array], int]:
+
+    def run(self, annotations: List[Annotation]) -> Annotation:
         annotated = np.array([x.distribution for x in annotations if not x.unannotated])
         if annotated:
             mean = np.mean(annotated, axis=0)
-            return mean, 0
+            return Annotation(distribution=mean.tolist(), unannotated=0)
 
-        return annotations[0], 1
+        return Annotation(distribution=annotations[0].distribution, unannotated=1)

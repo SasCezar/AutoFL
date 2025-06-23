@@ -13,6 +13,7 @@ class Version(BaseModel):
     Class representing a version. Each version has a commit id (sha), a commit number describing the position of the
     commit in the project's history, a commit date and a map of files.
     """
+
     commit_id: str
     commit_num: int = None
     commit_date: datetime = None
@@ -26,6 +27,7 @@ class Project(BaseModel):
     Class representing a project. Each project has a name, a remote (url), a directory path, a list of languages,
     a list of versions, a list of keywords, a taxonomy and a list of predicted labels and developer assigned labels.
     """
+
     name: str
     cfg: Optional[Dict[str, Any]] = None
     remote: Optional[str] = None
@@ -43,15 +45,19 @@ class VersionBuilder:
     Class responsible for building a version from a given commit id and a list of languages.
     """
 
-    def build_version(self, repo_dir: Path | str, languages: List[str], version: Version) -> Version:
+    def build_version(
+        self, repo_dir: Path | str, languages: List[str], version: Version
+    ) -> Version:
         files = self.load_files(Path(repo_dir), languages)
         version.files = files
         return version
 
     def load_files(self, repo_dir: Path, languages: List[str]) -> Dict[str, File]:
         extensions = self.get_languages_ext(languages)
-        all_paths = list(repo_dir.glob('**/*'))
-        filtered_paths = [Path(x) for x in all_paths if x.is_file() and x.suffix.lower() in extensions]
+        all_paths = list(repo_dir.glob("**/*"))
+        filtered_paths = [
+            Path(x) for x in all_paths if x.is_file() and x.suffix.lower() in extensions
+        ]
         files = {}
         for path in filtered_paths:
             rel_path = str(path.relative_to(repo_dir))
@@ -65,11 +71,11 @@ class VersionBuilder:
     @staticmethod
     def read_file(path: Path) -> str:
         try:
-            with open(path, 'rt') as inf:
-                content = ' '.join(inf.readlines())
+            with open(path, "rt") as inf:
+                content = " ".join(inf.readlines())
         except:
-            with open(path, 'rt', encoding='windows-1252') as inf:
-                content = ' '.join(inf.readlines())
+            with open(path, "rt", encoding="windows-1252") as inf:
+                content = " ".join(inf.readlines())
 
         return content
 

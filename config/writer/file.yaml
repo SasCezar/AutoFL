@@ -1,3 +1,3 @@
 _target_: writer.file.FileWriter
-out_path: ${data_path}/out/
+out_path: /media/sasce/External/AutoFL/data/out/
 exclude: null

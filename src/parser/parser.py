@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 from pathlib import Path
 from typing import List, Tuple
 
@@ -39,17 +39,19 @@ class ParserBase(ABC):
         return identifiers, package
 
     @staticmethod
-    def get_node_text(code: bytes, identifiers_nodes: dict[str, list[Node]]) -> List[str]:
+    def get_node_text(
+        code: bytes, identifiers_nodes: dict[str, list[Node]]
+    ) -> List[str]:
         identifiers = []
         for type in identifiers_nodes:
             for node in identifiers_nodes[type]:
-                token = code[node.start_byte:node.end_byte]
+                token = code[node.start_byte : node.end_byte]
                 identifiers.append(token.decode())
 
         return identifiers
 
     def get_package(self, file: str, code: bytes, root: Tree) -> str:
-        package = '.'
+        package = "."
 
         return package
 
@@ -58,7 +60,7 @@ class ParserBase(ABC):
 
 
 class ParserFactory:
-    """ The factory class for creating parsers"""
+    """The factory class for creating parsers"""
 
     registry = {}
     """ Internal registry for available parsers """

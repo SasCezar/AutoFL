@@ -15,15 +15,16 @@ class FileWriter(WriterBase):
         """
         super().__init__()
         self.out_path = Path(out_path)
-        self.exclude = json.loads(exclude)
+        self.out_path.mkdir(parents=True, exist_ok=True)
+        self.exclude = json.loads(exclude) if exclude else {}
         self.indent = indent
 
     def write(self, project: Project):
         project_dict = project.model_dump_json(exclude=self.exclude, indent=self.indent)
 
-        out_file = self.out_path.joinpath(f'{project.name}.json')
+        out_file = self.out_path.joinpath(f"{project.name}.json")
 
-        with open(out_file, 'wt') as outf:
+        with open(out_file, "wt") as outf:
             outf.write(project_dict)
 
     def write_bulk(self, projects: List[Project]):

@@ -17,17 +17,19 @@ app = FastAPI()
 
 @app.post("/label/files")
 async def label_files(analysis: Analysis):
-    with initialize(version_base='1.3', config_path="../../config/"):
+    with initialize(version_base="1.3", config_path="../../config/"):
         overrides = []
         # overrides = [f'{key}={value}' for key, value in analysis.config.items()] if analysis.config else []
         cfg = compose(config_name="main.yaml")  # , overrides=overrides)
 
     annot_cfg = OmegaConf.to_container(cfg.annotator, resolve=True)
-    project = Project(name=analysis.name,
-                      remote=analysis.remote,
-                      dir_path=f'{cfg.data_path}/repository/{analysis.name}',
-                      languages=analysis.languages,
-                      cfg=annot_cfg)
+    project = Project(
+        name=analysis.name,
+        remote=analysis.remote,
+        dir_path=f"{cfg.data_path}/repository/{analysis.name}",
+        languages=analysis.languages,
+        cfg=annot_cfg,
+    )
 
     dataloader: PostgresProjectLoader | None = None
     if cfg.dataloader is not None:
@@ -44,7 +46,9 @@ async def label_files(analysis: Analysis):
             cached = True
             logger.info(f"Loaded project {project.name} from database")
     except:
-        logger.info(f"Project {project.name} not found in database. Running analysis ...")
+        logger.info(
+            f"Project {project.name} not found in database. Running analysis ..."
+        )
 
     if not cached:
         execution = RunAnalysis(cfg)
@@ -58,10 +62,10 @@ async def label_files(analysis: Analysis):
         except:
             logger.info(f"Error writing project {project.name} to database")
 
-    result = {'result': jsonable_encoder(annotations.model_dump())}
+    result = {"result": jsonable_encoder(annotations.model_dump())}
     return JSONResponse(content=result)
 
 
 @app.get("/")
 async def main():
-    return {'Message': "Done"}
+    return {"Message": "Done"}

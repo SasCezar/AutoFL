@@ -9,6 +9,7 @@ class LFBase(ABC):
     """
     Abstract labelling function. Uses to annotate
     """
+
     def __init__(self, taxonomy: TaxonomyBase):
         """
         Taxonomy containing labels to annotate the examples with.

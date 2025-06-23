@@ -36,8 +36,6 @@ class BatchPipeline:
                 logger.info(f"Error processing {project.name}: {e} - Skipping project")
                 continue
 
-            print(project)
-
             project_cache.append(project)
             if len(project_cache) >= self.cache_size:
                 self.writer.write_bulk(project_cache)

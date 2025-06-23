@@ -15,26 +15,34 @@ class PostgresWriter(WriterBase):
         self.db = db
         self.user = user
         self.password = password
-        self.engine = sqlalchemy.create_engine(f'postgresql+psycopg://{user}:{password}@{host}/{db}')
+        self.engine = sqlalchemy.create_engine(
+            f"postgresql+psycopg://{user}:{password}@{host}/{db}"
+        )
         self.metadata = sqlalchemy.MetaData()
-        self.projects = sqlalchemy.Table('project', self.metadata,
-                                         autoload_with=self.engine)
+        self.projects = sqlalchemy.Table(
+            "project", self.metadata, autoload_with=self.engine
+        )
 
     def write(self, project: Project):
         with self.engine.connect() as conn:
             black_project = copy.deepcopy(project)
             black_project.versions = []
             for version in project.versions:
-                value = {"name": project.name,
-                         "version_sha": version.commit_id,
-                         "version_num": version.commit_num,
-                         "config": project.cfg,
-                         "project": black_project.model_dump_json(),  # TODO: Exclude versions
-                         "version": version.model_dump_json()}
+                value = {
+                    "name": project.name,
+                    "version_sha": version.commit_id,
+                    "version_num": version.commit_num,
+                    "config": project.cfg,
+                    "project": black_project.model_dump_json(),  # TODO: Exclude versions
+                    "version": version.model_dump_json(),
+                }
 
-                query = insert(self.projects).values(value).on_conflict_do_update(
-                    index_elements=['name', 'version_sha', 'config'],
-                    set_=value
+                query = (
+                    insert(self.projects)
+                    .values(value)
+                    .on_conflict_do_update(
+                        index_elements=["name", "version_sha", "config"], set_=value
+                    )
                 )
                 conn.execute(query)
             conn.commit()
